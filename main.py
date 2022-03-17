@@ -1,4 +1,5 @@
 import glob
+from collections.abc import Iterator, Generator
 import re
 import time
 import json
@@ -6,6 +7,7 @@ import os
 from pathlib import Path
 from itertools import cycle
 import logging
+import numpy as np
 # GGplot IMPORTS
 
 # Seaborsn IMPORTS
@@ -40,26 +42,6 @@ from copy import deepcopy
 
 "============================DEFINITION OF " \
 "CLASSES----------------*********************************#----================================="
-
-
-def loss_one_epoch(model, data_loader, loss,batch_size):
-    assert loss.reduction is "sum", "The reduction of the loss object must be \"sum\" "
-    # loss = nn.CrossEntropyLoss(reduction="sum")
-    model.eval()
-    model.cuda()
-    cumulative_sum = 0
-    total_items = 0
-
-    with torch.no_grad():
-        for data, label in data_loader:
-            data = data.cuda()
-            label = label.cuda()
-            prediction = model(data)
-            value = loss(prediction, label)
-            cumulative_sum += value.item()
-            total_items += len(data)
-            break
-    return cumulative_sum / total_items
 
 
 class DenseResnet50(LightningModule):
@@ -116,7 +98,40 @@ class LitModel(pl.LightningModule):
 
 "==================================================================================================================="
 "============================== DEFINITION OF FUNCTIONS=============================================================="
-"Disables batch normalization update for the model"
+'''
+Creates the random seed for the dataloaders, I want them to use the same seed for debbuging porpuses
+'''
+
+
+def seed_worker(worker_id):
+    worker_seed = torch.initial_seed() % 2 ** 32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+
+
+g = torch.Generator()
+g.manual_seed(0)
+'''
+Disables batch normalization update for the model
+'''
+
+
+def loss_one_epoch(model, data_loader, loss, train=True):
+    assert loss.reduction is "sum", "The reduction of the loss object must be \"sum\" "
+    # loss = nn.CrossEntropyLoss(reduction="sum")
+    model.eval()
+    model.cuda()
+    cumulative_sum = 0
+    total_items = 0
+
+    with torch.no_grad():
+        for data, label in data_loader:
+            data = data.cuda()
+            label = label.cuda()
+            value = compute_loss_batch(batch=(data, label), model=model, loss_object=loss, train=train)
+            cumulative_sum += value.item()
+            total_items += len(data)
+    return cumulative_sum / total_items
 
 
 def disable_bn(model):
@@ -125,7 +140,9 @@ def disable_bn(model):
             module.eval()
 
 
-"Enables batch normalization update for the model"
+'''
+Enables batch normalization update for the model, I migth need this for optimizing with SAM
+'''
 
 
 def enable_bn(model):
@@ -140,7 +157,7 @@ def load_CIFAR10(datapath, batch_size):
     trainset = torchvision.datasets.CIFAR10(root=datapath, train=True,
                                             download=True, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                              shuffle=True, num_workers=2)
+                                              shuffle=False, num_workers=2)
 
     testset = torchvision.datasets.CIFAR10(root=datapath, train=False,
                                            download=True, transform=transform)
@@ -176,39 +193,79 @@ def get_masked_model_from_checkpoint(path_to_checkpoint: "Path", model: nn.Modul
 " This is done in order to avoid batch notmalization parameters"
 
 
-def get_vector_of_subset_weights(full_state_dict: dict, subset_state_dict: dict):
-    dictionary_to_convert = {}
-    for key in subset_state_dict.keys():
-        dictionary_to_convert[key] = full_state_dict[key].detach().clone()
-    vector = parameters_to_vector(dictionary_to_convert.values())
+def get_vector_of_subset_weights(full_named_parameters: Generator, subset_state_dict: dict):
+    dictionary_to_convert = []
+    for name, param in full_named_parameters:
+        if name in subset_state_dict.keys():
+            # Detach and clone are used to avoid any issues with the original model.
+            dictionary_to_convert.append(param.data.detach().clone())
+    vector = parameters_to_vector(dictionary_to_convert)
     return vector
 
 
-def get_weights_of_vector(full_state_dict: dict, vector: torch.Tensor, subset_state_dict: dict):
+def get_weights_of_vector(full_named_parameters: Iterator, vector: torch.Tensor, subset_state_dict: dict):
     # This is because the "vector" only see the subset_state_dict
     # I need to fill the small_dict with the vector incoming and
     # vector_to_parameters replaces the values inside the iterable he gets.
     # also small_dict has the variable names and the shapes I need for the analysis
-    pre_tensors = list(subset_state_dict.values())
+    pre_tensors = deepcopy(list(subset_state_dict.values()))
 
     vector_to_parameters(vector, pre_tensors)
-    # TODO: In theory, when you replace the data of the tensor inside the state dictionary it is a pointer and as such
-    # it points to the original state dictionary, I do not know if I have to call model.load_state_dict() with
-    # full_stat_dict. I need to check this
-    for index, key in enumerate(subset_state_dict.keys()):
-        full_state_dict[key].data = pre_tensors[index].data
+
+    # The index is outside because pre_tensors do not have the same amount of elements that full_named_parameters
+    index = 0
+    for key, param in full_named_parameters:
+        if key in subset_state_dict.keys():
+            param.data.copy_(pre_tensors[index].clone())
+            index += 1
+    # return full_named_parameters, pre_tensors
 
 
-def get_linear_path_between_sparse_points(dataset, model, batch_size, path_to_solution, number_of_points=10):
+def compute_loss_batch(batch, model, loss_object, train=True):
+    value = 0
+    if not train:
+        model.eval()
+        with torch.no_grad():
+            data, label = batch
+            prediction = model(data)
+            value = loss_object(prediction, label)
+    else:
+        data, label = batch
+        prediction = model(data)
+        value = loss_object(prediction, label)
+    return value
+
+
+def set_biases_to_zero(model:nn.Module):
+    for name,weight in model.named_parameters():
+        if "bias" in name and not "bn"in name:
+           weight.data.copy_(torch.zeros_like(weight))
+def compare_biases(model1: nn.Module, model2: nn.Module):
+    parameters_2 = list(model2.named_parameters())
+
+    for i, (name, weigth) in enumerate(model1.named_parameters()):
+        if "bias" in name and not "bn"in name:
+            name2,weigth2 = parameters_2[i]
+            temp = 0
+
+def upload_only_batch_normalization_and_bias(named_parameters,state_dict,upload_bias = False):
+
+    for name, weigth in named_parameters:
+        if "bn" in name:
+            named_parameters[name].data.copy_(state_dict[name].data)
+        if "bias" in name and not "bn" in name and upload_bias:
+            named_parameters[name].data.copy_(state_dict[name].data)
+
+def get_linear_path_between_sparse_points(dataset, initial_model, batch_size, path_to_solution, number_of_points=10):
     "We are doing a linear interpolation between a pruned initialization and a pruning solution"
-    trainloader, testLoader = None, None
+    trainloader, testloader = None, None
     step = 1 / number_of_points
     solution = None
     num_classes = None
     if dataset == "cifar10":
         trainloader, testloader = load_CIFAR10("../data", batch_size)
         num_classes = 10
-    if isinstance(model, WideResNet):
+    if isinstance(initial_model, WideResNet):
         # get the last point which is the solution
         solution = WideResNet(depth=22, widen_factor=2, small_dense_density=1.0)
         # The initial declaration of the class do not have "masks" on it so we add them
@@ -216,24 +273,79 @@ def get_linear_path_between_sparse_points(dataset, model, batch_size, path_to_so
         solution.load_state_dict(full_dict["model"])
         setattr(solution, "masks", full_dict["mask"]["masks"])
         # get the mask for the initial point
-        get_masked_model_from_checkpoint(Path(path_to_solution), model)
-    if isinstance(model, ResNet):
+        get_masked_model_from_checkpoint(Path(path_to_solution), initial_model)
+        # Register the buffers which are related to the running mean and variance of the batch normalization layers
+        vector_to_parameters(parameters_to_vector(solution.buffers()),initial_model.buffers())
+    if isinstance(initial_model, ResNet):
         solution = resnet50(num_classes=num_classes)
         # The initial declaration of the class do not have "masks" on it so we add them
         full_dict = torch.load(path_to_solution)
         solution.load_state_dict(full_dict["model"])
         setattr(solution, "masks", full_dict["mask"]["masks"])
         # get the mask for the initial point
-        get_masked_model_from_checkpoint(path_to_solution, model)
+        get_masked_model_from_checkpoint(path_to_solution, initial_model)
+    #set_biases_to_zero(solution)
     loss_object = nn.CrossEntropyLoss(reduction="sum")
+    iter_dataloader = iter(testloader)
+    test_input, test_output = next(iter_dataloader)
+    test_input = test_input.cuda()
+    test_output = test_output.cuda()
+    initial_model.cuda()
+    solution.cuda()
+    del iter_dataloader
+    solution_loss_value = compute_loss_batch(batch=(test_input, test_output), model=solution,
+                                             loss_object=loss_object, train=False)
+    initial_point_loss_value = compute_loss_batch(batch=(test_input, test_output), model=initial_model,
+                                                  loss_object=loss_object, train=False)
+    initial_point = parameters_to_vector(initial_model.parameters())
+    final_point = parameters_to_vector(solution.parameters())
 
-    print(f"Loss of final point:{loss_one_epoch(solution,trainloader,loss_object,batch_size=batch_size)}")
-    # TODO: See what happens if I use named_parameters() instead of state_dict()
-    initial_point = get_vector_of_subset_weights(model.state_dict(), model.masks)
-    final_point = get_vector_of_subset_weights(solution.state_dict(), solution.masks)
-    get_weights_of_vector(solution.state_dict(),final_point,solution.masks)
-    print(f"Loss of final point after the reshape"
-          f":{loss_one_epoch(solution,trainloader,loss_object,batch_size=batch_size)}")
+    #
+    #
+    # # Here I test that the reshaping does not affect the output
+    # # For the final point
+    # get_weights_of_vector(solution.named_parameters(), final_point, solution.masks)
+    # solution_reshape_loss_value = compute_loss_batch(batch=(test_input, test_output), model=solution,
+    #                                                  loss_object=loss_object, train=False)
+    # # For the initial point
+    # get_weights_of_vector(initial_model.named_parameters(), initial_point, initial_model.masks)
+    # initial_point_reshape_loss_value = compute_loss_batch(batch=(test_input, test_output), model=initial_model,
+    #                                                       loss_object=loss_object, train=False)
+    # # Both of these loss values must be unaffected by the reshape
+    # assert solution_loss_value == solution_reshape_loss_value, f"Loss of the solution is not the same after the " \
+    #                                                            f"reshape. Lpre =" \
+    #                                                            f" {solution_loss_value},Lpost =" \
+    #                                                            f" {solution_reshape_loss_value}"
+    # assert initial_point_loss_value == initial_point_reshape_loss_value, f"Loss of the initial model is not the same " \
+    #                                                                      f"after " \
+    #                                                                      f"the reshape. Lpre = {initial_point_loss_value}," \
+    #                                                                      f"Lpost = {initial_point_reshape_loss_value}"
+    #
+
+
+
+    # Now I want to know if I replace these values in one copy of the initial model, the value changes to the correct
+    # value
+    temp_model = deepcopy(initial_model)
+    # buffers = parameters_to_vector(solution.buffers())
+    #get_weights_of_vector(temp_model.named_parameters(), final_point, initial_model.masks)
+    vector_to_parameters(final_point,temp_model.parameters())
+    # vector_to_parameters(buffers,temp_model.buffers())
+    #thing2 = parameters_to_vector(temp_model.parameters())
+    temp_model_with_final_weigths__loss = compute_loss_batch(batch=(test_input, test_output), model=temp_model,
+                                                             loss_object=loss_object, train=False)
+    assert temp_model_with_final_weigths__loss == solution_loss_value, f"Loss of the temp model after ´giving him the " \
+                                                                       f"solution's weights´ is not the same as the solution " \
+                                                                       f"reshape. Ltemp =" \
+                                                                       f" {temp_model_with_final_weigths__loss},Lsolution =" \
+                                                                       f" {solution_loss_value}"
+    assert compute_loss_batch(batch=(test_input,test_output),model=initial_model,loss_object=loss_object,
+                              train=False)!= temp_model_with_final_weigths__loss , "Loss of the temp model is equal to the initial model when " \
+                                                         "it should´nt be"
+    
+    # I delete all of these since I don't need it from this point onwards
+    del temp_model_with_final_weigths__loss, temp_model,initial_point_loss_value,solution_loss_value
+
     final_point = final_point.cuda()
     initial_point = initial_point.cuda()
     models_in_line = []
@@ -241,16 +353,22 @@ def get_linear_path_between_sparse_points(dataset, model, batch_size, path_to_so
     line.cuda()
     loss_ = []
     for weight in line:
-        current_model = deepcopy(model)
-        # Everything must be in cuda or CPU. Right now is in cuda
-        vector = torch.lerp(initial_point, final_point, weight.cuda())
+        current_model = deepcopy(initial_model)
 
-        current_state_dict = current_model.state_dict()
-        get_weights_of_vector(current_state_dict, vector, model.masks)
-        models_in_line.append(current_model)
-        # TODO: Verify that the variable current_state_dict indeed modifies the current_model weigths
-        point_of_loss = loss_one_epoch(current_model, trainloader,loss_object,batch_size=batch_size)
+        # WARNING: Everything must be in cuda or CPU. Right now is in cuda
+
+        vector = torch.lerp(initial_point, final_point, weight.to(initial_point.device))
+        vector_to_parameters(vector,current_model.parameters())
+
+
+
+
+        # point_of_loss = compute_loss_batch(batch=(test_input,test_output),model=current_model,loss_object=loss_object, train=False)
+        point_of_loss = loss_one_epoch(model=current_model,data_loader=trainloader,loss=loss_object,train=False)
         print(f"Loss: {point_of_loss}, alpha:{weight}")
+        # Put the model on CPU because I dont want to saturate the GPU memory.
+        current_model.cpu()
+        models_in_line.append(current_model)
         loss_.append(point_of_loss)
 
     return models_in_line, line, loss_
@@ -313,13 +431,16 @@ def main():
     train, test = load_CIFAR10("../data", 64)
 
     model = WideResNet(depth=22, widen_factor=2, small_dense_density=1.0)
-    models_line, line, loss = get_linear_path_between_sparse_points("cifar10", model, batch_size=64,
-                                                                    path_to_solution=checkpointpath,
-                                                                    number_of_points=3)
-    plt.plot(line, loss)
-    plt.ylabel('Train CrossEntropy', fontsize=20)
-    plt.xlabel('$\\alpha$', fontsize=20)
-    plt.show()
+
+    # models_line, line, loss = get_linear_path_between_sparse_points("cifar10", model, batch_size=64,
+    #                                                                 path_to_solution=checkpointpath,
+    #                                                                 number_of_points=100)
+    # plt.plot(line, loss)
+    # plt.ylabel('Train CrossEntropy', fontsize=20)
+    # plt.xlabel('$\\alpha$', fontsize=20)
+    # plt.show()
+def experiment_with_population():
+    
 
 
 if __name__ == "__main__":

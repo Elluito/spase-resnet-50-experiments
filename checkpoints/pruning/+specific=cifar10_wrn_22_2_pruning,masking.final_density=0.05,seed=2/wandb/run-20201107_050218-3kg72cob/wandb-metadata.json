@@ -1,0 +1,32 @@
+{
+    "root": "/srv/home/varunsundar/rethinking-sparse-learning/outputs/CIFAR10/Pruning_improved_pruning/+specific=cifar_wrn_22_2_pruning,masking.final_density=0.05,seed=2",
+    "program": "/srv/home/varunsundar/.conda/envs/torch38/lib/python3.8/site-packages/joblib/externals/loky/backend/popen_loky_posix.py",
+    "codePath": "popen_loky_posix.py",
+    "startedAt": "2020-11-07T05:02:20.036853",
+    "host": "euler13.wacc.wisc.edu",
+    "username": "varunsundar",
+    "executable": "/srv/home/varunsundar/.conda/envs/torch38/bin/python",
+    "os": "Linux-4.18.0-193.19.1.el8_2.x86_64-x86_64-with-glibc2.10",
+    "python": "3.8.5",
+    "gpu": "GeForce GTX 1080",
+    "gpu_count": 1,
+    "cpu_count": 40,
+    "cuda": "10.1.105",
+    "args": [
+        "dataset=CIFAR10",
+        "optimizer=SGD",
+        "+specific=cifar_wrn_22_2_pruning",
+        "exp_name=Pruning_improved_pruning",
+        "seed=2",
+        "masking.final_density=0.05,0.1,0.2,0.5",
+        "use_wandb=True",
+        "-m"
+    ],
+    "state": "finished",
+    "jobType": null,
+    "mode": "run",
+    "name": "CIFAR10_Pruning_improved_pruning_density_0.05",
+    "project": "cifar10",
+    "heartbeatAt": "2020-11-07T09:05:09.846659",
+    "exitcode": 0
+}
