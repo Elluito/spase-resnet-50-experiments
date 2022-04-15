@@ -9,7 +9,7 @@ from torch import nn
 
 if TYPE_CHECKING:
     from .utils.typing_alias import *
-from ..utils.ops import random_perm
+from sparselearning.utils.ops import random_perm
 
 
 

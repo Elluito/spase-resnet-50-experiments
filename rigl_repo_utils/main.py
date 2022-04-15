@@ -1,22 +1,27 @@
 import logging
 import os
+import typing
 from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import hydra
+import sparselearning.core
 import torch
 from tqdm import tqdm
 import wandb
 from omegaconf import DictConfig, OmegaConf
 
-from data import get_dataloaders
-from loss import LabelSmoothingCrossEntropy
-from models import registry as model_registry
+import rigl_repo_utils.main
+from .data import get_dataloaders
+from .loss import LabelSmoothingCrossEntropy
+from .models import registry as model_registry
 from sparselearning.core import Masking
+import sparselearning as sparseL
+import sparselearning.counting as sparseCount
 # The following is an dictionary defined at the end of decay file in funcs.py file
 from sparselearning.funcs.decay import registry as decay_registry
-
+from sparselearning.counting.ops import get_inference_FLOPs
 from sparselearning.utils.accuracy_helper import get_topk_accuracy
 from sparselearning.utils.smoothen_value import SmoothenValue
 from sparselearning.utils.train_helper import (
@@ -28,6 +33,32 @@ from sparselearning.utils import layer_wise_density
 
 if TYPE_CHECKING:
     from sparselearning.utils.typing_alias import *
+
+
+def static_train_sparse_FLOPs(
+        sparse_FLOPs: int, dense_FLOPs: int, iterations: int
+) -> float:
+    return sparse_FLOPs * 2 * iterations
+
+
+def RigL_train_FLOPs(
+        sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
+) -> float:
+    """
+    Train FLOPs for Rigging the Lottery (RigL), Evci et al. 2020.
+
+    :param sparse_FLOPs: FLOPs consumed for sparse model's forward pass
+    :type sparse_FLOPs: int
+    :param dense_FLOPs: FLOPs consumed for dense model's forward pass
+    :type dense_FLOPs: int
+    :param mask_interval: Mask update interval
+    :type mask_interval: int
+    :return: RigL train FLOPs
+    :rtype: float
+    """
+    return (2 * sparse_FLOPs + dense_FLOPs + 3 * sparse_FLOPs * mask_interval) / (
+            mask_interval + 1
+    )
 
 
 def train(
@@ -61,6 +92,7 @@ def train(
         output = model(data)
         loss = smooth_CE(output, target)
         loss.backward()
+
         # L2 Regularization
 
         # Exp avg collection
@@ -180,12 +212,13 @@ def evaluate(
     return loss, top_1_accuracy
 
 
-def single_seed_run(cfg: DictConfig) -> float:
+def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.Masking]:
     print(OmegaConf.to_yaml(cfg))
 
     # Manual seeds
     torch.manual_seed(cfg.seed)
-
+    # Training Step
+    train_step = 0
     # Set device
     if cfg.device == "cuda" and torch.cuda.is_available():
         device = torch.device(cfg.device)
@@ -242,19 +275,19 @@ def single_seed_run(cfg: DictConfig) -> float:
             else cfg.masking.end_when * len(train_loader)
         )
 
-        kwargs = {"prune_rate": cfg.masking.prune_rate, "T_max": max_iter}
+        kwargs = {"prune_rate": cfg.masking.prune_rate, "t_max": max_iter}
 
         if cfg.masking.decay_schedule == "magnitude-prune":
             kwargs = {
                 "final_sparsity": 1 - cfg.masking.final_density,
-                "T_max": max_iter,
-                "T_start": cfg.masking.start_when,
+                "t_max": max_iter,
+                "t_start": cfg.masking.start_when,
                 "interval": cfg.masking.interval,
             }
 
         decay = decay_registry[cfg.masking.decay_schedule](**kwargs)
 
-        mask = Masking(
+        mask = masking(
             optimizer,
             decay,
             density=cfg.masking.density,
@@ -265,8 +298,8 @@ def single_seed_run(cfg: DictConfig) -> float:
             redistribution_mode=cfg.masking.redistribution_mode,
         )
 
-        # Support for lottery mask
-        lottery_mask_path = Path(cfg.masking.get("lottery_mask_path", ""))
+        # support for lottery mask
+        lottery_mask_path = path(cfg.masking.get("lottery_mask_path", ""))
         mask.add_module(model, lottery_mask_path)
 
     # Load from checkpoint
@@ -290,18 +323,18 @@ def single_seed_run(cfg: DictConfig) -> float:
             wandb.log(log_dict, step=0)
     # Start the training procedure
 
+    _masking_args = {}
+    if mask:
+        _masking_args = {
+            "masking_apply_when": cfg.masking.apply_when,
+            "masking_interval": cfg.masking.interval,
+            "masking_end_when": cfg.masking.end_when,
+            "masking_print_FLOPs": cfg.masking.get("print_FLOPs", False),
+        }
     for epoch in range(start_epoch, cfg.optimizer.epochs):
         # step here is training iters not global steps
-        _masking_args = {}
-        if mask:
-            _masking_args = {
-                "masking_apply_when": cfg.masking.apply_when,
-                "masking_interval": cfg.masking.interval,
-                "masking_end_when": cfg.masking.end_when,
-                "masking_print_FLOPs": cfg.masking.get("print_FLOPs", False),
-            }
-
         scheduler = lr_scheduler if (epoch >= warmup_epochs) else warmup_scheduler
+
         _, step = train(
             model,
             mask,
@@ -316,7 +349,6 @@ def single_seed_run(cfg: DictConfig) -> float:
             use_wandb=cfg.wandb.use,
             **_masking_args,
         )
-
         # Run validation
         if epoch % cfg.val_interval == 0:
             val_loss, val_accuracy = evaluate(
@@ -357,7 +389,6 @@ def single_seed_run(cfg: DictConfig) -> float:
         ):
             if epoch % cfg.masking.interval == 0:
                 mask.update_connections()
-
     if not epoch:
         # Run val anyway
         epoch = cfg.optimizer.epochs - 1
@@ -370,7 +401,7 @@ def single_seed_run(cfg: DictConfig) -> float:
             use_wandb=cfg.wandb.use,
         )
 
-    evaluate(
+    val_loss, val_accuracy = evaluate(
         model,
         test_loader,
         step,
@@ -384,10 +415,20 @@ def single_seed_run(cfg: DictConfig) -> float:
         # Close wandb context
         wandb.join()
 
-    return val_accuracy
+    training_flops = 0
+    sparse_FLOPS = get_inference_FLOPs(mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
+    dense_FLOPS = mask.dense_FLOPs
+    if cfg.masking.name is "RigL":
+        training_flops = RigL_train_FLOPs(sparse_FLOPS * step*cfg.dataset.batch_size, dense_FLOPS * step*cfg.dataset.batch_size, cfg.masking.interval)
+    if cfg.masking.name is "Static":
+        training_flops = sparse_FLOPS * 2 * step*cfg.dataset.batch_size
+
+    return val_accuracy, training_flops
 
 
-@hydra.main(config_path="conf/specific",config_name="cifar10_wrn_22_2_static_modified")
+
+# @hydra.main(config_path="conf/specific",config_name="cifar10_wrn_22_2_static_modified")
+@hydra.main(config_path="conf", config_name="config")
 def main(cfg: DictConfig) -> float:
     if cfg.multi_seed:
         val_accuracy_ll = []
@@ -395,12 +436,12 @@ def main(cfg: DictConfig) -> float:
             run_cfg = deepcopy(cfg)
             run_cfg.seed = seed
             run_cfg.ckpt_dir = f"{cfg.ckpt_dir}_seed={seed}"
-            val_accuracy = single_seed_run(run_cfg)
+            val_accuracy, _ = single_seed_run(run_cfg)
             val_accuracy_ll.append(val_accuracy)
 
         return sum(val_accuracy_ll) / len(val_accuracy_ll)
     else:
-        val_accuracy = single_seed_run(cfg)
+        val_accuracy, _ = single_seed_run(cfg)
         return val_accuracy
 
 

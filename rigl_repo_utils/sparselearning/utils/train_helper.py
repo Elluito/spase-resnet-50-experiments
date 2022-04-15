@@ -97,6 +97,8 @@ def save_weights(
     epoch: int,
     ckpt_dir: str,
     is_min: bool = True,
+    population_index: int = None,
+    generation: int = None
 ):
     """
     Save progress.
@@ -130,9 +132,11 @@ def save_weights(
 
     if mask:
         state_dict["mask"] = mask.state_dict()
-
-    model_path = Path(ckpt_dir) / f"epoch_{epoch}.pth"
-
+    model_path = ""
+    if population_index and generation:
+        model_path = Path(ckpt_dir+f"individual_{population_index}") / f"generation_{generation}.pth"
+    else:
+        model_path = Path(ckpt_dir) / f"epoch_{epoch}.pth"
     torch.save(state_dict, model_path)
 
     if is_min:

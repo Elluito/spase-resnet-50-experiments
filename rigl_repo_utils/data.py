@@ -3,6 +3,7 @@ Get train, val and test dataloaders
 
 See registry dict for available dataset options.
 """
+import platform
 import logging
 from dataclasses import dataclass
 from math import floor
@@ -218,14 +219,14 @@ def get_dataloaders(
         split = int(floor((1.0 - validation_split) * len(full_dataset)))
         train_dataset = DatasetSplitter(full_dataset, slice(None, split), index_map)
         val_dataset = DatasetSplitter(full_dataset, slice(split, None), index_map)
-
+    multi_context = "fork" if "Linux" in platform.system() else "spawn"
     train_loader = DataLoader(
         train_dataset,
         batch_size,
         num_workers=train_threads,
         pin_memory=False,
         shuffle=True,
-        multiprocessing_context="fork",
+        multiprocessing_context=multi_context,
     )
 
     if validation_split:
@@ -235,7 +236,7 @@ def get_dataloaders(
             shuffle=True,
             num_workers=val_threads,
             pin_memory=False,
-            multiprocessing_context="fork",
+            multiprocessing_context=multi_context,
         )
 
     test_loader = DataLoader(
@@ -244,7 +245,7 @@ def get_dataloaders(
         shuffle=True,
         num_workers=1,
         pin_memory=False,
-        multiprocessing_context="fork",
+        multiprocessing_context=multi_context,
     )
     logging.info(f"Train dataset length {len(train_dataset)}")
     logging.info(f"Val dataset length {len(val_dataset) if validation_split else 0}")

@@ -5,12 +5,12 @@ from torch import optim
 
 from sparselearning.counting.ops import get_inference_FLOPs
 from models import registry as model_registry
-from .core import Masking
-from .funcs.decay import MagnitudePruneDecay, CosineDecay
+from sparselearning.core import Masking
+from sparselearning.funcs.decay import MagnitudePruneDecay, CosineDecay
 
 
 def Pruning_inference_FLOPs(
-    dense_FLOPs: int, decay: MagnitudePruneDecay, total_steps: int = 87891
+        dense_FLOPs: int, decay: MagnitudePruneDecay, total_steps: int = 87891
 ) -> float:
     """
     Inference FLOPs for Iterative Pruning, Zhu and Gupta 2018.
@@ -39,7 +39,7 @@ def Pruning_inference_FLOPs(
 
 
 def Pruning_train_FLOPs(
-    dense_FLOPs: int, decay: MagnitudePruneDecay, total_steps: int = 87891
+        dense_FLOPs: int, decay: MagnitudePruneDecay, total_steps: int = 87891
 ) -> float:
     """
     Train FLOPs for Iterative Pruning, Zhu and Gupta 2018.
@@ -68,7 +68,7 @@ def Pruning_train_FLOPs(
 
 
 def RigL_train_FLOPs(
-    sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
+        sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
 ) -> float:
     """
     Train FLOPs for Rigging the Lottery (RigL), Evci et al. 2020.
@@ -83,13 +83,13 @@ def RigL_train_FLOPs(
     :rtype: float
     """
     return (2 * sparse_FLOPs + dense_FLOPs + 3 * sparse_FLOPs * mask_interval) / (
-        mask_interval + 1
+            mask_interval + 1
     )
 
 
 
 def SNFS_train_FLOPs(
-    sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
+        sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
 ) -> int:
     """
     Train FLOPs for Sparse Networks from Scratch (SNFS), Dettmers et al. 2020.
@@ -107,7 +107,7 @@ def SNFS_train_FLOPs(
 
 
 def SET_train_FLOPs(
-    sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
+        sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
 ) -> int:
     """
     Train FLOPs for Sparse Evolutionary Training (SET), Mocanu et al. 2018.
@@ -125,10 +125,10 @@ def SET_train_FLOPs(
 
 
 def model_inference_FLOPs(
-    sparse_init: str = "random",
-    density: float = 0.2,
-    model_name: str = "wrn-22-2",
-    input_size: "Tuple" = (1, 3, 32, 32),
+        sparse_init: str = "random",
+        density: float = 0.2,
+        model_name: str = "wrn-22-2",
+        input_size: "Tuple" = (1, 3, 32, 32),
 ) -> int:
     """
     Obtain inference FLOPs for a model.
