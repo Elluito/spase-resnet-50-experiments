@@ -43,7 +43,7 @@ from optuna.visualization import plot_slice
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
 CLASSES = 10
-EPOCHS = 3
+EPOCHS = 1
 DIR = os.getcwd()
 
 
@@ -72,6 +72,7 @@ def objective_SAM(trial: optuna.trial.Trial) -> float:
     trainer.logger.log_hyperparams(hyperparameters)
 
     trainer.fit(model)
+    return trainer.callback_metrics["val_acc"].item()
 
 
 def main():
@@ -80,7 +81,7 @@ def main():
     )
 
     study = optuna.create_study(direction="maximize", pruner=pruner)
-    study.optimize(objective_SAM, n_trials=500, timeout=600)
+    study.optimize(objective_SAM, n_trials=100)
 
     print("Number of finished trials: {}".format(len(study.trials)))
 
