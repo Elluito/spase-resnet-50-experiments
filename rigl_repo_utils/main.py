@@ -287,7 +287,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
 
         decay = decay_registry[cfg.masking.decay_schedule](**kwargs)
 
-        mask = masking(
+        mask = Masking(
             optimizer,
             decay,
             density=cfg.masking.density,

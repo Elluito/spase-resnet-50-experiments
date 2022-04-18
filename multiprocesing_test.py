@@ -3,19 +3,25 @@ import multiprocessing as mp
 import threading as thread
 import logging
 import time
+import pathlib as path
 from waiting import wait
 import hydra
 from omegaconf import OmegaConf, DictConfig
+# rig and torch imports
 from rigl_repo_utils.models import registry as model_registry
-from sparselearning.core import  Masking
+from sparselearning.funcs.decay import registry as decay_registry
+from sparselearning.core import Masking
+from sparselearning.counting.ops import get_inference_FLOPs
 import torch
 import torch.nn as nn
+import torchvision
 import pytorch_lightning as pl
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, random_split
 from torchmetrics import Accuracy
 from torchvision import transforms
 from torchvision.datasets import MNIST
+# other inputs
 import typing
 import GPUtil
 from sam import SAM
@@ -24,7 +30,26 @@ PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 BATCH_SIZE = 256 if AVAIL_GPUS else 64
 
+
 ################################################# CLASSSES #############################################################
+
+class SAMLoop(pl.loops.FitLoop):
+    def advance(self):
+        """Advance from one iteration to the next."""
+
+        loss = lightning_module.training_step(batch, i)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    def on_advance_end(self):
+        """Do something at the end of an iteration."""
+
+    def on_run_end(self):
+        """Do something when the loop ends."""
+
+
 class MNISTModel(pl.LightningModule):
 
     def __init__(self, data_dir=PATH_DATASETS, hidden_size=64, learning_rate=2e-4):
@@ -130,48 +155,84 @@ class MNISTModel(pl.LightningModule):
             return 1
 
 
-class CIFAR10Model(pl.LightningModule):
+class CIFAR10ModelSAM(pl.LightningModule):
 
-    def __init__(self, data_dir=PATH_DATASETS,type_model:str="wrn-22-2",mask:Masking= None, learning_rate=2e-4):
+    def __init__(self, data_dir=PATH_DATASETS, type_model: str = "wrn-22-2", mask: Masking = None,
+                 learning_rate: float = 2e-4, rho: float = 0.05, adaptative: bool = False, decay_frequency: int = 100,
+                 decay_factor: float = 0.1):
 
         super().__init__()
 
         # Set our init args as class attributes
         self.data_dir = data_dir
-        self.hidden_size = hidden_size
         self.learning_rate = learning_rate
+        self.rho = rho
+        self.adaptive = adaptative
+        # self.lr_scheduler = None
+        # self.decay_frequency = decay_frequency
+        # self.decay_factor = decay_factor
 
         # Hardcode some dataset specific attributes
         self.num_classes = 10
-        self.dims = (1, 28, 28)
+        self.dims = (3, 32, 32)
         channels, width, height = self.dims
         self.transform = transforms.Compose(
-            [
-                transforms.ToTensor(),
-                transforms.Normalize((0.1307,), (0.3081,)),
-            ]
-        )
+            [transforms.ToTensor(),
+             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
         # Define PyTorch model
-        type_of_model,arguments = model_registry[type_model]
-        #Create an instace of said model
+        type_of_model, arguments = model_registry[type_model]
+        # Create an instace of said model
         self.model = type_of_model(*arguments)
         self.mask = mask
         if mask:
-            self.mask.add_module(self.model)
-
+            self.mask.add_module(self.model, lottery_mask_path=path.Path(""))
+            self.mask.to_module_device_()
+            self.mask.apply_mask()
+        self.loss_object = F.nll_loss
         self.accuracy = Accuracy()
+        self.training_FLOPS: float = 0
 
     def forward(self, x):
-        if self.mask
         x = self.model(x)
         return F.log_softmax(x, dim=1)
 
-    def training_step(self, batch, batch_idx):
+    def compute_loss(self, batch):
         x, y = batch
         logits = self(x)
-        loss = F.nll_loss(logits, y)
+        loss = self.loss_object(logits, y)
         return loss
+
+    def training_step(self, batch, batch_idx):
+
+        optimizer = self.optimizers()
+
+        # first forward-backward pass
+        enable_bn(self.model)
+        loss_1 = self.compute_loss(batch)
+        self.manual_backward(loss_1)
+        self.mask.to_module_device_()
+        self.mask.apply_mask_gradients()
+        optimizer.first_step(zero_grad=True)
+
+        # second forward-backward pass
+        disable_bn(self.model)
+        loss_2 = self.compute_loss(batch)
+        self.manual_backward(loss_2)
+        self.mask.apply_mask_gradients()
+        optimizer.second_step(zero_grad=True)
+        # Flops for one forward pass
+        sparse_inference_FLOPS = get_inference_FLOPs(self.mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
+        # Assuming that the backward pass uses approximately the same number of Flops as the
+        # forward.
+        # Acording to  this website shorturl.at/hpAP7 they said that is between 2 and 3 times the
+        # number of FLOPS
+        one_forward_backward_pass = sparse_inference_FLOPS * 2
+
+        self.training_FLOPS += one_forward_backward_pass * 2
+        self.log("FLOPS", self.training_FLOPS, prog_bar=True)
+
+        return loss_1
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
@@ -190,7 +251,8 @@ class CIFAR10Model(pl.LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = SAM(params=self.model.parameters(), base_optimizer=torch.optim.SGD, lr=self.learning_rate, rho=self.rho,
+                        adaptive=self.adaptive)
         return optimizer
 
     ####################
@@ -199,28 +261,151 @@ class CIFAR10Model(pl.LightningModule):
 
     def prepare_data(self):
         # download
-        MNIST(self.data_dir, train=True, download=True)
-        MNIST(self.data_dir, train=False, download=True)
+        torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True)
+        torchvision.datasets.CIFAR10(self.data_dir, train=False, download=True)
 
     def setup(self, stage=None):
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
-            mnist_full = MNIST(self.data_dir, train=True, transform=self.transform)
-            self.mnist_train, self.mnist_val = random_split(mnist_full, [55000, 5000])
+            cifar_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,transform=self.transform)
+            self.cifar10_train, self.cifar10_val = random_split(cifar_full, [45000, 5000])
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
-            self.mnist_test = MNIST(self.data_dir, train=False, transform=self.transform)
+            self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.transform)
 
     def train_dataloader(self):
-        return DataLoader(self.mnist_train, batch_size=BATCH_SIZE)
+        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE)
 
     def val_dataloader(self):
-        return DataLoader(self.mnist_val, batch_size=BATCH_SIZE)
+        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE)
 
     def test_dataloader(self):
-        return DataLoader(self.mnist_test, batch_size=BATCH_SIZE)
+        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE)
+
+    @property
+    def automatic_optimization(self) -> bool:
+        return False
+    #
+    # def on_train_batch_start(self, batch: typing.Any, batch_idx: int, unused: int = 0) -> typing.Optional[int]:
+    #
+    #     global found_best_event
+    #     if found_best_event.value:
+    #         return -1
+    #     else:
+    #         return 1
+
+
+class CIFAR10Model(pl.LightningModule):
+
+    def __init__(self, data_dir=PATH_DATASETS, type_model: str = "wrn-22-2", mask: Masking = None,
+                 learning_rate: float = 2e-4, momentum: float = 0.99):
+
+        super().__init__()
+
+        # Set our init args as class attributes
+        self.data_dir = data_dir
+        self.hidden_size = hidden_size
+        self.learning_rate = learning_rate
+        self.momentum = momentum
+
+        # Hardcode some dataset specific attributes
+        self.num_classes = 10
+        self.dims = (3, 32, 32)
+        channels, width, height = self.dims
+        self.transform = transforms.Compose(
+            [transforms.ToTensor(),
+             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+        # Define PyTorch model
+        type_of_model, arguments = model_registry[type_model]
+        # Create an instace of said model
+        self.model = type_of_model(*arguments)
+        self.mask = mask
+        if mask:
+            self.mask.add_module(self.model)
+            self.mask.apply_mask()
+        self.loss_object = F.nll_loss
+        self.accuracy = Accuracy()
+        self.sparse_inference_FLOPS = get_inference_FLOPs(self.mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
+        self.training_FLOPS: float = 0
+
+    def forward(self, x):
+        x = self.model(x)
+        return F.log_softmax(x, dim=1)
+
+    def compute_loss(self, batch):
+        x, y = batch
+        logits = self(x)
+        loss = self.loss_object(logits, y)
+        return loss
+
+    def training_step(self, batch, batch_idx):
+
+        # first forward-backward pass
+        enable_bn(self.model)
+        loss_1 = self.compute_loss(batch)
+        self.mask.apply_mask_gradients()
+        # Assuming that the backward pass uses approximately the same number of Flops as the
+        # forward.
+        # Acording to  this website shorturl.at/hpAP7 they said that is between 2 and 3 times the
+        # number of FLOPS
+        one_forward_backward_pass = self.sparse_inference_FLOPS
+
+        self.training_FLOPS += one_forward_backward_pass
+        self.log("FLOPS", self.training_FLOPS, prog_bar=True)
+
+        return loss_1
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self(x)
+        loss = F.nll_loss(logits, y)
+        preds = torch.argmax(logits, dim=1)
+        self.accuracy(preds, y)
+
+        # Calling self.log will surface up scalars for you in TensorBoard
+        self.log("val_loss", loss, prog_bar=True)
+        self.log("val_acc", self.accuracy, prog_bar=True)
+        return loss
+
+    def test_step(self, batch, batch_idx):
+        # Here we just reuse the validation_step for testing
+        return self.validation_step(batch, batch_idx)
+
+    def configure_optimizers(self):
+        optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate, momentum=self.momentum)
+        return optimizer
+
+    ####################
+    # DATA RELATED HOOKS
+    ####################
+
+    def prepare_data(self):
+        # download
+        torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True)
+        torchvision.datasets.CIFAR10(self.data_dir, train=False, download=True)
+
+    def setup(self, stage=None):
+
+        # Assign train/val datasets for use in dataloaders
+        if stage == "fit" or stage is None:
+            mnist_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,transform=self.transform)
+            self.cifar10_train, self.cifar10_val = random_split(mnist_full, [55000, 5000])
+
+        # Assign test dataset for use in dataloader(s)
+        if stage == "test" or stage is None:
+            self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.transform)
+
+    def train_dataloader(self):
+        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE)
+
+    def val_dataloader(self):
+        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE)
+
+    def test_dataloader(self):
+        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE)
 
     def on_train_batch_start(self, batch: typing.Any, batch_idx: int, unused: int = 0) -> typing.Optional[int]:
 
@@ -251,7 +436,20 @@ class GPUMonitor(thread.Thread):
     def stop(self):
         self.stopped = True
 
+
 ########################################## Functions ###################################################################
+def disable_bn(model):
+    for module in model.modules():
+
+        if isinstance(module, nn.BatchNorm1d) or isinstance(module, nn.BatchNorm2d)\
+                or isinstance(module, nn.BatchNorm3d):
+            module.eval()
+
+
+def enable_bn(model):
+    model.train()
+
+
 def collect_result(val):
     return val
 
@@ -262,23 +460,29 @@ def init(args):
     found_best_event = args
 
 
-def get_individual_arguments():
+def get_individual_arguments(model_type: str = "mnist"):
     # Init our model
-    mnist_model = MNISTModel()
+    if model_type == "mnist":
+        model = MNISTModel()
+    if model_type == "cifarSAM":
+        #todo: this is not going to work as it is, It needs other arguments
+        model = CIFAR10ModelSAM()
+    if model_type == "cifarSGD":
+        model = CIFAR10Model()
 
     # Init DataLoader from MNIST Dataset
     # train_ds = MNIST(PATH_DATASETS, train=True, download=True, transform=transforms.ToTensor())
     # train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE)
-    return mnist_model
+    return model
 
 
-def run_one_training(mnist_model: MNISTModel, epochs: int, target_value: float) -> float:
+def run_one_training(mnist_model: pl.LightningModule, epochs: int, target_value: float) -> float:
     global found_best_event
     # Here I wait in each process until I have availability in my GPU
     wait(lambda: len(GPUtil.getFirstAvailable(maxLoad=0.66, maxMemory=0.66)) != 0, waiting_for="GPUs to be available")
     trainer = None
     if not found_best_event.value:
-        stoper_callback = pl.callbacks.early_stopping.EarlyStopping(monitor="val_acc", stopping_threshold =
+        stoper_callback = pl.callbacks.early_stopping.EarlyStopping(monitor="val_acc", stopping_threshold=
         target_value)
         # Initialize a trainer
         trainer = pl.Trainer(
@@ -297,28 +501,28 @@ def run_one_training(mnist_model: MNISTModel, epochs: int, target_value: float) 
             progress_bar_refresh_rate=20
         )
     # Test the model ⚡
-    output = trainer.test(mnist_model)
+    output_test = trainer.test(mnist_model)
     # If I reach the accuracy I want in the test set then I set the event found_best so other processes do not
     # continue training
-    if output[0]["val_acc"] >= target_value:
+    if output_test[0]["val_acc"] >= target_value:
         with found_best_event.get_lock():
             found_best_event.value = 1
 
-    return output[0]["val_acc"]
+    return output_test[0]["val_acc"]
 
 
 @hydra.main(config_path="configs", config_name="population_training_config")
 def main(cfg: DictConfig):
     print(OmegaConf.to_yaml(cfg))
     number_of_generations = cfg.generations
-    # TODO:Need to be sure that this particular event is called in the method on_train_batch_start() from the MNISTModel
     global found_best_event
     found_best_event = mp.Value('i', 0)
-   # The value to which I stop the process
+    # The value to which I stop the process
     target_value = cfg.target_value
 
     pool = mp.Pool(processes=2, initializer=init, initargs=(found_best_event,))
-    model_population = [(get_individual_arguments(), cfg.optimizer.epochs,target_value) for _ in range(cfg.population_size)]
+    model_population = [(get_individual_arguments(), cfg.optimizer.epochs, target_value) for _ in
+                        range(cfg.population_size)]
     # val_accuracy = run_one_training(*model_population[0])
     # print(f"Validation accuracy: {val_accuracy}")
     #

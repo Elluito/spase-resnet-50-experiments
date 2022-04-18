@@ -9,7 +9,7 @@ defaults:
 device: cuda # cpu or cuda
 
 masking:
-  name: RigL
+  name: Static
   sparse_init: erdos-renyi-kernel
   density: 0.1  # The density of the overall sparse network.
   prune_rate: 0.3  # The pruning rate / prune rate.

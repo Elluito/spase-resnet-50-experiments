@@ -71,18 +71,20 @@ from sparselearning.utils import layer_wise_density
 
 "============================DEFINITION OF " \
 "CLASSES----------------*********************************#----================================="
+
+
 class GPUMonitor(thread.Thread):
     def __init__(self, delay):
         super(GPUMonitor, self).__init__()
         self.stopped = False
         self.gpu_avail = threading.Event()
-        self.delay = delay # Time between calls to GPUtil
+        self.delay = delay  # Time between calls to GPUtil
         self.start()
 
     def run(self):
         while not self.stopped:
-            GPUs = GPUtil.getFirstAvailable(maxLoad=0.66,maxMemory=0.66)
-            if len(GPUs)!=0:
+            GPUs = GPUtil.getFirstAvailable(maxLoad=0.66, maxMemory=0.66)
+            if len(GPUs) != 0:
                 self.gpu_avail.set()
             else:
                 self.gpu_avail.clear()
@@ -91,7 +93,6 @@ class GPUMonitor(thread.Thread):
 
     def stop(self):
         self.stopped = True
-
 
 
 class DenseResnet50(LightningModule):
@@ -146,8 +147,8 @@ class LitModel(pl.LightningModule):
         return [optimizer], [lr_scheduler]
 
 
-#==================================================================================================================="
-#============================== DEFINITION OF FUNCTIONS=============================================================="
+# ==================================================================================================================="
+# ============================== DEFINITION OF FUNCTIONS=============================================================="
 
 def RigL_train_FLOPs(
         sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
@@ -168,8 +169,29 @@ def RigL_train_FLOPs(
             mask_interval + 1
     )
 
-#Creates the random seed for the dataloaders, I want them to use the same seed for debbuging porpuses
 
+# Creates the random seed for the dataloaders, I want them to use the same seed for debbuging porpuses
+def get_simple_masking(optimizer: torch.optim.Optimizer, density: float = 0.1):
+    """
+    This function returns a simplified version of Masking given the optimizer.The masking itself will not
+    optimize the module is simply used for applying the masking to the gradients and to the model itself.
+    :param optimizer: Optimizer for the masking
+    :return: Masking with defaut values and given optimizer
+    """
+    kwargs = {
+    #    "final_sparsity": 1 - 0.95,
+        "t_max": 75000,
+        "t_start":0 ,
+        "interval": 100,
+    }
+
+    m = Masking(optimizer=optimizer,
+                prune_rate_decay=decay_registry["cosine"](),
+                density=density,
+                sparse_init="erdos-renyi"
+                )
+
+    return m
 
 
 def is_something_ready(something):
@@ -177,19 +199,19 @@ def is_something_ready(something):
         return True
     return False
 
+
 ###
 def seed_worker(worker_id):
     worker_seed = torch.initial_seed() % 2 ** 32
     np.random.seed(worker_seed)
     random.seed(worker_seed)
-def get_train_arguments(cfg:omegaconf.DictConfig):
 
 
-    raise  NotImplemented("Get_train__arguments is not implemented")
+def get_train_arguments(cfg: omegaconf.DictConfig):
+    raise NotImplemented("Get_train__arguments is not implemented")
 
 
-def get_a_model(cfg:omegaconf.DictConfig)->nn.Module:
-
+def get_a_model(cfg: omegaconf.DictConfig) -> nn.Module:
     # Select model
     assert (
             cfg.model in model_registry.keys()
@@ -198,7 +220,9 @@ def get_a_model(cfg:omegaconf.DictConfig)->nn.Module:
     _small_density = cfg.masking.density if cfg.masking.name == "Small_Dense" else 1.0
     model = model_class(*model_args, _small_density).to(device)
     return model
-def get_mask(cfg:omegaconf.DictConfig)-> rigl_repo_utils.main.Masking:
+
+
+def get_mask(cfg: omegaconf.DictConfig) -> rigl_repo_utils.main.Masking:
     mask = None
     if not cfg.masking.dense:
         max_iter = (
@@ -234,10 +258,10 @@ def get_mask(cfg:omegaconf.DictConfig)-> rigl_repo_utils.main.Masking:
         # support for lottery mask
         lottery_mask_path = path(cfg.masking.get("lottery_mask_path", ""))
         mask.add_module(model, lottery_mask_path)
-        return mask,lr_scheduler,warmup_scheduler
+        return mask, lr_scheduler, warmup_scheduler
 
 
-def experiment_with_population(cfg:omegaconf.DictConfig)->typing.List[nn.Module]:
+def experiment_with_population(cfg: omegaconf.DictConfig) -> typing.List[nn.Module]:
     N_population = cfg.population_experiment.population_size
     number_of_generations = cfg.population_experiment.generations
     monitor = GPUMonitor(delay=1)
@@ -261,7 +285,6 @@ def experiment_with_population(cfg:omegaconf.DictConfig)->typing.List[nn.Module]
     ), f"Select from {','.join(model_registry.keys())}"
     model_class, model_args = model_registry[cfg.model]
     _small_density = cfg.masking.density if cfg.masking.name == "Small_Dense" else 1.0
-
 
     # Training multiplier
     cfg.optimizer.decay_frequency *= cfg.optimizer.training_multiplier
@@ -323,42 +346,43 @@ def experiment_with_population(cfg:omegaconf.DictConfig)->typing.List[nn.Module]
     epoch = 0
     warmup_steps = cfg.optimizer.get("warmup_steps", 0)
     warmup_epochs = warmup_steps / len(train_loader)
-    #TODO: put here the training loop with all the parameters it needs, I need to initialize the parameters
+    # TODO: put here the training loop with all the parameters it needs, I need to initialize the parameters
 
     # Start the training procedure
 
     _masking_args = {}
     ######################################################################################################################
 
-
-
-
-
-    pool = [Process(target=single_generation_step, args=(, ta zrget, found_event))
+    pool = [Process(target=single_generation_step, args=())
             for range_ in ranges]
     for g in range(number_of_generations):
         for p in pool:
             wait(lambda: monitor.gpu_avail.is_set(), waiting_for="GPUs to be availables")
             p.start()
 
-
     pass
+
+
 '''
 Disables batch normalization update for the model
 '''
-def single_generation_training_step(model: nn.Module ,
+
+
+def single_generation_training_step(model: nn.Module,
                                     mask: sparselearning.core.Masking,
-                                    cfg:omegaconf.DictConfig,
-                                    optimizer:torch.optim.Optimizer,
+                                    cfg: omegaconf.DictConfig,
+                                    optimizer: torch.optim.Optimizer,
                                     lr_scheduler=None,
                                     warmup_scheduler=None,
-                                    device:torch.device=None,
+                                    device: torch.device = None,
                                     train_loader: torch.utils.data.DataLoader = None,
                                     val_loader: torch.utils.data.DataLoader = None,
                                     test_loader: torch.utils.data.DataLoader = None,
-                                    found_best_event: mp.Event
-                                    pop_index:int
-                                    )->typing.Tuple[float,float]:
+                                    found_best_event: mp.Event = None,
+                                    pop_index: int = None
+
+                                    ) -> typing.Tuple[float, float]:
+    # FIXME: This  method is not complete Needs to be completed
     epoch = 0
     warmup_steps = cfg.optimizer.get("warmup_steps", 0)
     warmup_epochs = warmup_steps / len(train_loader)
@@ -388,9 +412,9 @@ def single_generation_training_step(model: nn.Module ,
             step,
             epoch + 1,
             device,
-            label_smoothing= cfg.optimizer.label_smoothing,
-            log_interval= cfg.log_interval,
-            use_wandb= cfg.wandb.use,
+            label_smoothing=cfg.optimizer.label_smoothing,
+            log_interval=cfg.log_interval,
+            use_wandb=cfg.wandb.use,
             **_masking_args,
         )
         # Run validation
@@ -405,9 +429,7 @@ def single_generation_training_step(model: nn.Module ,
             )
 
             # Save weights
-            if (epoch + 1 == cfg.optimizer.epochs) or (
-                    (epoch + 1) % cfg.ckpt_interval == 0
-            ):
+            if (epoch + 1 == cfg.optimizer.epochs) or ((epoch + 1) % cfg.ckpt_interval == 0):
                 if val_loss < best_val_loss:
                     is_min = True
                     best_val_loss = val_loss
@@ -469,9 +491,8 @@ def single_generation_training_step(model: nn.Module ,
     if cfg.masking.name is "Static":
         training_flops = sparse_FLOPS * 2 * step * cfg.dataset.batch_size
 
+    return val_accuracy, training_flops
 
-    return val_accuracy,training_flops
-    pass
 
 def loss_one_epoch(model, data_loader, loss, train=True):
     assert loss.reduction is "sum", "The reduction of the loss object must be \"sum\" "
@@ -783,7 +804,6 @@ def main(cfg):
 
     single_seed_run(cfg)
 
-
     # model = ()
     # trainer = Trainer(gpus=hparams.gpus)
     # trainer.fit(model)
@@ -798,7 +818,6 @@ def main(cfg):
     # plt.xlabel('$\\alpha$', fontsize=20)
     # plt.show()
 
-
     pass
 
 
@@ -811,5 +830,5 @@ if __name__ == "__main__":
         dataset_path = str(pathlib.Path(__file__).parent.parent.absolute())
     else:
         dataset_path = "/nobackup"
-    OmegaConf.register_new_resolver("data_path", lambda: dataset_path+"/data/")
+    OmegaConf.register_new_resolver("data_path", lambda: dataset_path + "/data/")
     main()
