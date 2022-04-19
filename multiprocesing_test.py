@@ -28,8 +28,10 @@ from sam import SAM
 
 PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
 AVAIL_GPUS = min(1, torch.cuda.device_count())
-BATCH_SIZE = 256 if AVAIL_GPUS else 64
 
+BATCH_SIZE = 256 if AVAIL_GPUS else 64
+N_CORES = len(os.sched_getaffinity(0))
+USABLE_CORES = N_CORES if N_cores>4 else 2
 
 ################################################# CLASSSES #############################################################
 
@@ -276,14 +278,13 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.transform)
 
     def train_dataloader(self):
-        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE)
+        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
 
     def val_dataloader(self):
-        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE)
+        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
 
     def test_dataloader(self):
-        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE)
-
+        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
     @property
     def automatic_optimization(self) -> bool:
         return False
