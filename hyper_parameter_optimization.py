@@ -9,13 +9,13 @@ from packaging import version
 import pytorch_lightning as pl
 # optuna imports
 from optuna.trial import TrialState
-from optuna.visualization import plot_contour
-from optuna.visualization import plot_edf
-from optuna.visualization import plot_intermediate_values
-from optuna.visualization import plot_optimization_history
-from optuna.visualization import plot_parallel_coordinate
-from optuna.visualization import plot_param_importances
-from optuna.visualization import plot_slice
+from optuna.visualization.matplotlib import plot_contour
+from optuna.visualization.matplotlib import plot_edf
+from optuna.visualization.matplotlib import plot_intermediate_values
+from optuna.visualization.matplotlib import plot_optimization_history
+from optuna.visualization.matplotlib import plot_parallel_coordinate
+from optuna.visualization.matplotlib import plot_param_importances
+from optuna.visualization.matplotlib import plot_slice
 
 SEED = 42
 # Torch imports
@@ -43,7 +43,7 @@ from optuna.visualization import plot_slice
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
 CLASSES = 10
-EPOCHS = 1
+EPOCHS = 3
 DIR = os.getcwd()
 
 
@@ -81,7 +81,7 @@ def main():
     )
 
     study = optuna.create_study(direction="maximize", pruner=pruner)
-    study.optimize(objective_SAM, n_trials=100)
+    study.optimize(objective_SAM, n_trials=500)
 
     print("Number of finished trials: {}".format(len(study.trials)))
 
@@ -97,9 +97,12 @@ def main():
     fig1 = plot_optimization_history(study)
     fig2 = plot_intermediate_values(study)
     fig3 = plot_param_importances(study)
-    fig1.show()
-    fig2.show()
-    fig3.show()
+    fig4 = plot_slice(study,params=["learning_rate","rho"])
+
+    fig1.save("images/opt_history.png")
+    fig2.save("images/intermediate_values.png")
+    fig3.save("images/para_importances.png")
+    fig4.save("images/slice.png")
 
 
 if __name__ == '__main__':
