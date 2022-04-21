@@ -4,6 +4,8 @@ import threading as thread
 import logging
 import time
 import pathlib as path
+
+import omegaconf
 from waiting import wait
 import hydra
 from omegaconf import OmegaConf, DictConfig
@@ -25,13 +27,20 @@ from torchvision.datasets import MNIST
 import typing
 import GPUtil
 from sam import SAM
+from main import get_simple_masking
+import platform
 
 PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 
 BATCH_SIZE = 256 if AVAIL_GPUS else 64
-N_CORES = len(os.sched_getaffinity(0))
-USABLE_CORES = N_CORES if N_cores>4 else 2
+USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
+
+PERCENT_VALID_EXAMPLES = 0.1
+BATCHSIZE = 128
+CLASSES = 10
+DIR = os.getcwd()
+
 
 ################################################# CLASSSES #############################################################
 
@@ -232,7 +241,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         one_forward_backward_pass = sparse_inference_FLOPS * 2
 
         self.training_FLOPS += one_forward_backward_pass * 2
-        self.log("FLOPS", self.training_FLOPS, prog_bar=True)
+       # self.log("FLOPS", self.training_FLOPS)
 
         return loss_1
 
@@ -253,10 +262,13 @@ class CIFAR10ModelSAM(pl.LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = SAM(params=self.model.parameters(), base_optimizer=torch.optim.SGD, lr=self.learning_rate, rho=self.rho,
+        optimizer = SAM(params=self.model.parameters(), base_optimizer=torch.optim.SGD, lr=self.learning_rate,
+                        rho=self.rho,
                         adaptive=self.adaptive)
         return optimizer
 
+    def on_train_epoch_end(self) -> None:
+        self.log("Epoch_FLOPS",self.training_FLOPS)
     ####################
     # DATA RELATED HOOKS
     ####################
@@ -270,7 +282,8 @@ class CIFAR10ModelSAM(pl.LightningModule):
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
-            cifar_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,transform=self.transform)
+            cifar_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,
+                                                      transform=self.transform)
             self.cifar10_train, self.cifar10_val = random_split(cifar_full, [45000, 5000])
 
         # Assign test dataset for use in dataloader(s)
@@ -278,13 +291,14 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.transform)
 
     def train_dataloader(self):
-        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
+        return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
 
     def val_dataloader(self):
-        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
+        return DataLoader(self.cifar10_val, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
 
     def test_dataloader(self):
-        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE,num_workers=USABLE_CORES)
+        return DataLoader(self.cifar10_test, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
+
     @property
     def automatic_optimization(self) -> bool:
         return False
@@ -392,7 +406,8 @@ class CIFAR10Model(pl.LightningModule):
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
-            mnist_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,transform=self.transform)
+            mnist_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,
+                                                      transform=self.transform)
             self.cifar10_train, self.cifar10_val = random_split(mnist_full, [55000, 5000])
 
         # Assign test dataset for use in dataloader(s)
@@ -442,7 +457,7 @@ class GPUMonitor(thread.Thread):
 def disable_bn(model):
     for module in model.modules():
 
-        if isinstance(module, nn.BatchNorm1d) or isinstance(module, nn.BatchNorm2d)\
+        if isinstance(module, nn.BatchNorm1d) or isinstance(module, nn.BatchNorm2d) \
                 or isinstance(module, nn.BatchNorm3d):
             module.eval()
 
@@ -461,12 +476,39 @@ def init(args):
     found_best_event = args
 
 
+def single_train_SAM(cfg: omegaconf.DictConfig):
+    type_of_model, arguments = model_registry["wrn-22-2"]
+    # Create an instace of said model
+    dummy_model = type_of_model(*arguments)
+    dummy_optimizer = torch.optim.SGD(dummy_model.parameters(), lr=0.1)
+    mask = get_simple_masking(dummy_optimizer, density=cfg.density)
+    wandb_logger = None
+    if cfg.wandb:
+        from pytorch_lightning.loggers import WandbLogger
+        wandb_logger = WandbLogger(project="sparse_training")
+
+    model = CIFAR10ModelSAM(mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive, rho=cfg.rho)
+
+    trainer = pl.Trainer(
+        logger=True if not wandb_logger else wandb_logger,
+        limit_val_batches=cfg.percent_valid_examples,
+        checkpoint_callback=False,
+        max_epochs=cfg.epochs,
+        gpus=1 if torch.cuda.is_available() else None
+    )
+    hyperparameters = dict(lr=cfg.learning_rate, rho=cfg.rho)
+    trainer.logger.log_hyperparams(hyperparameters)
+
+    trainer.fit(model)
+    trainer.test(model)
+
+
 def get_individual_arguments(model_type: str = "mnist"):
     # Init our model
     if model_type == "mnist":
         model = MNISTModel()
     if model_type == "cifarSAM":
-        #todo: this is not going to work as it is, It needs other arguments
+        # todo: this is not going to work as it is, It needs other arguments
         model = CIFAR10ModelSAM()
     if model_type == "cifarSGD":
         model = CIFAR10Model()
@@ -535,4 +577,13 @@ def main(cfg: DictConfig):
 
 
 if __name__ == '__main__':
-    main()
+    cfg = omegaconf.DictConfig({
+        "wandb": True,
+        "learning_rate": 0.09540963110780444,
+        "rho": 1.5392140101476401,
+        "adaptive": True,
+        "epochs": 10,
+        "percent_valid_examples": 1,
+        "density": 0.05
+    })
+    single_train_SAM(cfg)

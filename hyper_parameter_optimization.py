@@ -2,6 +2,7 @@ import os
 from typing import List
 from typing import Optional
 import hydra
+import omegaconf
 import optuna
 import torch.utils.data as data_utils
 from optuna.integration import PyTorchLightningPruningCallback
@@ -99,10 +100,10 @@ def main():
     fig3 = plot_param_importances(study)
     fig4 = plot_slice(study,params=["learning_rate","rho"])
 
-    fig1.save("images/opt_history.png")
-    fig2.save("images/intermediate_values.png")
-    fig3.save("images/para_importances.png")
-    fig4.save("images/slice.png")
+    fig1.savefig("images/opt_history.png")
+    fig2.savefig("images/intermediate_values.png")
+    fig3.savefig("images/para_importances.png")
+    fig4.savefig("images/slice.png")
 
 
 if __name__ == '__main__':
