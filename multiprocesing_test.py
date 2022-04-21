@@ -485,7 +485,7 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
     wandb_logger = None
     if cfg.wandb:
         from pytorch_lightning.loggers import WandbLogger
-        wandb_logger = WandbLogger(project="sparse_training")
+        wandb_logger = WandbLogger(project="sparse_training",notes="Testing WAND logging capabilities in the cluster")
 
     model = CIFAR10ModelSAM(mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive, rho=cfg.rho)
 

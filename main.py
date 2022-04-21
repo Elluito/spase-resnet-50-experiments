@@ -19,9 +19,7 @@ import omegaconf
 from omegaconf import OmegaConf
 from waiting import wait
 # GGplot IMPORTS
-
 # Seaborsn IMPORTS
-import seaborn as sn
 # Matplotlib IMPORTS
 import matplotlib.pyplot as plt
 # Scypy IMPORTS
