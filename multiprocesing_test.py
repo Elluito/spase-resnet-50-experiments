@@ -265,6 +265,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
         self.log("Avg_acc",
                  torch.tensor(all_preds["val_acc"], dtype=torch.float32).mean())
+        self.log("Epoch_FLOPS", self.training_FLOPS)
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
@@ -277,7 +278,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
         return optimizer
 
     def on_train_epoch_end(self) -> None:
-        self.log("Epoch_FLOPS", self.training_FLOPS)
 
     ####################
     # DATA RELATED HOOKS
