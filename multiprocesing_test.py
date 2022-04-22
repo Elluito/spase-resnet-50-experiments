@@ -277,7 +277,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
                         adaptive=self.adaptive)
         return optimizer
 
-    def on_train_epoch_end(self) -> None:
 
     ####################
     # DATA RELATED HOOKS
