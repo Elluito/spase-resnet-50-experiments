@@ -4,7 +4,7 @@ import threading as thread
 import logging
 import time
 import pathlib as path
-
+import datetime as date
 import omegaconf
 from waiting import wait
 import hydra
@@ -29,11 +29,14 @@ import GPUtil
 from sam import SAM
 from main import get_simple_masking
 import platform
-
-PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
+PATH_DATASETS = ""
+if "Linux" in platform.system():
+    PATH_DATASETS = os.environ.get("PATH_DATASETS", "/nobackup/sclaam")
+else:
+    PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 
-BATCH_SIZE = 256 if AVAIL_GPUS else 64
+BATCH_SIZE = 128 if AVAIL_GPUS else 64
 USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
 
 PERCENT_VALID_EXAMPLES = 0.1
@@ -241,7 +244,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         one_forward_backward_pass = sparse_inference_FLOPS * 2
 
         self.training_FLOPS += one_forward_backward_pass * 2
-       # self.log("FLOPS", self.training_FLOPS)
+        # self.log("FLOPS", self.training_FLOPS)
 
         return loss_1
 
@@ -250,12 +253,18 @@ class CIFAR10ModelSAM(pl.LightningModule):
         logits = self(x)
         loss = F.nll_loss(logits, y)
         preds = torch.argmax(logits, dim=1)
-        self.accuracy(preds, y)
-
+        accuracy = self.accuracy(preds, y)
         # Calling self.log will surface up scalars for you in TensorBoard
         self.log("val_loss", loss, prog_bar=True)
-        self.log("val_acc", self.accuracy, prog_bar=True)
-        return loss
+        self.log("val_acc", accuracy, prog_bar=True)
+        return {"val_loss": loss, "val_acc": accuracy}
+
+    def validation_epoch_end(self, validation_step_outputs):
+        all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
+        self.log("Avg_acc",
+                 torch.tensor(all_preds["val_acc"],dtype=torch.float32).mean())
+
+
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
@@ -268,7 +277,8 @@ class CIFAR10ModelSAM(pl.LightningModule):
         return optimizer
 
     def on_train_epoch_end(self) -> None:
-        self.log("Epoch_FLOPS",self.training_FLOPS)
+        self.log("Epoch_FLOPS", self.training_FLOPS)
+
     ####################
     # DATA RELATED HOOKS
     ####################
@@ -484,8 +494,11 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
     mask = get_simple_masking(dummy_optimizer, density=cfg.density)
     wandb_logger = None
     if cfg.wandb:
+        now = date.datetime.now().strftime("%D-%H:%M")
         from pytorch_lightning.loggers import WandbLogger
-        wandb_logger = WandbLogger(project="sparse_training",notes="Testing WAND logging capabilities in the cluster")
+        wandb_logger = WandbLogger(project="sparse_training",
+                                   notes="Testing WAND logging capabilities in the cluster",
+                                   name=f"SAM_experiment_{now}")
 
     model = CIFAR10ModelSAM(mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive, rho=cfg.rho)
 
@@ -496,12 +509,12 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
         max_epochs=cfg.epochs,
         gpus=1 if torch.cuda.is_available() else None
     )
-    hyperparameters = dict(lr=cfg.learning_rate, rho=cfg.rho)
+    hyperparameters = cfg
     trainer.logger.log_hyperparams(hyperparameters)
 
     trainer.fit(model)
     trainer.test(model)
-
+    return 0
 
 def get_individual_arguments(model_type: str = "mnist"):
     # Init our model
@@ -578,12 +591,12 @@ def main(cfg: DictConfig):
 
 if __name__ == '__main__':
     cfg = omegaconf.DictConfig({
-        "wandb": True,
+        "wandb": False,
         "learning_rate": 0.09540963110780444,
         "rho": 1.5392140101476401,
         "adaptive": True,
         "epochs": 10,
-        "percent_valid_examples": 1,
+        "percent_valid_examples": 0.25,
         "density": 0.05
     })
     single_train_SAM(cfg)
