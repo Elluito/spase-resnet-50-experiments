@@ -6,6 +6,7 @@ import time
 import pathlib as path
 import datetime as date
 import omegaconf
+import wandb
 from waiting import wait
 import hydra
 from omegaconf import OmegaConf, DictConfig
@@ -29,6 +30,7 @@ import GPUtil
 from sam import SAM
 from main import get_simple_masking
 import platform
+
 PATH_DATASETS = ""
 if "Linux" in platform.system():
     PATH_DATASETS = os.environ.get("PATH_DATASETS", "/nobackup/sclaam")
@@ -262,9 +264,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
     def validation_epoch_end(self, validation_step_outputs):
         all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
         self.log("Avg_acc",
-                 torch.tensor(all_preds["val_acc"],dtype=torch.float32).mean())
-
-
+                 torch.tensor(all_preds["val_acc"], dtype=torch.float32).mean())
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
@@ -514,7 +514,10 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
 
     trainer.fit(model)
     trainer.test(model)
+    wandb_logger.finalize()
+    wandb.finish()
     return 0
+
 
 def get_individual_arguments(model_type: str = "mnist"):
     # Init our model
@@ -591,7 +594,7 @@ def main(cfg: DictConfig):
 
 if __name__ == '__main__':
     cfg = omegaconf.DictConfig({
-        "wandb": False,
+        "wandb": True,
         "learning_rate": 0.09540963110780444,
         "rho": 1.5392140101476401,
         "adaptive": True,
