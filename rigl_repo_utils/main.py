@@ -238,10 +238,14 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
 
     # wandb
     if cfg.wandb.use:
-        with open(cfg.wandb.api_key) as f:
-            os.environ["WANDB_API_KEY"] = f.read().strip()
-            os.environ["WANDB_START_METHOD"] = "thread"
 
+        # old code
+        # with open(cfg.wandb.api_key) as f:
+        #       os.environ["WANDB_API_KEY"] = f.read().strip()
+        #       os.environ["WANDB_START_METHOD"] = "thread"
+
+        #new code
+        os.environ["WANDB_START_METHOD"] = "thread"
         wandb.init(
             entity=cfg.wandb.entity,
             config=OmegaConf.to_container(cfg, resolve=True),

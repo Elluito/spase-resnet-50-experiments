@@ -30,6 +30,8 @@ import GPUtil
 from sam import SAM
 from main import get_simple_masking
 import platform
+from pytorch_lightning.loggers import WandbLogger
+
 
 PATH_DATASETS = ""
 if "Linux" in platform.system():
@@ -40,7 +42,7 @@ AVAIL_GPUS = min(1, torch.cuda.device_count())
 
 BATCH_SIZE = 128 if AVAIL_GPUS else 64
 USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
-
+print(f"Usable cores {USABLE_CORES}")
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
 CLASSES = 10
@@ -227,15 +229,17 @@ class CIFAR10ModelSAM(pl.LightningModule):
         enable_bn(self.model)
         loss_1 = self.compute_loss(batch)
         self.manual_backward(loss_1)
-        self.mask.to_module_device_()
-        self.mask.apply_mask_gradients()
+        if self.mask:
+            self.mask.to_module_device_()
+            self.mask.apply_mask_gradients()
         optimizer.first_step(zero_grad=True)
 
         # second forward-backward pass
         disable_bn(self.model)
         loss_2 = self.compute_loss(batch)
         self.manual_backward(loss_2)
-        self.mask.apply_mask_gradients()
+        if self.mask:
+            self.mask.apply_mask_gradients()
         optimizer.second_step(zero_grad=True)
         # Flops for one forward pass
         sparse_inference_FLOPS = get_inference_FLOPs(self.mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
@@ -265,7 +269,17 @@ class CIFAR10ModelSAM(pl.LightningModule):
         all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
         self.log("Avg_acc",
                  torch.tensor(all_preds["val_acc"], dtype=torch.float32).mean())
-        self.log("Epoch_FLOPS", self.training_FLOPS)
+        #self.log("Epoch_FLOPS", self.training_FLOPS)
+        log_dict = {
+            "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,
+            "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
+        }
+        if isinstance(self.logger,WandbLogger):
+            log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(mask)
+        self.log_dict(**log_dict)
+
+
+
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
@@ -494,23 +508,23 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
     wandb_logger = None
     if cfg.wandb:
         now = date.datetime.now().strftime("%D-%H:%M")
-        from pytorch_lightning.loggers import WandbLogger
         wandb_logger = WandbLogger(project="sparse_training",
                                    notes="Testing WAND logging capabilities in the cluster",
-                                   name=f"SAM_experiment_{now}")
+                                   name=f"SAM_{now}_density_{cfg.density}")
 
     model = CIFAR10ModelSAM(mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive, rho=cfg.rho)
-
+    # log gradients and model topology
+    wandb_logger.watch(model)
     trainer = pl.Trainer(
         logger=True if not wandb_logger else wandb_logger,
         limit_val_batches=cfg.percent_valid_examples,
         checkpoint_callback=False,
         max_epochs=cfg.epochs,
-        gpus=1 if torch.cuda.is_available() else None
+        gpus=AVAIL_GPUS if torch.cuda.is_available() else None
     )
     hyperparameters = cfg
     trainer.logger.log_hyperparams(hyperparameters)
-
+    trainer.logger.watch(model)
     trainer.fit(model)
     trainer.test(model)
     wandb_logger.finalize()
@@ -598,7 +612,7 @@ if __name__ == '__main__':
         "rho": 1.5392140101476401,
         "adaptive": True,
         "epochs": 10,
-        "percent_valid_examples": 0.25,
+        "percent_valid_examples": 0.1,
         "density": 0.05
     })
     single_train_SAM(cfg)

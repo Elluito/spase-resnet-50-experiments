@@ -1,6 +1,6 @@
 # @package dataset
 name: CIFAR10
-root: ${data_path:}/CIFAR10/
+root: nobackup/sclaam/
 batch_size: 128
 test_batch_size: ${dataset.batch_size}
 max_threads: 3
