@@ -15,6 +15,8 @@ from rigl_repo_utils.models import registry as model_registry
 from sparselearning.funcs.decay import registry as decay_registry
 from sparselearning.core import Masking
 from sparselearning.counting.ops import get_inference_FLOPs
+from sparselearning.utils import layer_wise_density
+#torch imports
 import torch
 import torch.nn as nn
 import torchvision
@@ -31,7 +33,6 @@ from sam import SAM
 from main import get_simple_masking
 import platform
 from pytorch_lightning.loggers import WandbLogger
-
 
 PATH_DATASETS = ""
 if "Linux" in platform.system():
