@@ -16,7 +16,7 @@ from sparselearning.funcs.decay import registry as decay_registry
 from sparselearning.core import Masking
 from sparselearning.counting.ops import get_inference_FLOPs
 from sparselearning.utils import layer_wise_density
-#torch imports
+# torch imports
 import torch
 import torch.nn as nn
 import torchvision
@@ -43,7 +43,7 @@ AVAIL_GPUS = min(1, torch.cuda.device_count())
 
 BATCH_SIZE = 128 if AVAIL_GPUS else 64
 # USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
-USABLE_CORES = os.cpu_count()//3 if "Linux" in platform.system() else 2
+USABLE_CORES = os.cpu_count() // 3 if "Linux" in platform.system() else 2
 print(f"Usable cores {USABLE_CORES}")
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
@@ -198,7 +198,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
         channels, width, height = self.dims
         normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
 
-
         self.train_transform = transforms.Compose(
             [
                 transforms.Pad(4, padding_mode="reflect"),
@@ -209,7 +208,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
             ]
         )
         self.test_transform = transforms.Compose([transforms.ToTensor(), normalize])
-
 
         # Define PyTorch model
         type_of_model, arguments = model_registry[type_model]
@@ -282,17 +280,16 @@ class CIFAR10ModelSAM(pl.LightningModule):
         all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
         self.log("Avg_acc",
                  torch.tensor(all_preds["val_acc"], dtype=torch.float32).mean())
-        #self.log("Epoch_FLOPS", self.training_FLOPS)
+        # self.log("Epoch_FLOPS", self.training_FLOPS)
         log_dict = {
             "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,
             "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
         }
-        if isinstance(self.logger,WandbLogger):
-            log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(self.mask)
-        self.log_dict(**log_dict)
-
-
-
+        for key, value in log_dict.items():
+            self.log(name=key, value=value)
+        if isinstance(self.logger, WandbLogger):
+            temp_dict = {"layer_wise_density": layer_wise_density.wandb_bar(self.mask)}
+            wandb.log(temp_dict)
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
@@ -303,7 +300,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
                         rho=self.rho,
                         adaptive=self.adaptive)
         return optimizer
-
 
     ####################
     # DATA RELATED HOOKS
