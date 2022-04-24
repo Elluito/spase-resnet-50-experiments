@@ -288,7 +288,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
             "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
         }
         if isinstance(self.logger,WandbLogger):
-            log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(mask)
+            log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(self.mask)
         self.log_dict(**log_dict)
 
 
