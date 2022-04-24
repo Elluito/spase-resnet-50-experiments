@@ -277,13 +277,13 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             else cfg.masking.end_when * len(train_loader)
         )
 
-        kwargs = {"prune_rate": cfg.masking.prune_rate, "t_max": max_iter}
+        kwargs = {"prune_rate": cfg.masking.prune_rate, "T_max": max_iter}
 
         if cfg.masking.decay_schedule == "magnitude-prune":
             kwargs = {
                 "final_sparsity": 1 - cfg.masking.final_density,
-                "t_max": max_iter,
-                "t_start": cfg.masking.start_when,
+                "T_max": max_iter,
+                "T_start": cfg.masking.start_when,
                 "interval": cfg.masking.interval,
             }
 
