@@ -64,7 +64,7 @@ from rigl_repo_utils.sparselearning.utils.train_helper import (
 )
 from rigl_repo_utils.main import train, single_seed_run
 # Imports from sparselearning (is rigl_repo_utils but installed as a package)
-from sparselearning.utils import layer_wise_density
+from sparselearning.utils import layer_wise_density,Masking
 
 "============================DEFINITION OF " \
 "CLASSES----------------*********************************#----================================="
@@ -219,7 +219,7 @@ def get_a_model(cfg: omegaconf.DictConfig) -> nn.Module:
     return model
 
 
-def get_mask(cfg: omegaconf.DictConfig) -> rigl_repo_utils.main.Masking:
+def get_mask(cfg: omegaconf.DictConfig) -> Masking:
     mask = None
     if not cfg.masking.dense:
         max_iter = (
