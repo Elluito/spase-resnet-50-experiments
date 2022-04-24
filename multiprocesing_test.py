@@ -42,9 +42,7 @@ else:
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 
 BATCH_SIZE = 128 if AVAIL_GPUS else 64
-USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
 # USABLE_CORES = os.cpu_count() // 3 if "Linux" in platform.system() else 2
-print(f"Usable cores {USABLE_CORES}")
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
 CLASSES = 10
@@ -623,4 +621,6 @@ if __name__ == '__main__':
         "percent_valid_examples": 0.1,
         "density": 0.05
     })
+    global USABLE_CORES
+    USABLE_CORES = 10
     single_train_SAM(cfg)
