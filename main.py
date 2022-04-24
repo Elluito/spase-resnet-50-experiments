@@ -816,7 +816,6 @@ def main(cfg):
     # plt.xlabel('$\\alpha$', fontsize=20)
     # plt.show()
 
-    pass
 
 
 if __name__ == "__main__":
@@ -824,9 +823,9 @@ if __name__ == "__main__":
     # parser.add_argument("--gpus", default=None)
     # args = parser.parse_args()
 
-    if "Windows" in platform.system():
-        dataset_path = str(pathlib.Path(__file__).parent.parent.absolute())
-    else:
-        dataset_path = "/nobackup"
-    OmegaConf.register_new_resolver("data_path", lambda: dataset_path + "/data/")
+    # if "Windows" in platform.system():
+    #     dataset_path = str(pathlib.Path(__file__).parent.parent.absolute())
+    # else:
+    #     dataset_path = "/nobackup"
+    # OmegaConf.register_new_resolver("data_path", lambda: dataset_path + "/data/")
     main()
