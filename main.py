@@ -64,7 +64,7 @@ from rigl_repo_utils.sparselearning.utils.train_helper import (
 )
 from rigl_repo_utils.main import train, single_seed_run
 # Imports from sparselearning (is rigl_repo_utils but installed as a package)
-from sparselearning.utils import layer_wise_density,Masking
+from sparselearning.utils import layer_wise_density
 
 "============================DEFINITION OF " \
 "CLASSES----------------*********************************#----================================="
