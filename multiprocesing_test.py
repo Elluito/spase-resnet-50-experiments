@@ -622,5 +622,5 @@ if __name__ == '__main__':
         "density": 0.05
     })
     global USABLE_CORES
-    USABLE_CORES = 10
+    USABLE_CORES = 3
     single_train_SAM(cfg)
