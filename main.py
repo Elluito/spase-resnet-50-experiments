@@ -44,7 +44,6 @@ import torch
 from hessian_eigenthings import compute_hessian_eigenthings
 # Optimizers imports
 # from KFAC_Pytorch.optimizers import KFACOptimizer
-import rigl_repo_utils.main
 from sam import SAM
 # RigL repository imports
 from rigl_repo_utils.models.resnet import resnet50, ResNet
