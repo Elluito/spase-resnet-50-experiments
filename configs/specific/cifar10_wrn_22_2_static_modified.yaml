@@ -4,7 +4,8 @@ seed: 0
 model: wrn-22-2
 
 wandb:
-  project: cifar10
+  use: True
+  project: sparse_training
   name: ${dataset.name}_${exp_name}_density_${masking.density}
 
 masking:
