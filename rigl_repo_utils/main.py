@@ -301,7 +301,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
         )
 
         # support for lottery mask
-        lottery_mask_path = path(cfg.masking.get("lottery_mask_path", ""))
+        lottery_mask_path = Path(cfg.masking.get("lottery_mask_path", ""))
         mask.add_module(model, lottery_mask_path)
 
     # Load from checkpoint
