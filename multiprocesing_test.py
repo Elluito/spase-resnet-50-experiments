@@ -42,7 +42,8 @@ else:
 AVAIL_GPUS = min(1, torch.cuda.device_count())
 
 BATCH_SIZE = 128 if AVAIL_GPUS else 64
-USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
+# USABLE_CORES = len(os.sched_getaffinity(0)) if "Linux" in platform.system() else 2
+USABLE_CORES = os.cpu_count()//3 if "Linux" in platform.system() else 2
 print(f"Usable cores {USABLE_CORES}")
 PERCENT_VALID_EXAMPLES = 0.1
 BATCHSIZE = 128
@@ -195,9 +196,20 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.num_classes = 10
         self.dims = (3, 32, 32)
         channels, width, height = self.dims
-        self.transform = transforms.Compose(
-            [transforms.ToTensor(),
-             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+
+
+        self.train_transform = transforms.Compose(
+            [
+                transforms.Pad(4, padding_mode="reflect"),
+                transforms.RandomCrop(32),
+                transforms.RandomHorizontalFlip(),
+                transforms.ToTensor(),
+                normalize,
+            ]
+        )
+        self.test_transform = transforms.Compose([transforms.ToTensor(), normalize])
+
 
         # Define PyTorch model
         type_of_model, arguments = model_registry[type_model]
@@ -307,12 +319,12 @@ class CIFAR10ModelSAM(pl.LightningModule):
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             cifar_full = torchvision.datasets.CIFAR10(self.data_dir, train=True, download=True,
-                                                      transform=self.transform)
+                                                      transform=self.train_transform)
             self.cifar10_train, self.cifar10_val = random_split(cifar_full, [45000, 5000])
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
-            self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.transform)
+            self.cifar10_test = torchvision.datasets.CIFAR10(self.data_dir, train=False, transform=self.test_transform)
 
     def train_dataloader(self):
         return DataLoader(self.cifar10_train, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
