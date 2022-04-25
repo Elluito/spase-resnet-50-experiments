@@ -12,6 +12,7 @@ import hydra
 from omegaconf import OmegaConf, DictConfig
 # rig and torch imports
 from rigl_repo_utils.models import registry as model_registry
+from rigl_repo_utils.loss import LabelSmoothingCrossEntropy
 from sparselearning.funcs.decay import registry as decay_registry
 from sparselearning.core import Masking
 from sparselearning.counting.ops import get_inference_FLOPs
@@ -33,6 +34,7 @@ from sam import SAM
 from main import get_simple_masking
 import platform
 from pytorch_lightning.loggers import WandbLogger
+from sparselearning.utils.accuracy_helper import get_topk_accuracy
 
 PATH_DATASETS = ""
 if "Linux" in platform.system():
@@ -177,7 +179,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
 
     def __init__(self, data_dir=PATH_DATASETS, type_model: str = "wrn-22-2", mask: Masking = None,
                  learning_rate: float = 2e-4, rho: float = 0.05, adaptative: bool = False, decay_frequency: int = 100,
-                 decay_factor: float = 0.1):
+                 decay_factor: float = 0.1, label_smoothing: int = 0.1):
 
         super().__init__()
 
@@ -216,13 +218,15 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.mask.add_module(self.model, lottery_mask_path=path.Path(""))
             self.mask.to_module_device_()
             self.mask.apply_mask()
-        self.loss_object = F.nll_loss
-        self.accuracy = Accuracy()
+        self.loss_object = LabelSmoothingCrossEntropy(label_smoothing)
+        self.sparse_inference_flops = self.mask.inference_FLOPs
+        self.dense_inference_flops = self.mask.dense_FLOPs
+
         self.training_FLOPS: float = 0
 
     def forward(self, x):
-        x = self.model(x)
-        return F.log_softmax(x, dim=1)
+        y = self.model(x)
+        return y
 
     def compute_loss(self, batch):
         x, y = batch
@@ -251,33 +255,38 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.mask.apply_mask_gradients()
         optimizer.second_step(zero_grad=True)
         # Flops for one forward pass
-        sparse_inference_FLOPS = get_inference_FLOPs(self.mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
         # Assuming that the backward pass uses approximately the same number of Flops as the
         # forward.
         # Acording to  this website shorturl.at/hpAP7 they said that is between 2 and 3 times the
         # number of FLOPS
-        one_forward_backward_pass = sparse_inference_FLOPS * 2
+        one_forward_backward_pass = self.sparse_inference_flops * 2
 
         self.training_FLOPS += one_forward_backward_pass * 2
-        # self.log("FLOPS", self.training_FLOPS)
+        self.log("Train FLOPS", self.training_FLOPS,on_step=False,on_epoch=True)
 
         return loss_1
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
-        logits = self(x)
-        loss = F.nll_loss(logits, y)
-        preds = torch.argmax(logits, dim=1)
-        accuracy = self.accuracy(preds, y)
+        with torch.no_grad():
+            logits = self(x)
+        loss = self.loss_object(logits, y)
+
+        top_1_accuracy, top_5_accuracy = get_topk_accuracy(
+            logits, y, topk=(1, 5)
+        )
         # Calling self.log will surface up scalars for you in TensorBoard
         self.log("val_loss", loss, prog_bar=True)
-        self.log("val_acc", accuracy, prog_bar=True)
-        return {"val_loss": loss, "val_acc": accuracy}
+        self.log("top1_acc", top_1_accuracy, prog_bar=True)
+        self.log("top5_acc", top_5_accuracy, prog_bar=True)
+        return {"val_loss": loss, "top1_acc": top_1_accuracy, "top5_acc": top_5_accuracy}
 
     def validation_epoch_end(self, validation_step_outputs):
         all_preds = {k: [dic[k] for dic in validation_step_outputs] for k in validation_step_outputs[0]}
-        self.log("Avg_acc",
-                 torch.tensor(all_preds["val_acc"], dtype=torch.float32).mean())
+        self.log("Avg_top_1_acc",
+                 torch.tensor(all_preds["top1_acc"], dtype=torch.float32).mean())
+        self.log("Avg_top_5_accuracy",
+                 torch.tensor(all_preds["top5_acc"], dtype=torch.float32).mean())
         # self.log("Epoch_FLOPS", self.training_FLOPS)
         log_dict = {
             "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,

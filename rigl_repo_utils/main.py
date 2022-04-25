@@ -1,5 +1,3 @@
-import typing
-from copy import deepcopy
 from pathlib import Path
 from typing import TYPE_CHECKING
 import logging
@@ -40,7 +38,7 @@ def static_train_sparse_FLOPs(
 
 
 def RigL_train_FLOPs(
-        sparse_FLOPs: int, dense_FLOPs: int, mask_interval: int = 100
+        sparse_FLOPs: float, dense_FLOPs: float, mask_interval: int = 100
 ) -> float:
     """
     Train FLOPs for Rigging the Lottery (RigL), Evci et al. 2020.
@@ -139,6 +137,7 @@ def train(
         log_dict = {
             "Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
             "Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
+            "Train FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step, masking_interval)
         }
 
         log_dict_str = " ".join([f"{k}: {v:.4f}" for (k, v) in log_dict.items()])
@@ -236,13 +235,12 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
 
     # wandb
     if cfg.wandb.use:
-
         # old code
         # with open(cfg.wandb.api_key) as f:
         #       os.environ["WANDB_API_KEY"] = f.read().strip()
         #       os.environ["WANDB_START_METHOD"] = "thread"
 
-        #new code
+        # new code
         os.environ["WANDB_START_METHOD"] = "thread"
         wandb.init(
             entity=cfg.wandb.entity,
@@ -421,12 +419,12 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
     sparse_FLOPS = get_inference_FLOPs(mask, input_tensor=torch.rand(*(1, 3, 32, 32)))
     dense_FLOPS = mask.dense_FLOPs
     if cfg.masking.name is "RigL":
-        training_flops = RigL_train_FLOPs(sparse_FLOPS * step*cfg.dataset.batch_size, dense_FLOPS * step*cfg.dataset.batch_size, cfg.masking.interval)
+        training_flops = RigL_train_FLOPs(sparse_FLOPS * step * cfg.dataset.batch_size,
+                                          dense_FLOPS * step * cfg.dataset.batch_size, cfg.masking.interval)
     if cfg.masking.name is "Static":
-        training_flops = sparse_FLOPS * 2 * step*cfg.dataset.batch_size
+        training_flops = sparse_FLOPS * 2 * step * cfg.dataset.batch_size
 
     return val_accuracy, training_flops
-
 
 
 # @hydra.main(config_path="conf/specific",config_name="cifar10_wrn_22_2_static_modified")
