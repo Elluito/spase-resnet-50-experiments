@@ -798,7 +798,6 @@ def dense_training_step():
 def main(cfg):
     print(OmegaConf.to_yaml(cfg))
     # I do this to access the path to the dataset, which is a shared location
-
     single_seed_run(cfg)
 
     # model = ()
@@ -822,9 +821,9 @@ if __name__ == "__main__":
     # parser.add_argument("--gpus", default=None)
     # args = parser.parse_args()
 
-    # if "Windows" in platform.system():
-    #     dataset_path = str(pathlib.Path(__file__).parent.parent.absolute())
-    # else:
-    #     dataset_path = "/nobackup"
-    # OmegaConf.register_new_resolver("data_path", lambda: dataset_path + "/data/")
+    if "Windows" in platform.system():
+        dataset_path = str(pathlib.Path(__file__).parent.parent.absolute())
+    else:
+        dataset_path = "/nobackup/sclaam"
+    OmegaConf.register_new_resolver("data_path", lambda: hydra.utils.to_absolute_path(dataset_path))
     main()
