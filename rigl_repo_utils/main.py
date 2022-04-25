@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from typing import TYPE_CHECKING
 import logging
 import hydra
@@ -7,7 +8,7 @@ import torch
 from tqdm import tqdm
 import wandb
 from omegaconf import DictConfig, OmegaConf
-
+import typing
 import rigl_repo_utils.main
 from .data import get_dataloaders
 from .loss import LabelSmoothingCrossEntropy
@@ -248,7 +249,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             project=cfg.wandb.project,
             name=cfg.wandb.name,
             reinit=True,
-            save_code=True,
+            #save_code=True,
         )
         wandb.watch(model)
 

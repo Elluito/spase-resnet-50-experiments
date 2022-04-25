@@ -27,8 +27,8 @@ resume: True
 wandb:
   use: False
   api_key: ${hydra:runtime.cwd}/wandb_api.key
-  entity: ml-reprod-2020
-  project: cifar10
+  entity: luis_alfredo
+  project: sparse_training
   name: ${exp_name}
 
 wandb_api_key: ${hydra:runtime.cwd}/wandb_api.key
