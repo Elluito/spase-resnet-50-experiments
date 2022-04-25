@@ -136,9 +136,10 @@ def train(
 
     if masking_print_FLOPs:
         log_dict = {
-            "Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
-            "Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
-            "Train FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step, masking_interval)
+            #"Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
+            #"Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
+            "Epoch_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
+                                       masking_interval)
         }
 
         log_dict_str = " ".join([f"{k}: {v:.4f}" for (k, v) in log_dict.items()])
@@ -203,9 +204,9 @@ def evaluate(
 
     # Log loss, accuracy
     if use_wandb:
-        wandb.log({f"{val_or_test}_loss": loss}, step=global_step)
-        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, step=global_step)
-        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, step=global_step)
+        wandb.log({f"{val_or_test}_loss": loss}, step=epoch)
+        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, step=epoch)
+        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, step=epoch)
 
     return loss, top_1_accuracy
 
