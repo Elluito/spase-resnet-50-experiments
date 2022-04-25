@@ -533,8 +533,6 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
     trainer.logger.log_hyperparams(hyperparameters)
     trainer.fit(model)
     trainer.test(model)
-    wandb_logger.finalize()
-    wandb.finish()
     return 0
 
 
