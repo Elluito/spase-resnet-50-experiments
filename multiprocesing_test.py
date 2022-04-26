@@ -243,7 +243,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
         loss_1 = self.compute_loss(batch)
         self.manual_backward(loss_1)
         optimizer.first_step(zero_grad=True)
-        self.mask.apply_mask()
 
         # second forward-backward pass
         disable_bn(self.model)
