@@ -259,6 +259,9 @@ class CIFAR10ModelSAM(pl.LightningModule):
         one_forward_backward_pass = self.sparse_inference_flops * 2
 
         self.training_FLOPS += one_forward_backward_pass * 2
+        
+        
+        self.log("train_loss",loss_1)
 
         self.log("Epoch_FLOPS", self.training_FLOPS,on_step=False,on_epoch=True)
 
