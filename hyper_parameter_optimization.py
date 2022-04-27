@@ -52,6 +52,7 @@ def objective_SAM(trial: optuna.trial.Trial) -> float:
     # We are optimizing rho, learning rate, if using adaptive or not is better
     learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1, log=True)
     rho = trial.suggest_float("rho", 0.2, 2.5)
+    momentum = trial.suggest_float("rho", 0.1, 0.99)
     adaptative = trial.suggest_categorical("adatative",[False,True])
     type_of_model, arguments = model_registry["wrn-22-2"]
     # Create an instace of said model

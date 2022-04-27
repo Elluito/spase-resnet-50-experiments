@@ -14,9 +14,11 @@ from omegaconf import OmegaConf, DictConfig
 from rigl_repo_utils.models import registry as model_registry
 from rigl_repo_utils.loss import LabelSmoothingCrossEntropy
 from sparselearning.funcs.decay import registry as decay_registry
+from sparselearning.funcs.decay import CosineDecay
 from sparselearning.core import Masking
 from sparselearning.counting.ops import get_inference_FLOPs
-from sparselearning.utils import layer_wise_density
+from sparselearning.utils import layer_wise_density, train_helper
+
 # torch imports
 import torch
 import torch.nn as nn
@@ -177,17 +179,19 @@ class MNISTModel(pl.LightningModule):
 
 class CIFAR10ModelSAM(pl.LightningModule):
 
-    def __init__(self, data_dir=PATH_DATASETS, type_model: str = "wrn-22-2", mask: Masking = None,
+    def __init__(self, data_dir=PATH_DATASETS, model: nn.Module = None, mask: Masking = None,
                  learning_rate: float = 2e-4, rho: float = 0.05, adaptative: bool = False, decay_frequency: int = 100,
-                 decay_factor: float = 0.1, label_smoothing: int = 0.1):
+                 decay_factor: float = 0.1, label_smoothing: int = 0.1,weight_decay:float=5e-4):
 
         super().__init__()
+        assert model is not None, "The model needs to be Specified"
 
         # Set our init args as class attributes
         self.data_dir = data_dir
         self.learning_rate = learning_rate
         self.rho = rho
         self.adaptive = adaptative
+        self.weight_decay = weight_decay
         # self.lr_scheduler = None
         # self.decay_frequency = decay_frequency
         # self.decay_factor = decay_factor
@@ -196,6 +200,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.num_classes = 10
         self.dims = (3, 32, 32)
         channels, width, height = self.dims
+
         normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
 
         self.train_transform = transforms.Compose(
@@ -210,18 +215,18 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.test_transform = transforms.Compose([transforms.ToTensor(), normalize])
 
         # Define PyTorch model
-        type_of_model, arguments = model_registry[type_model]
+        # type_of_model, arguments = model_registry[type_model]
         # Create an instace of said model
-        self.model = type_of_model(*arguments)
+        self.model = model
+        self.first_time = 1
         self.mask = mask
         if mask:
             self.mask.add_module(self.model, lottery_mask_path=path.Path(""))
             self.mask.to_module_device_()
             self.mask.apply_mask()
+            self.sparse_inference_flops = self.mask.inference_FLOPs
+            self.dense_inference_flops = self.mask.dense_FLOPs
         self.loss_object = LabelSmoothingCrossEntropy(label_smoothing)
-        self.sparse_inference_flops = self.mask.inference_FLOPs
-        self.dense_inference_flops = self.mask.dense_FLOPs
-
         self.training_FLOPS: float = 0
 
     def forward(self, x):
@@ -235,35 +240,34 @@ class CIFAR10ModelSAM(pl.LightningModule):
         return loss
 
     def training_step(self, batch, batch_idx):
-        self.mask.to_module_device_()
+        if self.first_time and self.mask:
+            self.mask.to_module_device_()
+            self.first_time = 0
         optimizer = self.optimizers()
-
         # first forward-backward pass
-        enable_bn(self.model)
+        enable_bn(self)
         loss_1 = self.compute_loss(batch)
         self.manual_backward(loss_1)
         optimizer.first_step(zero_grad=True)
 
         # second forward-backward pass
-        disable_bn(self.model)
+        disable_bn(self)
         loss_2 = self.compute_loss(batch)
         self.manual_backward(loss_2)
         optimizer.second_step(zero_grad=True)
-        self.mask.apply_mask()
+        if self.mask:
+            self.mask.apply_mask()
+            one_forward_backward_pass = self.sparse_inference_flops * 2
+            self.training_flops += one_forward_backward_pass * 2
+            self.log("epoch_flops", self.training_flops, on_step=false, on_epoch=true)
 
-        # Flops for one forward pass
-        # Assuming that the backward pass uses approximately the same number of Flops as the
+        # flops for one forward pass
+        # assuming that the backward pass uses approximately the same number of flops as the
         # forward.
-        # Acording to  this website shorturl.at/hpAP7 they said that is between 2 and 3 times the
-        # number of FLOPS
-        one_forward_backward_pass = self.sparse_inference_flops * 2
+        # acording to  this website shorturl.at/hpap7 they said that is between 2 and 3 times the
+        # number of flops
 
-        self.training_FLOPS += one_forward_backward_pass * 2
-        
-        
-        self.log("train_loss",loss_1)
-
-        self.log("Epoch_FLOPS", self.training_FLOPS,on_step=False,on_epoch=True)
+        self.log("train_loss", loss_1, prog_bar=True)
 
         return loss_1
 
@@ -277,9 +281,9 @@ class CIFAR10ModelSAM(pl.LightningModule):
             logits, y, topk=(1, 5)
         )
         # Calling self.log will surface up scalars for you in TensorBoard
-        #self.log("val_loss", loss, prog_bar=True)
-        #self.log("top1_acc", top_1_accuracy, prog_bar=True)
-        #self.log("top5_acc", top_5_accuracy, prog_bar=True)
+        # self.log("val_loss", loss, prog_bar=True)
+        self.log("top1_acc", top_1_accuracy, prog_bar=True)
+        self.log("top5_acc", top_5_accuracy, prog_bar=True)
         return {"val_loss": loss, "top1_acc": top_1_accuracy, "top5_acc": top_5_accuracy}
 
     def validation_epoch_end(self, validation_step_outputs):
@@ -291,24 +295,31 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.log("val_top_5_accuracy",
                  torch.tensor(all_preds["top5_acc"], dtype=torch.float32).mean())
         # self.log("Epoch_FLOPS", self.training_FLOPS)
-        log_dict = {
-            "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,
-            "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
-        }
-        for key, value in log_dict.items():
-            self.log(name=key, value=value)
-        if isinstance(self.logger, WandbLogger):
-            temp_dict = {"layer_wise_density": layer_wise_density.wandb_bar(self.mask)}
-            wandb.log(temp_dict)
+        if self.mask:
+            log_dict = {
+                "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,
+                "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
+            }
+            for key, value in log_dict.items():
+                self.log(name=key, value=value)
+        # if isinstance(self.logger, WandbLogger):
+        #     temp_dict = {"layer_wise_density": layer_wise_density.wandb_bar(self.mask)}
+        #     wandb.log(temp_dict)
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = SAM(params=self.model.parameters(), base_optimizer=torch.optim.SGD, lr=self.learning_rate,
+        weight_decay = self.weight_decay
+        if self.weight_decay:
+            parameters = train_helper._add_weight_decay(self, self.weight_decay)
+            weight_decay = 0
+        else:
+            parameters = self.parameters()
+        optimizer = SAM(params=parameters, base_optimizer=torch.optim.SGD, lr=self.learning_rate,
                         rho=self.rho,
-                        adaptive=self.adaptive)
+                        adaptive=self.adaptive, momentum=0.9,weight_decay=weight_decay,nesterov=True)
         return optimizer
 
     ####################
@@ -498,7 +509,6 @@ class GPUMonitor(thread.Thread):
 ########################################## Functions ###################################################################
 def disable_bn(model):
     for module in model.modules():
-
         if isinstance(module, nn.BatchNorm1d) or isinstance(module, nn.BatchNorm2d) \
                 or isinstance(module, nn.BatchNorm3d):
             module.eval()
@@ -512,7 +522,7 @@ def collect_result(val):
     return val
 
 
-def init(args):
+def init_multi(args):
     ''' store the counter for later use '''
     global found_best_event
     found_best_event = args
@@ -523,15 +533,19 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
     # Create an instace of said model
     dummy_model = type_of_model(*arguments)
     dummy_optimizer = torch.optim.SGD(dummy_model.parameters(), lr=0.1)
-    mask = get_simple_masking(dummy_optimizer, density=cfg.density)
+    decay = CosineDecay(T_max=45000 * (cfg.epochs))
+    # mask = get_simple_masking(dummy_optimizer, density=cfg.density)
+    mask = Masking(dummy_optimizer, prune_rate_decay=decay, density=cfg.density)
+    real_model = type_of_model(*arguments)
     wandb_logger = None
     if cfg.wandb:
         now = date.datetime.now().strftime("%D-%H:%M")
         wandb_logger = WandbLogger(project="sparse_training",
-                                   notes="Testing WAND logging capabilities in the cluster",
-                                   name=f"SAM_{now}_density_{cfg.density}")
+                                   notes="Testing dense SAM training",
+                                   name=f"SAM_TEST_density_{cfg.density}")
 
-    model = CIFAR10ModelSAM(mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive, rho=cfg.rho)
+    model = CIFAR10ModelSAM(model=real_model, mask=None, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive,
+                            rho=cfg.rho)
     # log gradients and model topology
     wandb_logger.watch(model)
     trainer = pl.Trainer(
@@ -608,7 +622,7 @@ def main(cfg: DictConfig):
     # The value to which I stop the process
     target_value = cfg.target_value
 
-    pool = mp.Pool(processes=2, initializer=init, initargs=(found_best_event,))
+    pool = mp.Pool(processes=2, initializer=init_multi, initargs=(found_best_event,))
     model_population = [(get_individual_arguments(), cfg.optimizer.epochs, target_value) for _ in
                         range(cfg.population_size)]
     # val_accuracy = run_one_training(*model_population[0])
@@ -624,9 +638,10 @@ def main(cfg: DictConfig):
 if __name__ == '__main__':
     cfg = omegaconf.DictConfig({
         "wandb": True,
-        "learning_rate": 0.09540963110780444,
+        "learning_rate": 0.095409631107804,
         "rho": 1.5392140101476401,
         "adaptive": True,
+        "weigth_decay": 5e-4,
         "epochs": 10,
         "percent_valid_examples": 0.1,
         "density": 0.1
