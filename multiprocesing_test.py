@@ -774,6 +774,8 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
     decay = CosineDecay(T_max=45000 * (cfg.epochs))
     # mask = get_simple_masking(dummy_optimizer, density=cfg.density)
     mask = Masking(dummy_optimizer, prune_rate_decay=decay, density=cfg.density)
+    mask.add_module(model)
+    mask.apply_mask()
 
     weight_decay = cfg.weight_decay
     training_FLOPS: float = 0
