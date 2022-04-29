@@ -50,17 +50,19 @@ DIR = os.getcwd()
 
 def objective_SAM(trial: optuna.trial.Trial) -> float:
     # We are optimizing rho, learning rate, if using adaptive or not is better
-    learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1, log=True)
+    learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1)
     rho = trial.suggest_float("rho", 0.2, 2.5)
-    momentum = trial.suggest_float("rho", 0.1, 0.99)
-    adaptative = trial.suggest_categorical("adatative",[False,True])
+    momentum = trial.suggest_float("momentum", 0.1, 0.99)
+    adaptative = trial.suggest_categorical("adaptative",[False,True])
+    nesterov = trial.suggest_categorical("nesterov",[False,True])
     type_of_model, arguments = model_registry["wrn-22-2"]
     # Create an instace of said model
     dummy_model = type_of_model(*arguments)
     dummy_optimizer = torch.optim.SGD(dummy_model.parameters(),lr=0.1)
     mask = get_simple_masking(dummy_optimizer, density=0.05)
 
-    model = CIFAR10ModelSAM(mask=mask, learning_rate=learning_rate,adaptative=adaptative, rho=rho)
+    real_model = type_of_model(*arguments)
+    model = CIFAR10ModelSAM(model=real_model, learning_rate=learning_rate,adaptative=adaptative, rho=rho,momentum=momentum)
 
     trainer = pl.Trainer(
         logger=True,

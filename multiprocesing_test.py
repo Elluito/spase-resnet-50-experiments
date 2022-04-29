@@ -17,7 +17,7 @@ from sparselearning.funcs.decay import registry as decay_registry
 from sparselearning.funcs.decay import CosineDecay
 from sparselearning.core import Masking
 from sparselearning.counting.ops import get_inference_FLOPs
-from sparselearning.utils import layer_wise_density, train_helper
+from sparselearning.utils import train_helper, smoothen_value
 
 # torch imports
 import torch
@@ -37,6 +37,7 @@ from main import get_simple_masking
 import platform
 from pytorch_lightning.loggers import WandbLogger
 from sparselearning.utils.accuracy_helper import get_topk_accuracy
+import tqdm
 
 PATH_DATASETS = ""
 if "Linux" in platform.system():
@@ -181,7 +182,8 @@ class CIFAR10ModelSAM(pl.LightningModule):
 
     def __init__(self, data_dir=PATH_DATASETS, model: nn.Module = None, mask: Masking = None,
                  learning_rate: float = 2e-4, rho: float = 0.05, adaptative: bool = False, decay_frequency: int = 100,
-                 decay_factor: float = 0.1, label_smoothing: int = 0.1,weight_decay:float=5e-4):
+                 decay_factor: float = 0.1, label_smoothing: int = 0, weight_decay: float = 5e-4,
+                 momentum: float = 0.9):
 
         super().__init__()
         assert model is not None, "The model needs to be Specified"
@@ -192,6 +194,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.rho = rho
         self.adaptive = adaptative
         self.weight_decay = weight_decay
+        self.momentum = momentum
         # self.lr_scheduler = None
         # self.decay_frequency = decay_frequency
         # self.decay_factor = decay_factor
@@ -226,8 +229,8 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.mask.apply_mask()
             self.sparse_inference_flops = self.mask.inference_FLOPs
             self.dense_inference_flops = self.mask.dense_FLOPs
-        self.loss_object = LabelSmoothingCrossEntropy(label_smoothing)
-        self.training_FLOPS: float = 0
+        self.loss_object = nn.CrossEntropyLoss()
+        self.training_flops: float = 0
 
     def forward(self, x):
         y = self.model(x)
@@ -244,16 +247,19 @@ class CIFAR10ModelSAM(pl.LightningModule):
             self.mask.to_module_device_()
             self.first_time = 0
         optimizer = self.optimizers()
+        optimizer.zero_grad()
         # first forward-backward pass
-        enable_bn(self)
-        loss_1 = self.compute_loss(batch)
-        self.manual_backward(loss_1)
+        # enable_bn(self)
+        # loss_1 = self.compute_loss(batch)
+        # self.manual_backward(loss_1)
+        loss_1 = self.loss_object(self(batch[0]), batch[1])
+        loss_1.backward()
         optimizer.first_step(zero_grad=True)
-
         # second forward-backward pass
-        disable_bn(self)
-        loss_2 = self.compute_loss(batch)
-        self.manual_backward(loss_2)
+        # disable_bn(self)
+        # loss_2 = self.compute_loss(batch)
+        # self.manual_backward(loss_2)
+        self.loss_object(self(batch[0]), batch[1]).backward()
         optimizer.second_step(zero_grad=True)
         if self.mask:
             self.mask.apply_mask()
@@ -272,6 +278,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         return loss_1
 
     def validation_step(self, batch, batch_idx):
+
         x, y = batch
         with torch.no_grad():
             logits = self(x)
@@ -313,13 +320,14 @@ class CIFAR10ModelSAM(pl.LightningModule):
     def configure_optimizers(self):
         weight_decay = self.weight_decay
         if self.weight_decay:
-            parameters = train_helper._add_weight_decay(self, self.weight_decay)
+            parameters = train_helper._add_weight_decay(self, weight_decay)
             weight_decay = 0
         else:
             parameters = self.parameters()
         optimizer = SAM(params=parameters, base_optimizer=torch.optim.SGD, lr=self.learning_rate,
                         rho=self.rho,
-                        adaptive=self.adaptive, momentum=0.9,weight_decay=weight_decay,nesterov=True)
+                        adaptive=self.adaptive, momentum=self.momentum, weight_decay=weight_decay)
+
         return optimizer
 
     ####################
@@ -486,6 +494,49 @@ class CIFAR10Model(pl.LightningModule):
             return 1
 
 
+class SimpleWrapper(pl.LightningModule):
+    def __init__(self, model=None, loss: typing.Callable = None, optimizer: torch.optim.Optimizer = None,
+                 scheduler=None, *args,
+                 **kwargs):
+        super().__init__(*args, **kwargs)
+
+        assert model is not None, "The model needs to be Specified"
+        self.model = model
+        self.loss_object = loss
+        self.optimizer = optimizer
+        self.scheduler = scheduler
+
+    def forward(self, x) -> torch.TensorType:
+        return self.model(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        pred = self.model(x)
+        loss = self.loss_object(pred, y)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        with torch.no_grad():
+            logits = self.model(x)
+        loss = self.loss_object(logits, y)
+        top_1_accuracy, top_5_accuracy = get_topk_accuracy(
+            F.log_softmax(logits), y, topk=(1, 5)
+        )
+        # Calling self.log will surface up scalars for you in TensorBoard
+        self.log("val_loss", loss, prog_bar=True)
+        self.log("val_accuracy", top_1_accuracy, prog_bar=True)
+        self.log("top_5_accuracy", top_5_accuracy, prog_bar=True)
+
+    def test_step(self, batch, batch_indx):
+        self.validation_step(batch, batch_indx)
+
+    def configure_optimizers(self):
+        optimizer = self.optimizer
+        scheduler = self.scheduler
+        return [optimizer], [{"scheduler": scheduler, "interval": "epoch"}]
+
+
 class GPUMonitor(thread.Thread):
     def __init__(self, delay):
         super(GPUMonitor, self).__init__()
@@ -514,6 +565,182 @@ def disable_bn(model):
             module.eval()
 
 
+def get_cifar10():
+    normalize = transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+
+    train_transform = transforms.Compose(
+        [
+            transforms.Pad(4, padding_mode="reflect"),
+            transforms.RandomCrop(32),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            normalize,
+        ]
+    )
+    test_transform = transforms.Compose([transforms.ToTensor(), normalize])
+
+    # Assign train/val datasets for use in dataloaders
+    cifar_full = torchvision.datasets.CIFAR10(PATH_DATASETS, train=True, download=True,
+                                              transform=train_transform)
+    cifar10_train, cifar10_val = random_split(cifar_full, [45000, 5000])
+
+    # Assign test dataset for use in dataloader(s)
+    cifar10_test = torchvision.datasets.CIFAR10(PATH_DATASETS, train=False, transform=test_transform)
+
+    train_loader = DataLoader(cifar10_train, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
+    val_loader = DataLoader(cifar10_val, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
+    test_loader = DataLoader(cifar10_test, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
+    return train_loader, val_loader, test_loader
+
+
+def manual_SGD_optimization(cfg: omegaconf.DictConfig):
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+
+        # Get data
+    train_loader, val_loader, test_loader = get_cifar10()
+    type_of_model, arguments = model_registry[cfg.model]
+    model = type_of_model(*arguments).to(device)
+    loss_object = torch.nn.CrossEntropyLoss()
+
+    weight_decay = cfg.weight_decay
+    if cfg.weight_decay:
+
+        parameters = train_helper._add_weight_decay(model, weight_decay)
+        weight_decay = 0
+    else:
+        parameters = model.parameters()
+
+    optimizer = torch.optim.SGD(parameters, lr=0.1, momentum=0.9, weight_decay=weight_decay)
+
+    lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, cfg.epochs)
+
+    ligthning_model = SimpleWrapper(model=model, loss=loss_object, optimizer=optimizer, scheduler=lr_scheduler)
+
+    trainer = pl.Trainer(
+        logger=True,
+        limit_val_batches=cfg.percent_valid_examples,
+        checkpoint_callback=False,
+        max_epochs=cfg.epochs,
+        gpus=AVAIL_GPUS if torch.cuda.is_available() else None
+    )
+    hyperparameters = cfg
+    trainer.logger.log_hyperparams(hyperparameters)
+    trainer.fit(ligthning_model, train_dataloader=train_loader, val_dataloaders=val_loader)
+    trainer.test(ligthning_model, dataloaders=test_loader)
+
+    return 0
+
+
+def train_SAM(model: nn.Module,mask:Masking ,optimizer: torch.optim.Optimizer, device: torch.device, train_loader: DataLoader,
+              loss_object: typing.Callable, epoch: int, global_step: int, train_flops:float,log_interval: int = 100,
+              use_wandb: bool = False):
+    model.train()
+    _mask_update_counter = 0
+    _loss_collector = smoothen_value.SmoothenValue()
+    pbar = tqdm.tqdm(total=len(train_loader), dynamic_ncols=True)
+    smooth_CE = loss_object
+
+    for batch_idx, (data, target) in enumerate(train_loader):
+        data, target = data.to(device), target.to(device)
+        optimizer.zero_grad()
+        # first forward-backward step
+        predictions = model(data)
+        # enable_bn(model)
+        loss = smooth_CE(predictions, target)
+        loss.backward()
+        optimizer.first_step(zero_grad=True)
+
+        # second forward-backward step
+        # disable_bn(model)
+        smooth_CE(model(data), target).backward()
+        optimizer.second_step(zero_grad=True)
+        if mask:
+            mask.apply_mask()
+            one_forward_backward_pass = self.sparse_inference_flops * 2
+            train_flops += one_forward_backward_pass * 2
+        # L2 Regularization
+
+        # Exp avg collection
+        _loss_collector.add_value(loss.item())
+
+        # Mask the gradient step
+        # stepper = mask if mask else optimizer
+        # if (
+        #         mask
+        #         and masking_apply_when == "step_end"
+        #         and global_step < masking_end_when
+        #         and ((global_step + 1) % masking_interval) == 0
+        # ):
+        #     mask.update_connections()
+        #     _mask_update_counter += 1
+        # else:
+        #     stepper.step()
+
+        # Lr scheduler
+        # lr_scheduler.step()
+        pbar.update(1)
+        global_step += 1
+
+        if batch_idx % log_interval == 0:
+            msg = f"Train Epoch {epoch} Iters {global_step} Train loss {_loss_collector.smooth:.6f}"
+            pbar.set_description(msg)
+
+            if use_wandb :
+                log_dict = {"train_loss": loss}
+                # if mask:
+                #     density = mask.stats.total_density
+                #     log_dict = {
+                #         **log_dict,
+                #         "prune_rate": mask.prune_rate,
+                #         "density": density,
+                #     }
+                wandb.log(
+                    log_dict,
+                    step=global_step,
+                )
+
+
+def evaluate(model: nn.Module, valLoader: DataLoader, device: torch.device, loss_object: typing.Callable,
+             epoch: int, is_test_set: bool = False, use_wandb: bool = False):
+    model.eval()
+    top1_list = []
+    top5_list = []
+    loss = 0
+    pbar = tqdm.tqdm(total=len(valLoader), dynamic_ncols=True)
+    with torch.no_grad():
+        for inputs, targets in valLoader:
+            inputs = inputs.to(device)
+            targets = targets.to(device)
+            y_pred = model(inputs)
+            loss += loss_object(y_pred, targets).item()
+
+            top_1_accuracy, top_5_accuracy = get_topk_accuracy(
+                F.log_softmax(y_pred, dim=1), targets, topk=(1, 5)
+            )
+            top1_list.append(top_1_accuracy)
+            top5_list.append(top_5_accuracy)
+
+            pbar.update(1)
+
+    loss /= len(valLoader)
+    mean_top_1_accuracy = torch.tensor(top1_list).mean()
+    mean_top_5_accuracy = torch.tensor(top5_list).mean()
+
+    val_or_test = "val" if not is_test_set else "test"
+    msg = f"{val_or_test.capitalize()} Epoch {epoch} {val_or_test} loss {loss:.6f} top-1 accuracy" \
+          f" {mean_top_1_accuracy:.4f} top-5 accuracy {mean_top_5_accuracy:.4f}"
+    pbar.set_description(msg)
+    logging.info(msg)
+
+    if use_wandb:
+        wandb.log({f"{val_or_test}_loss": loss}, epoch=epoch)
+        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, epoch=epoch)
+        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, epoch=epoch)
+
+
 def enable_bn(model):
     model.train()
 
@@ -528,7 +755,89 @@ def init_multi(args):
     found_best_event = args
 
 
-def single_train_SAM(cfg: omegaconf.DictConfig):
+def manual_SAM_optimization(cfg: omegaconf.DictConfig):
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
+
+    # Get data
+    train_loader, val_loader, test_loader = get_cifar10()
+    type_of_model, arguments = model_registry[cfg.model]
+    model = type_of_model(*arguments).to(device)
+    loss_object = torch.nn.CrossEntropyLoss()
+
+    type_of_model, arguments = model_registry["wrn-22-2"]
+    # Create an instace of said model
+    dummy_model = type_of_model(*arguments)
+    dummy_optimizer = torch.optim.SGD(dummy_model.parameters(), lr=0.1)
+    decay = CosineDecay(T_max=45000 * (cfg.epochs))
+    # mask = get_simple_masking(dummy_optimizer, density=cfg.density)
+    mask = Masking(dummy_optimizer, prune_rate_decay=decay, density=cfg.density)
+
+    weight_decay = cfg.weight_decay
+    training_FLOPS: float = 0
+
+
+    if cfg.weight_decay:
+        parameters = train_helper._add_weight_decay(model, weight_decay)
+        weight_decay = 0
+    else:
+        parameters = model.parameters()
+
+    optimizer = SAM(params=parameters, base_optimizer=torch.optim.SGD, lr=cfg.learning_rate,
+                    rho=cfg.rho,
+                    adaptive=cfg.adaptive, momentum=cfg.momentum, weight_decay=weight_decay)
+
+
+    lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer.base_optimizer, cfg.epochs)
+    if cfg.wandb:
+        # old code
+        # with open(cfg.wandb.api_key) as f:
+        #       os.environ["WANDB_API_KEY"] = f.read().strip()
+        #       os.environ["WANDB_START_METHOD"] = "thread"
+
+        # new code
+        os.environ["WANDB_START_METHOD"] = "thread"
+        wandb.init(
+            entity="luis_alfredo",
+            config=OmegaConf.to_container(cfg, resolve=True),
+            project="sparse_learning",
+            name=f"SAM_manual",
+            reinit=True,
+            # save_code=True,
+        )
+        wandb.watch(model)
+    global_step = 0
+
+    for epoch in range(cfg.epochs):
+
+        train_SAM(model,mask, optimizer, device, train_loader, loss_object, epoch, global_step,
+                  use_wandb=cfg.wandb,train_flops=training_FLOPS)
+        wandb.log("train_FLOPS", training_FLOPS, step=global_step)
+        lr_scheduler.step()
+
+        if epoch % cfg.val_interval == 0:
+            evaluate(
+                model,
+                val_loader,
+                device,
+                loss_object,
+                epoch,
+                use_wandb=cfg.wandb
+            )
+
+    evaluate(
+        model,
+        test_loader,
+        device,
+        loss_object,
+        cfg.epochs,
+        use_wandb=cfg.wandb,
+        is_test_set=True)
+
+
+def single_train_SAM_Ligthning(cfg: omegaconf.DictConfig):
     type_of_model, arguments = model_registry["wrn-22-2"]
     # Create an instace of said model
     dummy_model = type_of_model(*arguments)
@@ -544,10 +853,11 @@ def single_train_SAM(cfg: omegaconf.DictConfig):
                                    notes="Testing dense SAM training",
                                    name=f"SAM_TEST_density_{cfg.density}")
 
-    model = CIFAR10ModelSAM(model=real_model, mask=None, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive,
+    model = CIFAR10ModelSAM(model=real_model, mask=mask, learning_rate=cfg.learning_rate, adaptative=cfg.adaptive,
                             rho=cfg.rho)
     # log gradients and model topology
-    wandb_logger.watch(model)
+    if cfg.wandb:
+        wandb_logger.watch(model)
     trainer = pl.Trainer(
         logger=True if not wandb_logger else wandb_logger,
         limit_val_batches=cfg.percent_valid_examples,
@@ -636,16 +946,31 @@ def main(cfg: DictConfig):
 
 
 if __name__ == '__main__':
+    # cfg = omegaconf.DictConfig({
+    #     "wandb":False,
+    #     "learning_rate": 0.095409631107804,
+    #     "rho": 1.5392140101476401,
+    #     "adaptive": True,
+    #     "weigth_decay": 5e-4,
+    #     "momentum": 0.9,
+    #     "epochs": 10,
+    #     "percent_valid_examples": 0.1,
+    #     "density": 0.1
+    # }
     cfg = omegaconf.DictConfig({
         "wandb": True,
-        "learning_rate": 0.095409631107804,
-        "rho": 1.5392140101476401,
+        "model": "wrn-22-2",
+        "learning_rate": 0.1,
+        "rho": 2,
         "adaptive": True,
-        "weigth_decay": 5e-4,
+        "weight_decay": 5e-4,
+        "momentum": 0.9,
+        "nesterov": True,
         "epochs": 10,
         "percent_valid_examples": 0.1,
-        "density": 0.1
+        "density": 0.1,
+        "val_interval": 1
     })
     global USABLE_CORES
-    USABLE_CORES = 1
-    single_train_SAM(cfg)
+    USABLE_CORES = 2
+    manual_SAM_optimization(cfg)

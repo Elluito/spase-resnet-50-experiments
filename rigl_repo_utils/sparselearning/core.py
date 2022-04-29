@@ -674,18 +674,9 @@ class Masking(object):
         Performs an optimizer step
         (i.e, no update to mask topology).
         """
-        self.optimizer.step()
-        self.apply_mask()
-
+        self.optimizer.step(); self.apply_mask()
         if not self.dense_gradients:
-            self.reset_momentum()
-
-        # Get updated prune rate
-        if self.prune_rate_decay.mode == "cumulative":
-            current_sparsity = (
-                1 - self.stats.total_density
-            )  # Useful for pruning where we want a target sparsity
-            self.prune_rate_decay.step(self.mask_step, current_sparsity)
+            self.reset_momentum()  # Get updated prune rate if self.prune_rate_decay.mode == "cumulative": current_sparsity = ( 1 - self.stats.total_density)  # Useful for pruning where we want a target sparsity self.prune_rate_decay.step(self.mask_step, current_sparsity)
         else:
             self.prune_rate_decay.step(self.mask_step)
 

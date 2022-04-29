@@ -138,7 +138,7 @@ def train(
         log_dict = {
             #"Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
             #"Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
-            "Epoch_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
+            "Train_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
                                        masking_interval)
         }
 
@@ -204,15 +204,14 @@ def evaluate(
 
     # Log loss, accuracy
     if use_wandb:
-        wandb.log({f"{val_or_test}_loss": loss}, step=epoch)
-        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, step=epoch)
-        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, step=epoch)
+        wandb.log({f"{val_or_test}_loss": loss}, epoch=epoch)
+        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, epoch=epoch)
+        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, epoch=epoch)
 
     return loss, top_1_accuracy
 
 
 def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.Masking]:
-    print(OmegaConf.to_yaml(cfg))
 
     # Manual seeds
     torch.manual_seed(cfg.seed)
