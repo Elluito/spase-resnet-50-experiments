@@ -16,6 +16,7 @@ from .models import registry as model_registry
 from sparselearning.core import Masking
 import sparselearning as sparseL
 import sparselearning.counting as sparseCount
+import torch.nn.functional as F
 # The following is an dictionary defined at the end of decay file in funcs.py file
 from sparselearning.funcs.decay import registry as decay_registry
 from sparselearning.counting.ops import get_inference_FLOPs
@@ -80,7 +81,10 @@ def train(
     _mask_update_counter = 0
     _loss_collector = SmoothenValue()
     pbar = tqdm(total=len(train_loader), dynamic_ncols=True)
-    smooth_CE = LabelSmoothingCrossEntropy(label_smoothing)
+    # this loss is if the model does output F.log_max
+    #smooth_CE = LabelSmoothingCrossEntropy(label_smoothing)
+    # This loss is if the model does NOT output F.log_max() and instead is just the linear layer
+    smooth_CE = torch.nn.CrossEntropyLoss(label_smoothing)
 
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
@@ -186,7 +190,7 @@ def evaluate(
             loss += smooth_CE(output, target).item()  # sum up batch loss
 
             top_1_accuracy, top_5_accuracy = get_topk_accuracy(
-                output, target, topk=(1, 5)
+                F.log_softmax(output), target, topk=(1, 5)
             )
             top_1_accuracy_ll.append(top_1_accuracy)
             top_5_accuracy_ll.append(top_5_accuracy)
