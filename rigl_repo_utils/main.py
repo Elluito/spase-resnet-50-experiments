@@ -142,7 +142,7 @@ def train(
         log_dict = {
             #"Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
             #"Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
-            "Train_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
+            "FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
                                        masking_interval)
         }
 
