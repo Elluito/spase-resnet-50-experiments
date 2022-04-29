@@ -84,7 +84,7 @@ def train(
     # this loss is if the model does output F.log_max
     #smooth_CE = LabelSmoothingCrossEntropy(label_smoothing)
     # This loss is if the model does NOT output F.log_max() and instead is just the linear layer
-    smooth_CE = torch.nn.CrossEntropyLoss(label_smoothing)
+    smooth_CE = torch.nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
     for batch_idx, (data, target) in enumerate(train_loader):
         data, target = data.to(device), target.to(device)
