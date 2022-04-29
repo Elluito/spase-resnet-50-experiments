@@ -815,7 +815,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
 
         train_SAM(model, mask, optimizer, device, train_loader, loss_object, epoch, global_step,
                   use_wandb=cfg.wandb, train_flops=training_FLOPS)
-        wandb.log("train_FLOPS", training_FLOPS, step=global_step)
+        wandb.log("train_FLOPS", training_FLOPS)
         lr_scheduler.step()
 
         if epoch % cfg.val_interval == 0:
