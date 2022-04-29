@@ -1,6 +1,0 @@
-# @package optimizer
-name: SAM
-lr: 0.09540963110780444
-rho: 1.5392140101476401
-adatative: True
-base_optimizer: SGD
