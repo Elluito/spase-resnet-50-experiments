@@ -1,0 +1,11 @@
+# @package optimizer
+name: SAM
+epochs: 10
+
+
+lr: 0.095409631107804
+rho: 1.5392140101476401
+adaptive: True
+weigth_decay: 5e-4
+momentum: 0.9
+percent_valid_examples: 0.1
