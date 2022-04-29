@@ -659,7 +659,7 @@ def train_SAM(model: nn.Module,mask:Masking ,optimizer: torch.optim.Optimizer, d
         optimizer.second_step(zero_grad=True)
         if mask:
             mask.apply_mask()
-            one_forward_backward_pass = self.sparse_inference_flops * 2
+            one_forward_backward_pass =mask.sparse_inference_flops * 2
             train_flops += one_forward_backward_pass * 2
         # L2 Regularization
 
