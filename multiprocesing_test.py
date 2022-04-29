@@ -634,8 +634,9 @@ def manual_SGD_optimization(cfg: omegaconf.DictConfig):
     return 0
 
 
-def train_SAM(model: nn.Module,mask:Masking ,optimizer: torch.optim.Optimizer, device: torch.device, train_loader: DataLoader,
-              loss_object: typing.Callable, epoch: int, global_step: int, train_flops:float,log_interval: int = 100,
+def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer, device: torch.device,
+              train_loader: DataLoader,
+              loss_object: typing.Callable, epoch: int, global_step: int, train_flops: float, log_interval: int = 100,
               use_wandb: bool = False):
     model.train()
     _mask_update_counter = 0
@@ -659,7 +660,7 @@ def train_SAM(model: nn.Module,mask:Masking ,optimizer: torch.optim.Optimizer, d
         optimizer.second_step(zero_grad=True)
         if mask:
             mask.apply_mask()
-            one_forward_backward_pass =mask.sparse_inference_flops * 2
+            one_forward_backward_pass = mask.inference_FLOPs * 2
             train_flops += one_forward_backward_pass * 2
         # L2 Regularization
 
@@ -688,7 +689,7 @@ def train_SAM(model: nn.Module,mask:Masking ,optimizer: torch.optim.Optimizer, d
             msg = f"Train Epoch {epoch} Iters {global_step} Train loss {_loss_collector.smooth:.6f}"
             pbar.set_description(msg)
 
-            if use_wandb :
+            if use_wandb:
                 log_dict = {"train_loss": loss}
                 # if mask:
                 #     density = mask.stats.total_density
@@ -780,7 +781,6 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
     weight_decay = cfg.weight_decay
     training_FLOPS: float = 0
 
-
     if cfg.weight_decay:
         parameters = train_helper._add_weight_decay(model, weight_decay)
         weight_decay = 0
@@ -790,7 +790,6 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
     optimizer = SAM(params=parameters, base_optimizer=torch.optim.SGD, lr=cfg.learning_rate,
                     rho=cfg.rho,
                     adaptive=cfg.adaptive, momentum=cfg.momentum, weight_decay=weight_decay)
-
 
     lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer.base_optimizer, cfg.epochs)
     if cfg.wandb:
@@ -814,8 +813,8 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
 
     for epoch in range(cfg.epochs):
 
-        train_SAM(model,mask, optimizer, device, train_loader, loss_object, epoch, global_step,
-                  use_wandb=cfg.wandb,train_flops=training_FLOPS)
+        train_SAM(model, mask, optimizer, device, train_loader, loss_object, epoch, global_step,
+                  use_wandb=cfg.wandb, train_flops=training_FLOPS)
         wandb.log("train_FLOPS", training_FLOPS, step=global_step)
         lr_scheduler.step()
 
