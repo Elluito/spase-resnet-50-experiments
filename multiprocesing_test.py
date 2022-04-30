@@ -760,7 +760,9 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         device = torch.device("cuda")
     else:
         device = torch.device("cpu")
-
+    print("\n")
+    print(f"Current device {device}")
+    print("\n")
     # Get data
     train_loader, val_loader, test_loader = get_cifar10()
     type_of_model, arguments = model_registry[cfg.model]
@@ -775,6 +777,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
     # mask = get_simple_masking(dummy_optimizer, density=cfg.density)
     mask = Masking(dummy_optimizer, prune_rate_decay=decay, density=cfg.density)
     mask.add_module(model)
+    mask.to_module_device_()
     mask.apply_mask()
 
     weight_decay = cfg.weight_decay

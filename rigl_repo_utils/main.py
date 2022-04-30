@@ -453,7 +453,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
     #     training_flops = sparse_FLOPS * 2 * step * cfg.dataset.batch_size
 
 
-    return val_accuracy, training_flops
+    return val_accuracy, train_flops
 
 
 # @hydra.main(config_path="conf/specific",config_name="cifar10_wrn_22_2_static_modified")
