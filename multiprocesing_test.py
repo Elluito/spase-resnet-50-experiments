@@ -806,7 +806,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
             config=OmegaConf.to_container(cfg, resolve=True),
             project="sparse_training",
             notes="In this run I changed the WideResNet to output the linear conbintaion, and chaged the loss acordingly",
-            name=f"SAM_manual_{}",
+            name=f"SAM_manual_{now}",
             reinit=True,
             #save_code=True,
         )
