@@ -800,12 +800,13 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
 
         # new code
         os.environ["WANDB_START_METHOD"] = "thread"
+        now = date.datetime.now().strftime("%M:%S")
         wandb.init(
             entity="luis_alfredo",
             config=OmegaConf.to_container(cfg, resolve=True),
             project="sparse_training",
             notes="In this run I changed the WideResNet to output the linear conbintaion, and chaged the loss acordingly",
-            name=f"SAM_manual_{torch.rand()}",
+            name=f"SAM_manual_{}",
             reinit=True,
             #save_code=True,
         )
