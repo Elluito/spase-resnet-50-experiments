@@ -982,5 +982,5 @@ if __name__ == '__main__':
         "val_interval": 1
     })
     global USABLE_CORES
-    USABLE_CORES = 1
+    USABLE_CORES = 3
     manual_SAM_optimization(cfg)
