@@ -584,7 +584,7 @@ def get_cifar10():
                                               transform=train_transform)
     cifar10_train, cifar10_val = random_split(cifar_full, [45000, 5000])
 
-    # Assign test dataset for use in dataloader(s)
+    # Assign test dataset mfor use in dataloader(s)
     cifar10_test = torchvision.datasets.CIFAR10(PATH_DATASETS, train=False, transform=test_transform)
 
     train_loader = DataLoader(cifar10_train, batch_size=BATCH_SIZE, num_workers=USABLE_CORES)
@@ -653,7 +653,8 @@ def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer,
         loss = smooth_CE(predictions, target)
         loss.backward()
         optimizer.first_step(zero_grad=True)
-
+        if mask:
+            mask.apply_mask()
         # second forward-backward step
         # disable_bn(model)
         smooth_CE(model(data), target).backward()
@@ -688,9 +689,8 @@ def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer,
         if batch_idx % log_interval == 0:
             msg = f"Train Epoch {epoch} Iters {global_step} Train loss {_loss_collector.smooth:.6f}"
             pbar.set_description(msg)
-
             if use_wandb:
-                log_dict = {"train_loss": loss}
+                log_dict = {"train_loss": loss, "gobal_step": global_step}
                 # if mask:
                 #     density = mask.stats.total_density
                 #     log_dict = {
@@ -699,13 +699,13 @@ def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer,
                 #         "density": density,
                 #     }
                 wandb.log(
-                    log_dict,
-                    step=global_step,
+                    log_dict
                 )
+    return train_flops, global_step
 
 
 def evaluate(model: nn.Module, valLoader: DataLoader, device: torch.device, loss_object: typing.Callable,
-             epoch: int, global_step:int,is_test_set: bool = False, use_wandb: bool = False):
+             epoch: int, global_step: int, is_test_set: bool = False, use_wandb: bool = False):
     model.eval()
     top1_list = []
     top5_list = []
@@ -737,9 +737,9 @@ def evaluate(model: nn.Module, valLoader: DataLoader, device: torch.device, loss
     logging.info(msg)
 
     if use_wandb:
-        wandb.log({f"{val_or_test}_loss": loss}, step=global_step)
-        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, step=global_step)
-        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, step=global_step)
+        wandb.log({f"{val_or_test}_loss": loss, "EPOCH": epoch})
+        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy, "EPOCH": epoch})
+        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy, "EPOCH": epoch})
 
 
 def enable_bn(model):
@@ -805,19 +805,20 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
             entity="luis_alfredo",
             config=OmegaConf.to_container(cfg, resolve=True),
             project="sparse_training",
-            notes="In this run I changed the WideResNet to output the linear conbintaion, and chaged the loss acordingly",
+            notes="To see if wandb loggs everything",
             name=f"SAM_manual_{now}",
-            reinit=True,
-            #save_code=True,
+            reinit=True
+            # save_code=True,
         )
         wandb.watch(model)
     global_step = 0
 
     for epoch in range(cfg.epochs):
 
-        train_SAM(model, mask, optimizer, device, train_loader, loss_object, epoch, global_step,
-                  use_wandb=cfg.wandb, train_flops=training_FLOPS)
-        wandb.log({"train_FLOPS": training_FLOPS}, step=global_step)
+        training_FLOPS, global_step = train_SAM(model, mask, optimizer, device, train_loader, loss_object, epoch,
+                                                global_step, use_wandb=cfg.wandb, train_flops=training_FLOPS)
+        if cfg.wandb:
+            wandb.log({"train_FLOPS": training_FLOPS, "EPOCH": epoch})
         lr_scheduler.step()
 
         if epoch % cfg.val_interval == 0:
@@ -841,7 +842,9 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         use_wandb=cfg.wandb,
         is_test_set=True)
 
-    wandb.finish()
+    if cfg.wandb.use:
+        # Close wandb context
+        wandb.join()
 
 
 def single_train_SAM_Ligthning(cfg: omegaconf.DictConfig):
@@ -965,9 +968,9 @@ if __name__ == '__main__':
     #     "density": 0.1
     # }
     cfg = omegaconf.DictConfig({
-        "wandb": True,
+        "wandb": False,
         "model": "wrn-22-2",
-        "learning_rate": 0.1,
+        "learning_rate": 0.01,
         "rho": 2,
         "adaptive": True,
         "weight_decay": 5e-4,

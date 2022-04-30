@@ -82,7 +82,7 @@ def train(
     _loss_collector = SmoothenValue()
     pbar = tqdm(total=len(train_loader), dynamic_ncols=True)
     # this loss is if the model does output F.log_max
-    #smooth_CE = LabelSmoothingCrossEntropy(label_smoothing)
+    # smooth_CE = LabelSmoothingCrossEntropy(label_smoothing)
     # This loss is if the model does NOT output F.log_max() and instead is just the linear layer
     smooth_CE = torch.nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
@@ -140,10 +140,11 @@ def train(
 
     if masking_print_FLOPs:
         log_dict = {
-            #"Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
-            #"Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
-            "train_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs*global_step,
-                                       masking_interval)
+            # "Inference FLOPs": mask.inference_FLOPs / mask.dense_FLOPs,
+            # "Avg Inference FLOPs": mask.avg_inference_FLOPs / mask.dense_FLOPs,
+            "train_FLOPS": RigL_train_FLOPs(mask.inference_FLOPs * global_step, mask.dense_FLOPs * global_step,
+                                            masking_interval),
+            "EPOCH": epoch
         }
 
         log_dict_str = " ".join([f"{k}: {v:.4f}" for (k, v) in log_dict.items()])
@@ -208,15 +209,14 @@ def evaluate(
 
     # Log loss, accuracy
     if use_wandb:
-        wandb.log({f"{val_or_test}_loss": loss}, epoch=epoch)
-        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy}, epoch=epoch)
-        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy}, epoch=epoch)
+        wandb.log({f"{val_or_test}_loss": loss, "EPOCH": epoch})
+        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy, "EPOCH": epoch})
+        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy, "EPOCH": epoch})
 
     return loss, top_1_accuracy
 
 
 def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.Masking]:
-
     # Manual seeds
     torch.manual_seed(cfg.seed)
     # Training Step
@@ -253,7 +253,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             project=cfg.wandb.project,
             name=cfg.wandb.name,
             reinit=True,
-            #save_code=True,
+            # save_code=True,
         )
         wandb.watch(model)
 
