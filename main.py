@@ -400,7 +400,7 @@ def single_generation_training_step(model: nn.Module,
         # step here is training iters not global steps
         scheduler = lr_scheduler if (epoch >= warmup_epochs) else warmup_scheduler
 
-        _, step = train(
+        _, step, = train(
             model,
             mask,
             train_loader,

@@ -705,7 +705,7 @@ def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer,
 
 
 def evaluate(model: nn.Module, valLoader: DataLoader, device: torch.device, loss_object: typing.Callable,
-             epoch: int, global_step: int, is_test_set: bool = False, use_wandb: bool = False):
+             epoch: int, global_step: int, training_flops: float, is_test_set: bool = False, use_wandb: bool = False):
     model.eval()
     top1_list = []
     top5_list = []
@@ -737,9 +737,8 @@ def evaluate(model: nn.Module, valLoader: DataLoader, device: torch.device, loss
     logging.info(msg)
 
     if use_wandb:
-        wandb.log({f"{val_or_test}_loss": loss, "EPOCH": epoch})
-        wandb.log({f"{val_or_test}_accuracy": top_1_accuracy, "EPOCH": epoch})
-        wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy, "EPOCH": epoch})
+        wandb.log({f"{val_or_test}_loss": loss, f"{val_or_test}_accuracy": top_1_accuracy,
+                   f"{val_or_test}_top_5_accuracy": top_5_accuracy, "train_FLOPS": training_flops, "EPOCH": epoch})
 
 
 def enable_bn(model):
@@ -817,8 +816,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
 
         training_FLOPS, global_step = train_SAM(model, mask, optimizer, device, train_loader, loss_object, epoch,
                                                 global_step, use_wandb=cfg.wandb, train_flops=training_FLOPS)
-        if cfg.wandb:
-            wandb.log({"train_FLOPS": training_FLOPS, "EPOCH": epoch})
+
         lr_scheduler.step()
 
         if epoch % cfg.val_interval == 0:
