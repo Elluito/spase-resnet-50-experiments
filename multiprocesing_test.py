@@ -827,6 +827,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
                 loss_object,
                 epoch,
                 global_step,
+                training_FLOPS,
                 use_wandb=cfg.wandb
             )
 
@@ -837,6 +838,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         loss_object,
         cfg.epochs,
         global_step,
+        training_FLOPS,
         use_wandb=cfg.wandb,
         is_test_set=True)
 
