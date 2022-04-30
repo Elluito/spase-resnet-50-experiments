@@ -115,7 +115,7 @@ def train(
             stepper.step()
 
         if masking_name == "RigL":
-            train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPS, mask.interval)
+            train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPs, mask.interval)
         if masking_name == "Static":
             # Here  we assume that  the backward pass consumes appoximately the same number of flops that the forward
             # pass
