@@ -200,7 +200,7 @@ def evaluate(
             loss += smooth_CE(output, target).item()  # sum up batch loss
 
             top_1_accuracy, top_5_accuracy = get_topk_accuracy(
-                F.log_softmax(output), target, topk=(1, 5)
+                F.log_softmax(output,dim=-1), target, topk=(1, 5)
             )
             top_1_accuracy_ll.append(top_1_accuracy)
             top_5_accuracy_ll.append(top_5_accuracy)
