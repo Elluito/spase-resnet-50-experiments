@@ -653,8 +653,8 @@ def train_SAM(model: nn.Module, mask: Masking, optimizer: torch.optim.Optimizer,
         loss = smooth_CE(predictions, target)
         loss.backward()
         optimizer.first_step(zero_grad=True)
-        if mask:
-            mask.apply_mask()
+        # if mask:
+        #     mask.apply_mask()
         # second forward-backward step
         # disable_bn(model)
         smooth_CE(model(data), target).backward()
