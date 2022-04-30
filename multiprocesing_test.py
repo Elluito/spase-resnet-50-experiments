@@ -803,10 +803,11 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         wandb.init(
             entity="luis_alfredo",
             config=OmegaConf.to_container(cfg, resolve=True),
-            project="sparse_learning",
-            name=f"SAM_manual",
+            project="sparse_training",
+            notes="In this run I changed the WideResNet to output the linear conbintaion, and chaged the loss acordingly",
+            name=f"SAM_manual_{torch.rand()}",
             reinit=True,
-            # save_code=True,
+            #save_code=True,
         )
         wandb.watch(model)
     global_step = 0
@@ -835,8 +836,11 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         device,
         loss_object,
         cfg.epochs,
+        global_step,
         use_wandb=cfg.wandb,
         is_test_set=True)
+
+    wandb.finish()
 
 
 def single_train_SAM_Ligthning(cfg: omegaconf.DictConfig):
