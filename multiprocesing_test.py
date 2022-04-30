@@ -973,7 +973,7 @@ if __name__ == '__main__':
     cfg = omegaconf.DictConfig({
         "wandb": True,
         "model": "wrn-22-2",
-        "learning_rate": 0.01,
+        "learning_rate": 0.1,
         "rho": 2,
         "adaptive": True,
         "weight_decay": 5e-4,
