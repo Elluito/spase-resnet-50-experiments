@@ -114,9 +114,9 @@ def train(
         else:
             stepper.step()
 
-        if masking_name is "RigL":
+        if masking_name == "RigL":
             train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPS, mask.interval)
-        if masking_name is "Static":
+        if masking_name == "Static":
             # Here  we assume that  the backward pass consumes appoximately the same number of flops that the forward
             # pass
             train_flops += mask.inference_FLOPs*2
@@ -197,7 +197,7 @@ def evaluate(
             data, target = data.to(device), target.to(device)
 
             output = model(data)
-            loss += smooth_CE(output, target).item()  # sum up batch loss
+            loss += F.log_softmax(smooth_CE(output, target).item())  # sum up batch loss
 
             top_1_accuracy, top_5_accuracy = get_topk_accuracy(
                 F.log_softmax(output,dim=-1), target, topk=(1, 5)

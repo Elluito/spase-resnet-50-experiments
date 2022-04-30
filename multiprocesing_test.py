@@ -807,10 +807,9 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
             entity="luis_alfredo",
             config=OmegaConf.to_container(cfg, resolve=True),
             project="sparse_training",
-            notes="To see if wandb loggs everything",
             name=f"SAM_manual_{now}",
-            reinit=True
-            # save_code=True,
+            reinit=True,
+            save_code=True,
         )
         wandb.watch(model)
     global_step = 0
