@@ -285,7 +285,7 @@ class CIFAR10ModelSAM(pl.LightningModule):
         loss = self.loss_object(logits, y)
 
         top_1_accuracy, top_5_accuracy = get_topk_accuracy(
-            logits, y, topk=(1, 5)
+            F.log_softmax(logits,dim=-1), y, topk=(1, 5)
         )
         # Calling self.log will surface up scalars for you in TensorBoard
         # self.log("val_loss", loss, prog_bar=True)
@@ -302,13 +302,6 @@ class CIFAR10ModelSAM(pl.LightningModule):
         self.log("val_top_5_accuracy",
                  torch.tensor(all_preds["top5_acc"], dtype=torch.float32).mean())
         # self.log("Epoch_FLOPS", self.training_FLOPS)
-        if self.mask:
-            log_dict = {
-                "Inference FLOPs": self.mask.inference_FLOPs / self.mask.dense_FLOPs,
-                "Avg Inference FLOPs": self.mask.avg_inference_FLOPs / self.mask.dense_FLOPs,
-            }
-            for key, value in log_dict.items():
-                self.log(name=key, value=value)
         # if isinstance(self.logger, WandbLogger):
         #     temp_dict = {"layer_wise_density": layer_wise_density.wandb_bar(self.mask)}
         #     wandb.log(temp_dict)
@@ -970,19 +963,19 @@ if __name__ == '__main__':
     #     "density": 0.1
     # }
     cfg = omegaconf.DictConfig({
-        "wandb": True,
+        "wandb":False,
         "model": "wrn-22-2",
         "learning_rate": 0.1,
-        "rho": 2,
-        "adaptive": True,
+        "rho": 0.05,
+        "adaptive": False,
         "weight_decay": 5e-4,
         "momentum": 0.9,
         "nesterov": True,
         "epochs": 10,
         "percent_valid_examples": 0.1,
-        "density": 0.1,
+        "density": 1,
         "val_interval": 1
     })
     global USABLE_CORES
     USABLE_CORES = 1
-    manual_SAM_optimization(cfg)
+    single_train_SAM_Ligthning(cfg)

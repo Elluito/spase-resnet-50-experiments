@@ -51,7 +51,7 @@ DIR = os.getcwd()
 def objective_SAM(trial: optuna.trial.Trial) -> float:
     # We are optimizing rho, learning rate, if using adaptive or not is better
     learning_rate = trial.suggest_float("learning_rate", 1e-5, 1e-1)
-    rho = trial.suggest_float("rho", 0.2, 2.5)
+    rho = trial.suggest_float("rho", 0.0005, 2.5)
     momentum = trial.suggest_float("momentum", 0.1, 0.99)
     adaptative = trial.suggest_categorical("adaptative",[False,True])
     nesterov = trial.suggest_categorical("nesterov",[False,True])
