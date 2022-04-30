@@ -68,6 +68,7 @@ def train(
         global_step: int,
         epoch: int,
         device: torch.device,
+        masking_name:str,
         train_flops: float,
         label_smoothing: float = 0.0,
         log_interval: int = 100,
@@ -113,9 +114,9 @@ def train(
         else:
             stepper.step()
 
-        if mask.name is "RigL":
+        if masking_name is "RigL":
             train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPS, mask.interval)
-        if mask.name is "Static":
+        if masking_name is "Static":
             # Here  we assume that  the backward pass consumes appoximately the same number of flops that the forward
             # pass
             train_flops += mask.inference_FLOPs*2
@@ -365,6 +366,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             step,
             epoch + 1,
             device,
+            mask_name=cfg.masking.name,
             train_flops=train_flops,
             label_smoothing=cfg.optimizer.label_smoothing,
             log_interval=cfg.log_interval,
