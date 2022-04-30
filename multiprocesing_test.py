@@ -842,7 +842,7 @@ def manual_SAM_optimization(cfg: omegaconf.DictConfig):
         use_wandb=cfg.wandb,
         is_test_set=True)
 
-    if cfg.wandb.use:
+    if cfg.wandb:
         # Close wandb context
         wandb.join()
 
@@ -968,7 +968,7 @@ if __name__ == '__main__':
     #     "density": 0.1
     # }
     cfg = omegaconf.DictConfig({
-        "wandb": False,
+        "wandb": True,
         "model": "wrn-22-2",
         "learning_rate": 0.01,
         "rho": 2,
@@ -982,5 +982,5 @@ if __name__ == '__main__':
         "val_interval": 1
     })
     global USABLE_CORES
-    USABLE_CORES = 2
+    USABLE_CORES = 1
     manual_SAM_optimization(cfg)
