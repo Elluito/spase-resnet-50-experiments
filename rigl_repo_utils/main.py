@@ -420,6 +420,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             val_loader,
             step,
             epoch + 1,
+            train_flops,
             device,
             use_wandb=cfg.wandb.use,
         )
@@ -429,6 +430,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
         test_loader,
         step,
         epoch + 1,
+        train_flops,
         device,
         is_test_set=True,
         use_wandb=cfg.wandb.use,
