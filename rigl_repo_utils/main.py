@@ -366,7 +366,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
             step,
             epoch + 1,
             device,
-            mask_name=cfg.masking.name,
+            masking_name=cfg.masking.name,
             train_flops=train_flops,
             label_smoothing=cfg.optimizer.label_smoothing,
             log_interval=cfg.log_interval,
