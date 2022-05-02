@@ -68,7 +68,7 @@ def train(
         global_step: int,
         epoch: int,
         device: torch.device,
-        masking_name:str,
+        masking_name: str,
         train_flops: float,
         label_smoothing: float = 0.0,
         log_interval: int = 100,
@@ -115,11 +115,11 @@ def train(
             stepper.step()
 
         if masking_name == "RigL":
-            train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPs,masking_interval)
+            train_flops += RigL_train_FLOPs(mask.inference_FLOPs, mask.dense_FLOPs, masking_interval)
         if masking_name == "Static":
             # Here  we assume that  the backward pass consumes appoximately the same number of flops that the forward
             # pass
-            train_flops += mask.inference_FLOPs*2
+            train_flops += mask.inference_FLOPs * 2
         # Lr scheduler
         lr_scheduler.step()
         pbar.update(1)
@@ -168,7 +168,7 @@ def train(
 
     logging.info(msg)
 
-    return _loss_collector.smooth, global_step,train_flops
+    return _loss_collector.smooth, global_step, train_flops
 
 
 def evaluate(
@@ -176,7 +176,7 @@ def evaluate(
         loader: "DataLoader",
         global_step: int,
         epoch: int,
-        training_flops:float,
+        training_flops: float,
         device: torch.device,
         is_test_set: bool = False,
         use_wandb: bool = False,
@@ -197,10 +197,10 @@ def evaluate(
             data, target = data.to(device), target.to(device)
 
             output = model(data)
-            loss += F.log_softmax(smooth_CE(output, target).item())  # sum up batch loss
+            loss += smooth_CE(F.log_softmax(output, dim=-1), target).item()  # sum up batch loss
 
             top_1_accuracy, top_5_accuracy = get_topk_accuracy(
-                F.log_softmax(output,dim=-1), target, topk=(1, 5)
+                F.log_softmax(output, dim=-1), target, topk=(1, 5)
             )
             top_1_accuracy_ll.append(top_1_accuracy)
             top_5_accuracy_ll.append(top_5_accuracy)
@@ -218,13 +218,11 @@ def evaluate(
 
     # Log loss, accuracy
     if use_wandb:
-
         wandb.log({f"{val_or_test}_loss": loss, f"{val_or_test}_accuracy": top_1_accuracy,
                    f"{val_or_test}_top_5_accuracy": top_5_accuracy, "train_FLOPS": training_flops, "EPOCH": epoch})
         # wandb.log({f"{val_or_test}_loss": loss, "EPOCH": epoch})
         # wandb.log({f"{val_or_test}_accuracy": top_1_accuracy, "EPOCH": epoch})
         # wandb.log({f"{val_or_test}_top_5_accuracy": top_5_accuracy, "EPOCH": epoch})
-
 
     return loss, top_1_accuracy
 
@@ -240,9 +238,8 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
     else:
         device = torch.device("cpu")
 
-    #Training flops
-    train_flops:float = 0
-
+    # Training flops
+    train_flops: float = 0
 
     # Get data
     train_loader, val_loader, test_loader = get_dataloaders(**cfg.dataset)
@@ -357,7 +354,7 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
         # step here is training iters not global steps
         scheduler = lr_scheduler if (epoch >= warmup_epochs) else warmup_scheduler
 
-        _, step,train_flops = train(
+        _, step, train_flops = train(
             model,
             mask,
             train_loader,
@@ -451,7 +448,6 @@ def single_seed_run(cfg: DictConfig) -> typing.Union[float, sparselearning.core.
     # if cfg.masking.name is "Static":
     #
     #     training_flops = sparse_FLOPS * 2 * step * cfg.dataset.batch_size
-
 
     return val_accuracy, train_flops
 

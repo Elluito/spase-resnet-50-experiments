@@ -263,17 +263,17 @@ class CIFAR10ModelSAM(pl.LightningModule):
         optimizer.second_step(zero_grad=True)
         if self.mask:
             self.mask.apply_mask()
-            one_forward_backward_pass = self.sparse_inference_flops * 2
+            one_forward_backward_pass = self.sparse_inference_flops * 2 # flops for one forward pass
             self.training_flops += one_forward_backward_pass * 2
-            self.log("epoch_flops", self.training_flops, on_step=False, on_epoch=True)
+            self.log("train_FLOPS", self.training_flops, on_step=False, on_epoch=True)
 
-        # flops for one forward pass
         # assuming that the backward pass uses approximately the same number of flops as the
         # forward.
         # acording to  this website shorturl.at/hpap7 they said that is between 2 and 3 times the
         # number of flops
 
         self.log("train_loss", loss_1, prog_bar=True)
+        self.log("E", self.training_flops, on_step=False, on_epoch=True)
 
         return loss_1
 
@@ -289,8 +289,8 @@ class CIFAR10ModelSAM(pl.LightningModule):
         )
         # Calling self.log will surface up scalars for you in TensorBoard
         # self.log("val_loss", loss, prog_bar=True)
-        self.log("top1_acc", top_1_accuracy, prog_bar=True)
-        self.log("top5_acc", top_5_accuracy, prog_bar=True)
+        self.log("val_accuracy", top_1_accuracy, prog_bar=True)
+        self.log("top_5_acc", top_5_accuracy, prog_bar=True)
         return {"val_loss": loss, "top1_acc": top_1_accuracy, "top5_acc": top_5_accuracy}
 
     def validation_epoch_end(self, validation_step_outputs):
@@ -308,7 +308,28 @@ class CIFAR10ModelSAM(pl.LightningModule):
 
     def test_step(self, batch, batch_idx):
         # Here we just reuse the validation_step for testing
-        return self.validation_step(batch, batch_idx)
+        x, y = batch
+        with torch.no_grad():
+            logits = self(x)
+        loss = self.loss_object(logits, y)
+
+        top_1_accuracy, top_5_accuracy = get_topk_accuracy(
+            F.log_softmax(logits, dim=-1), y, topk=(1, 5)
+        )
+        # Calling self.log will surface up scalars for you in TensorBoard
+        # self.log("val_loss", loss, prog_bar=True)
+        # self.log("top_5_acc", top_5_accuracy, prog_bar=True)
+        return {"test_loss": loss, "test_accuracy": top_1_accuracy, "test_top_5_acc": top_5_accuracy}
+
+    def on_test_epoch_end(self, test_step_outputs) -> None:
+
+        all_preds = {k: [dic[k] for dic in test_step_outputs] for k in test_step_outputs[0]}
+        self.log("test_loss",
+                 torch.tensor(all_preds["test_loss"], dtype=torch.float32).mean())
+        self.log("test_accuracy",
+                 torch.tensor(all_preds["test_accuracy"], dtype=torch.float32).mean())
+        self.log("test_top_5_accuracy",
+                 torch.tensor(all_preds["test_top_5_acc"], dtype=torch.float32).mean())
 
     def configure_optimizers(self):
         weight_decay = self.weight_decay
