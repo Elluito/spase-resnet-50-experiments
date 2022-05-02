@@ -32,6 +32,7 @@ from torchvision import transforms
 from multiprocesing_test import CIFAR10ModelSAM, CIFAR10Model
 from main import get_simple_masking
 from rigl_repo_utils.models import registry as model_registry
+from multiprocesing_test.main import single
 from optuna.integration import PyTorchLightningPruningCallback
 from optuna.visualization import plot_contour
 from optuna.visualization import plot_edf
