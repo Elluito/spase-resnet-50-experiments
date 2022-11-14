@@ -1,0 +1,2 @@
+export SIMPLE_RIGL="+specific=cifar10_wrn_22_2_rigl_modified"
+export SIMPLE_STATIC="+specific=cifar10_wrn_22_2_static_modified"

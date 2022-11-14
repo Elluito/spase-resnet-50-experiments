@@ -1,0 +1,25 @@
+[[36m2022-04-30 19:57:46,932[39m][[34mroot[39m][[32mINFO[39m] - Excluding bias and batchnorm layers from weight decay.
+[[36m2022-04-30 19:57:46,970[39m][[34mroot[39m][[32mINFO[39m] - Dense FLOPs 315,460,224
+[[36m2022-04-30 19:57:46,973[39m][[34mroot[39m][[32mINFO[39m] - Removing biases...
+[[36m2022-04-30 19:57:46,973[39m][[34mroot[39m][[32mINFO[39m] - Removing 2D batch norms...
+[[36m2022-04-30 19:57:46,973[39m][[34mroot[39m][[32mINFO[39m] - Removing 1D batch norms...
+[[36m2022-04-30 19:57:46,975[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:fc.weight set to 1.0
+[[36m2022-04-30 19:57:46,976[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:block1.layer.0.convShortcut.weight set to 1.0
+[[36m2022-04-30 19:57:46,978[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:conv1.weight set to 1.0
+[[36m2022-04-30 19:57:46,979[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:block2.layer.0.convShortcut.weight set to 1.0
+[[36m2022-04-30 19:57:47,294[39m][[34mroot[39m][[32mINFO[39m] - Total Model parameters: 1079642.
+[[36m2022-04-30 19:57:47,295[39m][[34mroot[39m][[32mINFO[39m] - Total parameters after removed layers: 1076912.
+[[36m2022-04-30 19:57:47,295[39m][[34mroot[39m][[32mINFO[39m] - Total parameters under sparsity level of 0.1: 107835
+[[36m2022-04-30 19:57:47,295[39m][[34mroot[39m][[32mINFO[39m] - Achieved sparsity at init (w/o BN, bias): 0.1001
+[[36m2022-04-30 19:57:47,427[39m][[34mroot[39m][[32mINFO[39m] - Inference (Sparse) FLOPs (at init) 54,665,984
+[[36m2022-04-30 19:57:47,427[39m][[34mroot[39m][[32mINFO[39m] - Not resuming, training from scratch.
+  0%|          | 0/352 [00:00<?, ?it/s]Error executing job with overrides: ['+specific=cifar10_wrn_22_2_rigL_modified', '++optimizer.epochs=10', '++dataset.max_threads=1', '++masking.density=0.1']
+Traceback (most recent call last):
+  File "main.py", line 801, in main
+    single_seed_run(cfg)
+  File "/home/home01/sclaam/spase-resnet-50-experiments/rigl_repo_utils/main.py", line 374, in single_seed_run
+    **_masking_args,
+  File "/home/home01/sclaam/spase-resnet-50-experiments/rigl_repo_utils/main.py", line 118, in train
+    train_flops += RigL_train_FLOPs(mask.inference_FLOPs,mask.dense_FLOPS, mask.interval)
+AttributeError: 'Masking' object has no attribute 'dense_FLOPS'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

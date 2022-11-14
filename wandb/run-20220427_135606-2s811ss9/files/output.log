@@ -1,0 +1,283 @@
+
+Downloading https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz to /nobackup/sclaam/cifar-10-python.tar.gz
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/callback_connector.py:152: LightningDeprecationWarning: Setting `Trainer(checkpoint_callback=False)` is deprecated in v1.5 and will be removed in v1.7. Please consider using `Trainer(enable_checkpointing=False)`.
+  f"Setting `Trainer(checkpoint_callback={checkpoint_callback})` is deprecated in v1.5 and will "
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+170499072it [01:04, 2651034.13it/s]
+Extracting /nobackup/sclaam/cifar-10-python.tar.gz to /nobackup/sclaam
+Files already downloaded and verified
+Files already downloaded and verified
+Sanity Checking DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+  | Name        | Type                       | Params
+-----------------------------------------------------------
+0 | model       | WideResNet                 | 1.1 M
+1 | loss_object | LabelSmoothingCrossEntropy | 0
+-----------------------------------------------------------
+1.1 M     Trainable params
+0         Non-trainable params
+1.1 M     Total params
+4.319     Total estimated model params size (MB)
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, val_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 24 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  category=PossibleUserWarning,
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 24 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 1:  99%|█████████▉| 352/356 [02:32<00:01,  2.31it/s, v_num=1ss9, train_loss=nan.0, top1_acc=0.0898, top5_acc=0.514]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 5:  49%|████▉     | 174/356 [06:58<07:18,  2.41s/it, v_num=1ss9, train_loss=nan.0, top1_acc=0.0898, top5_acc=0.514]
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py:724: UserWarning: Detected KeyboardInterrupt, attempting graceful shutdown...
+
+Epoch 5:  49%|████▉     | 176/356 [06:59<07:08,  2.38s/it, v_num=1ss9, train_loss=nan.0, top1_acc=0.0898, top5_acc=0.514]Files already downloaded and verified
+Files already downloaded and verified
+Testing DataLoader 0:   3%|▎         | 2/79 [00:00<00:10,  7.65it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, test_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 24 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+
+Testing DataLoader 0: 100%|██████████| 79/79 [00:03<00:00, 22.92it/s]
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       Test metric             DataLoader 0
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        top1_acc            0.10000000149011612
+        top5_acc                    0.5

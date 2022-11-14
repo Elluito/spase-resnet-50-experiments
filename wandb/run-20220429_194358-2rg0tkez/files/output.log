@@ -1,0 +1,46 @@
+  0%|          | 0/352 [00:00<?, ?it/s]/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/utils/data/dataloader.py:490: UserWarning: This DataLoader will create 2 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  cpuset_checked))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 0 Iters 301 Train loss 1.608290: 100%|██████████| 352/352 [01:01<00:00,  5.70it/s]
+
+
+Val Epoch 0 val loss 2.015416 top-1 accuracy 0.3594 top-5 accuracy 0.8889: 100%|██████████| 40/40 [00:05<00:00, 13.93it/s]Traceback (most recent call last):
+  File "multiprocesing_test.py", line 978, in <module>
+    manual_SAM_optimization(cfg)
+  File "multiprocesing_test.py", line 829, in manual_SAM_optimization
+    use_wandb=cfg.wandb
+  File "multiprocesing_test.py", line 739, in evaluate
+    wandb.log({f"{val_or_test}_loss": loss}, epoch=epoch)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 256, in wrapper
+    return func(self, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 222, in wrapper
+    return func(self, *args, **kwargs)
+TypeError: log() got an unexpected keyword argument 'epoch'

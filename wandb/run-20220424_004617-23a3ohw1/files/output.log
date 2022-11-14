@@ -1,0 +1,43 @@
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/callback_connector.py:152: LightningDeprecationWarning: Setting `Trainer(checkpoint_callback=False)` is deprecated in v1.5 and will be removed in v1.7. Please consider using `Trainer(enable_checkpointing=False)`.
+  f"Setting `Trainer(checkpoint_callback={checkpoint_callback})` is deprecated in v1.5 and will "
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+Traceback (most recent call last):
+  File "multiprocesing_test.py", line 618, in <module>
+    single_train_SAM(cfg)
+  File "multiprocesing_test.py", line 527, in single_train_SAM
+    trainer.logger.watch(model)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loggers/wandb.py", line 367, in watch
+    self.experiment.watch(model, log=log, log_freq=log_freq, log_graph=log_graph)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 222, in wrapper
+    return func(self, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 2175, in watch
+    wandb.watch(models, criterion, log, log_freq, idx, log_graph)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_watch.py", line 100, in watch
+    graph = wandb.run._torch.hook_torch(model, criterion, graph_idx=global_idx)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/wandb_torch.py", line 303, in hook_torch
+    graph.hook_torch_modules(model, criterion, graph_idx=graph_idx)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/wandb_torch.py", line 359, in hook_torch_modules
+    "You can only call `wandb.watch` once per model.  Pass a new instance of the model if you need to call wandb.watch again in your code."
+ValueError: You can only call `wandb.watch` once per model.  Pass a new instance of the model if you need to call wandb.watch again in your code.
+Traceback (most recent call last):
+  File "multiprocesing_test.py", line 618, in <module>
+    single_train_SAM(cfg)
+  File "multiprocesing_test.py", line 527, in single_train_SAM
+    trainer.logger.watch(model)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loggers/wandb.py", line 367, in watch
+    self.experiment.watch(model, log=log, log_freq=log_freq, log_graph=log_graph)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 222, in wrapper
+    return func(self, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_run.py", line 2175, in watch
+    wandb.watch(models, criterion, log, log_freq, idx, log_graph)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/wandb_watch.py", line 100, in watch
+    graph = wandb.run._torch.hook_torch(model, criterion, graph_idx=global_idx)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/wandb_torch.py", line 303, in hook_torch
+    graph.hook_torch_modules(model, criterion, graph_idx=graph_idx)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/wandb_torch.py", line 359, in hook_torch_modules
+    "You can only call `wandb.watch` once per model.  Pass a new instance of the model if you need to call wandb.watch again in your code."

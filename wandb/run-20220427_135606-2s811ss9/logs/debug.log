@@ -1,0 +1,25 @@
+2022-04-27 13:56:06,921 INFO    MainThread:177374 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/.config/wandb/settings
+2022-04-27 13:56:06,921 INFO    MainThread:177374 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/spase-resnet-50-experiments/wandb/settings
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'api_key': '***REDACTED***', '_require_service': 'True'}
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': 'multiprocesing_test.py', 'program': 'multiprocesing_test.py'}
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_init.py:_log_setup():437] Logging user logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220427_135606-2s811ss9/logs/debug.log
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_init.py:_log_setup():438] Logging internal logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220427_135606-2s811ss9/logs/debug-internal.log
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_init.py:init():471] calling init triggers
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_init.py:init():475] wandb.init called with sweep_config: {}
+config: {}
+2022-04-27 13:56:06,922 INFO    MainThread:177374 [wandb_init.py:init():524] starting backend
+2022-04-27 13:56:06,928 INFO    MainThread:177374 [backend.py:_multiprocessing_setup():99] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-04-27 13:56:06,948 INFO    MainThread:177374 [wandb_init.py:init():533] backend started and connected
+2022-04-27 13:56:06,951 INFO    MainThread:177374 [wandb_init.py:init():597] updated telemetry
+2022-04-27 13:56:06,989 INFO    MainThread:177374 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-27 13:56:07,428 INFO    MainThread:177374 [wandb_run.py:_on_init():1923] communicating current version
+2022-04-27 13:56:07,511 INFO    MainThread:177374 [wandb_run.py:_on_init():1927] got version response 
+2022-04-27 13:56:07,511 INFO    MainThread:177374 [wandb_init.py:init():659] starting run threads in backend
+2022-04-27 13:56:12,322 INFO    MainThread:177374 [wandb_run.py:_console_start():1897] atexit reg
+2022-04-27 13:56:12,325 INFO    MainThread:177374 [wandb_run.py:_redirect():1770] redirect: SettingsConsole.WRAP
+2022-04-27 13:56:12,325 INFO    MainThread:177374 [wandb_run.py:_redirect():1807] Wrapping output streams.
+2022-04-27 13:56:12,325 INFO    MainThread:177374 [wandb_run.py:_redirect():1831] Redirects installed.
+2022-04-27 13:56:12,326 INFO    MainThread:177374 [wandb_init.py:init():684] run started, returning control to user process
+2022-04-27 13:56:12,623 INFO    MainThread:177374 [wandb_watch.py:watch():47] Watching
+2022-04-27 13:56:12,633 INFO    MainThread:177374 [wandb_run.py:_config_callback():1131] config_cb None None {'wandb': True, 'learning_rate': 0.095409631107804, 'rho': 1.5392140101476401, 'adaptive': True, 'weigth_decay': 0.0005, 'epochs': 10, 'percent_valid_examples': 0.1, 'density': 0.1}
+2022-04-27 14:04:44,603 WARNING MsgRouterThr:177374 [router.py:message_loop():76] message_loop has been closed

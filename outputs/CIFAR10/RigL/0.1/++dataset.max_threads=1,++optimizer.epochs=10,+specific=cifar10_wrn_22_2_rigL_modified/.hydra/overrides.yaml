@@ -1,0 +1,4 @@
+- +specific=cifar10_wrn_22_2_rigL_modified
+- ++optimizer.epochs=10
+- ++dataset.max_threads=1
+- ++masking.density=0.1

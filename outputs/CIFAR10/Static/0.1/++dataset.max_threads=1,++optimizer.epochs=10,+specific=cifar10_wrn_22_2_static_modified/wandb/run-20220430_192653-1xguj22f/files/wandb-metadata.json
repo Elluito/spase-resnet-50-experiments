@@ -1,0 +1,27 @@
+{
+    "os": "Linux-3.10.0-957.1.3.el7.x86_64-x86_64-with-centos-7.6.1810-Core",
+    "python": "3.7.4",
+    "heartbeatAt": "2022-04-30T18:26:54.303626",
+    "startedAt": "2022-04-30T18:26:53.915013",
+    "docker": null,
+    "gpu": "Tesla K80",
+    "gpu_count": 2,
+    "cpu_count": 24,
+    "cuda": null,
+    "args": [
+        "+specific=cifar10_wrn_22_2_static_modified",
+        "++optimizer.epochs=10",
+        "++dataset.max_threads=1"
+    ],
+    "state": "running",
+    "program": "main.py",
+    "git": {
+        "remote": "https://github.com/Elluito/spase-resnet-50-experiments.git",
+        "commit": "4673d5a37be68da07cd29c3cf47ec9815ec3a68c"
+    },
+    "email": "alfredoavendano@hotmail.com",
+    "root": "/home/home01/sclaam/spase-resnet-50-experiments",
+    "host": "db12gpu2.arc3.leeds.ac.uk",
+    "username": "sclaam",
+    "executable": "/apps/developers/compilers/anaconda/2019.10/1/default/bin/python"
+}

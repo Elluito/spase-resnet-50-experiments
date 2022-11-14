@@ -1,0 +1,81 @@
+2022-04-24 23:23:42,761 INFO    StreamThr :6116 [internal.py:wandb_internal():93] W&B internal server running at pid: 6116, started at: 2022-04-24 23:23:42.515302
+2022-04-24 23:23:42,764 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: status
+2022-04-24 23:23:42,766 DEBUG   SenderThread:6116 [sender.py:send_request():246] send_request: status
+2022-04-24 23:23:42,767 DEBUG   SenderThread:6116 [sender.py:send():232] send: header
+2022-04-24 23:23:42,768 DEBUG   SenderThread:6116 [sender.py:send():232] send: run
+2022-04-24 23:23:42,771 INFO    WriterThread:6116 [datastore.py:open_for_write():75] open: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/run-gcfbvujb.wandb
+2022-04-24 23:23:42,772 INFO    SenderThread:6116 [sender.py:_maybe_setup_resume():490] checking resume status for None/sparse_training/gcfbvujb
+2022-04-24 23:23:43,123 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: check_version
+2022-04-24 23:23:43,133 INFO    SenderThread:6116 [dir_watcher.py:__init__():166] watching files in: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files
+2022-04-24 23:23:43,133 INFO    SenderThread:6116 [sender.py:_start_run_threads():814] run started: gcfbvujb with start time 1650839022
+2022-04-24 23:23:43,134 DEBUG   SenderThread:6116 [sender.py:send():232] send: summary
+2022-04-24 23:23:43,135 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-24 23:23:43,135 DEBUG   SenderThread:6116 [sender.py:send_request():246] send_request: check_version
+2022-04-24 23:23:43,203 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: run_start
+2022-04-24 23:23:43,208 DEBUG   HandlerThread:6116 [meta.py:__init__():35] meta init
+2022-04-24 23:23:43,208 DEBUG   HandlerThread:6116 [meta.py:__init__():49] meta init done
+2022-04-24 23:23:43,208 DEBUG   HandlerThread:6116 [meta.py:probe():209] probe
+2022-04-24 23:23:43,215 DEBUG   HandlerThread:6116 [meta.py:_setup_git():199] setup git
+2022-04-24 23:23:43,260 DEBUG   HandlerThread:6116 [meta.py:_setup_git():206] setup git done
+2022-04-24 23:23:43,260 DEBUG   HandlerThread:6116 [meta.py:_save_pip():53] save pip
+2022-04-24 23:23:43,262 DEBUG   HandlerThread:6116 [meta.py:_save_pip():67] save pip done
+2022-04-24 23:23:43,262 DEBUG   HandlerThread:6116 [meta.py:_save_conda():74] save conda
+2022-04-24 23:23:44,136 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/conda-environment.yaml
+2022-04-24 23:23:44,136 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/wandb-summary.json
+2022-04-24 23:23:44,136 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/requirements.txt
+2022-04-24 23:23:47,122 DEBUG   HandlerThread:6116 [meta.py:_save_conda():84] save conda done
+2022-04-24 23:23:47,122 DEBUG   HandlerThread:6116 [meta.py:probe():247] probe done
+2022-04-24 23:23:47,140 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/conda-environment.yaml
+2022-04-24 23:23:47,140 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/wandb-metadata.json
+2022-04-24 23:23:47,275 DEBUG   SenderThread:6116 [sender.py:send():232] send: files
+2022-04-24 23:23:47,275 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file wandb-metadata.json with policy now
+2022-04-24 23:23:47,283 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-24 23:23:47,283 DEBUG   SenderThread:6116 [sender.py:send_request():246] send_request: stop_status
+2022-04-24 23:23:47,455 DEBUG   SenderThread:6116 [sender.py:send():232] send: telemetry
+2022-04-24 23:23:47,455 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:23:47,455 DEBUG   SenderThread:6116 [sender.py:send():232] send: telemetry
+2022-04-24 23:23:47,455 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:23:47,455 WARNING SenderThread:6116 [sender.py:send_metric():904] Seen metric with glob (shouldn't happen)
+2022-04-24 23:23:47,820 INFO    Thread-16 :6116 [upload_job.py:push():137] Uploaded file /local/3747255.1.40core-192G-4V100.q/tmp3xn70aanwandb/1m0cd1p4-wandb-metadata.json
+2022-04-24 23:23:48,141 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:23:48,600 DEBUG   SenderThread:6116 [sender.py:send():232] send: telemetry
+2022-04-24 23:23:48,662 DEBUG   SenderThread:6116 [sender.py:send():232] send: config
+2022-04-24 23:23:50,142 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:23:52,144 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:23:54,146 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:23:58,150 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:24:02,166 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:24:02,198 DEBUG   SenderThread:6116 [sender.py:send():232] send: files
+2022-04-24 23:24:02,198 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file media/graph/graph_0_summary_801359895658494f6ab5.graph.json with policy now
+2022-04-24 23:24:02,200 DEBUG   SenderThread:6116 [sender.py:send():232] send: summary
+2022-04-24 23:24:02,201 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-24 23:24:02,456 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-24 23:24:02,457 DEBUG   SenderThread:6116 [sender.py:send_request():246] send_request: stop_status
+2022-04-24 23:24:02,603 DEBUG   SenderThread:6116 [sender.py:send():232] send: config
+2022-04-24 23:24:02,798 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: log_artifact
+2022-04-24 23:24:02,799 DEBUG   SenderThread:6116 [sender.py:send_request():246] send_request: log_artifact
+2022-04-24 23:24:02,850 INFO    Thread-17 :6116 [upload_job.py:push():137] Uploaded file /local/3747255.1.40core-192G-4V100.q/tmp3xn70aanwandb/341jmrr1-media/graph/graph_0_summary_801359895658494f6ab5.graph.json
+2022-04-24 23:24:03,168 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/wandb-summary.json
+2022-04-24 23:24:03,169 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/media/table/layer_wise_density_table_0_07f2aead75dd538701b7.table.json
+2022-04-24 23:24:03,169 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/media/graph/graph_0_summary_801359895658494f6ab5.graph.json
+2022-04-24 23:24:03,169 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/media
+2022-04-24 23:24:03,170 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/media/graph
+2022-04-24 23:24:03,170 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/media/table
+2022-04-24 23:24:03,175 DEBUG   HandlerThread:6116 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-24 23:24:04,170 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/output.log
+2022-04-24 23:24:04,414 INFO    Thread-19 :6116 [upload_job.py:push():95] Uploaded file /home/home01/sclaam/.cache/wandb/artifacts/obj/md5/c9/8fc522b9c8f3275c007dbbd5f24963
+2022-04-24 23:24:05,254 INFO    SenderThread:6116 [sender.py:send_request_log_artifact():1001] logged artifact run-gcfbvujb-layer_wise_density_table - {'id': 'QXJ0aWZhY3Q6MTE4MDUyMTg5', 'digest': 'ec08b1bdf91eb865fe7cc5e8ac9758b7', 'state': 'PENDING', 'aliases': [], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE5Mjc4MzYw', 'latestArtifact': None}, 'version': 'latest'}
+2022-04-24 23:24:05,254 DEBUG   SenderThread:6116 [sender.py:send():232] send: files
+2022-04-24 23:24:05,254 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file media/table/layer_wise_density_table_0_07f2aead75dd538701b7.table.json with policy now
+2022-04-24 23:24:05,254 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,254 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,254 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,254 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: metric
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: history
+2022-04-24 23:24:05,255 DEBUG   SenderThread:6116 [sender.py:send():232] send: summary
+2022-04-24 23:24:05,257 INFO    SenderThread:6116 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-24 23:24:06,172 INFO    Thread-12 :6116 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_232342-gcfbvujb/files/wandb-summary.json

@@ -1,0 +1,83 @@
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/callback_connector.py:152: LightningDeprecationWarning: Setting `Trainer(checkpoint_callback=False)` is deprecated in v1.5 and will be removed in v1.7. Please consider using `Trainer(enable_checkpointing=False)`.
+  f"Setting `Trainer(checkpoint_callback={checkpoint_callback})` is deprecated in v1.5 and will "
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Sanity Checking: 0it [00:00, ?it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+  | Name     | Type       | Params
+----------------------------------------
+0 | model    | WideResNet | 1.1 M
+1 | accuracy | Accuracy   | 0
+----------------------------------------
+1.1 M     Trainable params
+0         Non-trainable params
+1.1 M     Total params
+4.319     Total estimated model params size (MB)
+/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/utils/data/dataloader.py:490: UserWarning: This DataLoader will create 13 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+
+Sanity Checking DataLoader 0: 100%|██████████| 2/2 [00:07<00:00,  3.72s/it]
+Traceback (most recent call last):
+  File "multiprocesing_test.py", line 630, in <module>
+    single_train_SAM(cfg)
+  File "multiprocesing_test.py", line 540, in single_train_SAM
+    trainer.fit(model)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 769, in fit
+    self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 721, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 809, in _fit_impl
+    results = self._run(model, ckpt_path=self.ckpt_path)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1234, in _run
+    results = self._run_stage()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1321, in _run_stage
+    return self._run_train()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1343, in _run_train
+    self._run_sanity_check()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1411, in _run_sanity_check
+    val_loop.run()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/base.py", line 211, in run
+    output = self.on_run_end()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/dataloader/evaluation_loop.py", line 187, in on_run_end
+    self._evaluation_epoch_end(self._outputs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/dataloader/evaluation_loop.py", line 309, in _evaluation_epoch_end
+    self.trainer._call_lightning_module_hook("validation_epoch_end", output_or_outputs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1593, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "multiprocesing_test.py", line 291, in validation_epoch_end
+    log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(mask)
+NameError: name 'mask' is not defined
+Traceback (most recent call last):
+  File "multiprocesing_test.py", line 630, in <module>
+    single_train_SAM(cfg)
+  File "multiprocesing_test.py", line 540, in single_train_SAM
+    trainer.fit(model)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 769, in fit
+    self._fit_impl, model, train_dataloaders, val_dataloaders, datamodule, ckpt_path
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 721, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 809, in _fit_impl
+    results = self._run(model, ckpt_path=self.ckpt_path)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1234, in _run
+    results = self._run_stage()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1321, in _run_stage
+    return self._run_train()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1343, in _run_train
+    self._run_sanity_check()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1411, in _run_sanity_check
+    val_loop.run()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/base.py", line 211, in run
+    output = self.on_run_end()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/dataloader/evaluation_loop.py", line 187, in on_run_end
+    self._evaluation_epoch_end(self._outputs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/loops/dataloader/evaluation_loop.py", line 309, in _evaluation_epoch_end
+    self.trainer._call_lightning_module_hook("validation_epoch_end", output_or_outputs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/trainer.py", line 1593, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "multiprocesing_test.py", line 291, in validation_epoch_end
+    log_dict["layer-wise-density"] = layer_wise_density.wandb_bar(mask)

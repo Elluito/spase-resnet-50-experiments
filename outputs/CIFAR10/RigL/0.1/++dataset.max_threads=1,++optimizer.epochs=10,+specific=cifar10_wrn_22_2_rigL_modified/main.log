@@ -1,0 +1,39 @@
+[2022-05-02 23:23:03,146][root][INFO] - Train dataset length 45000
+[2022-05-02 23:23:03,173][root][INFO] - Val dataset length 5000
+[2022-05-02 23:23:03,173][root][INFO] - Test dataset length 10000
+[2022-05-02 23:23:10,069][root][INFO] - Excluding bias and batchnorm layers from weight decay.
+[2022-05-02 23:23:10,118][root][INFO] - Dense FLOPs 315,460,224
+[2022-05-02 23:23:10,120][root][INFO] - Removing biases...
+[2022-05-02 23:23:10,120][root][INFO] - Removing 2D batch norms...
+[2022-05-02 23:23:10,121][root][INFO] - Removing 1D batch norms...
+[2022-05-02 23:23:10,123][root][INFO] - Density of layer:fc.weight set to 1.0
+[2022-05-02 23:23:10,124][root][INFO] - Density of layer:block1.layer.0.convShortcut.weight set to 1.0
+[2022-05-02 23:23:10,126][root][INFO] - Density of layer:conv1.weight set to 1.0
+[2022-05-02 23:23:10,127][root][INFO] - Density of layer:block2.layer.0.convShortcut.weight set to 1.0
+[2022-05-02 23:23:10,450][root][INFO] - Total Model parameters: 1079642.
+[2022-05-02 23:23:10,451][root][INFO] - Total parameters after removed layers: 1076912.
+[2022-05-02 23:23:10,451][root][INFO] - Total parameters under sparsity level of 0.1: 107835
+[2022-05-02 23:23:10,451][root][INFO] - Achieved sparsity at init (w/o BN, bias): 0.1001
+[2022-05-02 23:23:10,609][root][INFO] - Inference (Sparse) FLOPs (at init) 54,665,984
+[2022-05-02 23:23:10,609][root][INFO] - Not resuming, training from scratch.
+[2022-05-02 23:24:39,605][root][INFO] - Train Epoch 1 Iters 352 Mask Updates 0 Train loss 1.211070 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:24:46,602][root][INFO] - Val Epoch 1 Iters 352 val loss 2.279118 top-1 accuracy 0.4172 top-5 accuracy 0.8842
+[2022-05-02 23:27:17,056][root][INFO] - Train Epoch 2 Iters 704 Mask Updates 0 Train loss 1.010307 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:27:27,141][root][INFO] - Val Epoch 2 Iters 704 val loss 3.086852 top-1 accuracy 0.4479 top-5 accuracy 0.8756
+[2022-05-02 23:30:54,394][root][INFO] - Train Epoch 3 Iters 1056 Mask Updates 0 Train loss 0.908064 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:31:07,528][root][INFO] - Val Epoch 3 Iters 1056 val loss 1.743088 top-1 accuracy 0.5412 top-5 accuracy 0.9225
+[2022-05-02 23:35:30,685][root][INFO] - Train Epoch 4 Iters 1408 Mask Updates 0 Train loss 0.810890 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:35:46,890][root][INFO] - Val Epoch 4 Iters 1408 val loss 1.640838 top-1 accuracy 0.5895 top-5 accuracy 0.9299
+[2022-05-02 23:41:05,800][root][INFO] - Train Epoch 5 Iters 1760 Mask Updates 0 Train loss 0.812234 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:41:25,007][root][INFO] - Val Epoch 5 Iters 1760 val loss 1.475115 top-1 accuracy 0.6105 top-5 accuracy 0.9539
+[2022-05-02 23:47:40,751][root][INFO] - Train Epoch 6 Iters 2112 Mask Updates 0 Train loss 0.733090 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:48:02,985][root][INFO] - Val Epoch 6 Iters 2112 val loss 1.969570 top-1 accuracy 0.5404 top-5 accuracy 0.9379
+[2022-05-02 23:55:13,648][root][INFO] - Train Epoch 7 Iters 2464 Mask Updates 0 Train loss 0.744541 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-02 23:55:38,847][root][INFO] - Val Epoch 7 Iters 2464 val loss 1.206916 top-1 accuracy 0.6479 top-5 accuracy 0.9746
+[2022-05-03 00:03:43,090][root][INFO] - Train Epoch 8 Iters 2816 Mask Updates 0 Train loss 0.699141 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-03 00:04:11,349][root][INFO] - Val Epoch 8 Iters 2816 val loss 1.418691 top-1 accuracy 0.6459 top-5 accuracy 0.9699
+[2022-05-03 00:13:12,185][root][INFO] - Train Epoch 9 Iters 3168 Mask Updates 0 Train loss 0.695768 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-03 00:13:43,780][root][INFO] - Val Epoch 9 Iters 3168 val loss 1.457795 top-1 accuracy 0.6252 top-5 accuracy 0.9707
+[2022-05-03 00:23:40,776][root][INFO] - Train Epoch 10 Iters 3520 Mask Updates 0 Train loss 0.680717 Prune Rate 0.30000 Density 0.10013 Inference FLOPs: 0.1733 Avg Inference FLOPs: 0.1733
+[2022-05-03 00:24:15,111][root][INFO] - Val Epoch 10 Iters 3520 val loss 1.119381 top-1 accuracy 0.6988 top-5 accuracy 0.9758
+[2022-05-03 00:24:15,112][root][INFO] - Epoch 10 saving weights

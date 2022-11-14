@@ -1,0 +1,67 @@
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/.config/wandb/settings
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/RigL/0.05/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_rigL_modified/wandb/settings
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'api_key': '***REDACTED***', 'start_method': 'thread'}
+2022-04-30 19:21:04,050 WARNING MainThread:49927 [wandb_setup.py:_flush():75] Could not find program at main.py
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': None, 'program': 'main.py'}
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_init.py:_log_setup():437] Logging user logs to /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/RigL/0.05/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_rigL_modified/wandb/run-20220430_192104-1kj1q80v/logs/debug.log
+2022-04-30 19:21:04,050 INFO    MainThread:49927 [wandb_init.py:_log_setup():438] Logging internal logs to /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/RigL/0.05/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_rigL_modified/wandb/run-20220430_192104-1kj1q80v/logs/debug-internal.log
+2022-04-30 19:21:04,051 INFO    MainThread:49927 [wandb_init.py:init():471] calling init triggers
+2022-04-30 19:21:04,051 INFO    MainThread:49927 [wandb_init.py:init():475] wandb.init called with sweep_config: {}
+config: {'exp_name': 'RigL', 'seed': 0, 'multi_seed': [], 'model': 'wrn-22-2', 'device': 'cuda', 'log_interval': 100, 'ckpt_dir': 'ckpts', 'ckpt_interval': 10, 'val_interval': 1, 'resume': False, 'wandb': {'use': True, 'api_key': '/home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key', 'entity': 'luis_alfredo', 'project': 'sparse_training', 'name': 'CIFAR10_RigL_density_0.05'}, 'wandb_api_key': '/home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key', 'masking': {'name': 'RigL', 'density': 0.05, 'sparse_init': 'erdos-renyi-kernel', 'dense_gradients': False, 'growth_mode': 'momentum', 'prune_mode': 'magnitude', 'redistribution_mode': 'none', 'prune_rate': 0.3, 'dense': False, 'decay_schedule': 'cosine', 'apply_when': 'step_end', 'end_when': -1, 'interval': 1, 'print_FLOPs': True}, 'dataset': {'name': 'CIFAR10', 'root': '/nobackup/sclaam/data/CIFAR10', 'batch_size': 128, 'test_batch_size': 128, 'max_threads': 1, 'validation_split': 0.1, 'fixed_shuffle': False}, 'optimizer': {'name': 'SGD', 'epochs': 10, 'lr': 0.1, 'momentum': 0.9, 'weight_decay': 0.0005, 'label_smoothing': 0.0, 'decay_frequency': 30000, 'decay_factor': 0.2, 'warmup_steps': 0, 'use_nesterov': True, 'training_multiplier': 1}}
+2022-04-30 19:21:04,051 INFO    MainThread:49927 [wandb_init.py:init():524] starting backend
+2022-04-30 19:21:04,058 INFO    MainThread:49927 [backend.py:ensure_launched():217] starting backend process...
+2022-04-30 19:21:04,058 INFO    MainThread:49927 [backend.py:ensure_launched():222] started backend process with pid: 0
+2022-04-30 19:21:04,059 INFO    MainThread:49927 [wandb_init.py:init():533] backend started and connected
+2022-04-30 19:21:04,061 INFO    BackendThr:49927 [internal.py:wandb_internal():93] W&B internal server running at pid: 49927, started at: 2022-04-30 19:21:04.058641
+2022-04-30 19:21:04,072 INFO    MainThread:49927 [wandb_init.py:init():597] updated telemetry
+2022-04-30 19:21:04,076 INFO    WriterThread:49927 [datastore.py:open_for_write():75] open: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/RigL/0.05/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_rigL_modified/wandb/run-20220430_192104-1kj1q80v/run-1kj1q80v.wandb
+2022-04-30 19:21:04,124 INFO    MainThread:49927 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-30 19:21:34,126 INFO    MainThread:49927 [interface_shared.py:_communicate_run():326] couldn't get run from backend
+2022-04-30 19:21:34,127 ERROR   MainThread:49927 [wandb_init.py:init():633] backend process timed out
+2022-04-30 19:21:34,127 ERROR   MainThread:49927 [wandb_init.py:init():644] encountered error: Error communicating with wandb process
+try: wandb.init(settings=wandb.Settings(start_method='fork'))
+or:  wandb.init(settings=wandb.Settings(start_method='thread'))
+For more info see: https://docs.wandb.ai/library/init#init-start-error
+2022-04-30 19:21:34,128 INFO    HandlerThread:49927 [handler.py:finish():806] shutting down handler
+2022-04-30 19:21:34,132 INFO    WriterThread:49927 [datastore.py:close():279] close: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/RigL/0.05/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_rigL_modified/wandb/run-20220430_192104-1kj1q80v/run-1kj1q80v.wandb
+2022-04-30 19:21:34,159 ERROR   SenderThread:49927 [internal_api.py:execute():143] 409 response executing GraphQL.
+2022-04-30 19:21:34,159 ERROR   SenderThread:49927 [internal_api.py:execute():144] {"errors":[{"message":"Error 1062: Duplicate entry '855911-1kj1q80v' for key 'PRIMARY'","path":["upsertBucket"]}],"data":{"upsertBucket":null}}
+2022-04-30 19:21:35,098 ERROR   BackendThr:49927 [internal.py:wandb_internal():165] Thread SenderThread:
+Traceback (most recent call last):
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/apis/normalize.py", line 22, in wrapper
+    return func(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_api.py", line 1318, in upsert_run
+    response = self.gql(mutation, variable_values=variable_values, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/lib/retry.py", line 102, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_api.py", line 140, in execute
+    return self.client.execute(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/transport/requests.py", line 39, in execute
+    request.raise_for_status()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/models.py", line 940, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 409 Client Error: Conflict for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_util.py", line 51, in run
+    self._run()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_util.py", line 102, in _run
+    self._process(record)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal.py", line 310, in _process
+    self._sm.send(record)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/sender.py", line 234, in send
+    send_handler(record)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/sender.py", line 692, in send_run
+    self._init_run(run, config_value_dict)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/sender.py", line 730, in _init_run
+    commit=run.git.last_commit or None,
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/apis/normalize.py", line 24, in wrapper
+    raise CommError(err.response, err)
+wandb.errors.CommError: <Response [409]>
+2022-04-30 19:21:37,214 INFO    MainThread:49927 [wandb_init.py:teardown():285] tearing down wandb.init

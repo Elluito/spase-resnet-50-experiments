@@ -1,0 +1,10 @@
+  0%|          | 0/352 [00:00<?, ?it/s]/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/utils/data/dataloader.py:490: UserWarning: This DataLoader will create 2 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  cpuset_checked))
+Traceback (most recent call last):
+  File "multiprocesing_test.py", line 978, in <module>
+    manual_SAM_optimization(cfg)
+  File "multiprocesing_test.py", line 818, in manual_SAM_optimization
+    use_wandb=cfg.wandb,train_flops=training_FLOPS)
+  File "multiprocesing_test.py", line 662, in train_SAM
+    one_forward_backward_pass = self.sparse_inference_flops * 2
+NameError: name 'self' is not defined

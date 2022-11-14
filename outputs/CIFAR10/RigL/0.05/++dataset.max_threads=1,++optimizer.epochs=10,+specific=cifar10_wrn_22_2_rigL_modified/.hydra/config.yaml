@@ -1,0 +1,52 @@
+exp_name: ${masking.name}
+seed: 0
+multi_seed: []
+model: wrn-22-2
+device: cuda
+log_interval: 100
+ckpt_dir: ckpts
+ckpt_interval: ${optimizer.epochs}
+val_interval: 1
+resume: false
+wandb:
+  use: true
+  api_key: ${hydra:runtime.cwd}/wandb_api.key
+  entity: luis_alfredo
+  project: sparse_training
+  name: ${dataset.name}_${exp_name}_density_${masking.density}
+wandb_api_key: ${hydra:runtime.cwd}/wandb_api.key
+masking:
+  name: RigL
+  density: 0.05
+  sparse_init: erdos-renyi-kernel
+  dense_gradients: false
+  growth_mode: momentum
+  prune_mode: magnitude
+  redistribution_mode: none
+  prune_rate: 0.3
+  dense: false
+  decay_schedule: cosine
+  apply_when: step_end
+  end_when: -1
+  interval: 1
+  print_FLOPs: true
+dataset:
+  name: CIFAR10
+  root: ${data_path:}/data/CIFAR10
+  batch_size: 128
+  test_batch_size: ${dataset.batch_size}
+  max_threads: 1
+  validation_split: 0.1
+  fixed_shuffle: false
+optimizer:
+  name: SGD
+  epochs: 10
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+  label_smoothing: 0.0
+  decay_frequency: 30000
+  decay_factor: 0.2
+  warmup_steps: 0
+  use_nesterov: true
+  training_multiplier: 1

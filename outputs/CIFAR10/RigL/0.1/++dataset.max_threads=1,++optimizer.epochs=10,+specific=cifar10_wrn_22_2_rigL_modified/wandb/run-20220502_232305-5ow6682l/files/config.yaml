@@ -1,0 +1,146 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.15
+    framework: ignite
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.4
+    start_time: 1651530185
+    t:
+      1:
+      - 1
+      - 9
+      - 10
+      - 41
+      - 50
+      - 55
+      2:
+      - 1
+      - 9
+      - 10
+      - 41
+      - 50
+      - 55
+      3:
+      - 1
+      - 13
+      - 16
+      4: 3.7.4
+      5: 0.12.15
+      8:
+      - 8
+    visualize:
+      layer-wise-density:
+        panel_config:
+          fieldSettings:
+            label: layer name
+            value: density
+          panelDefId: wandb/bar/v0
+          stringSettings:
+            title: Layer-wise Density
+          transform:
+            name: tableWithLeafColNames
+          userQuery:
+            queryFields:
+            - args:
+              - name: runSets
+                value: ${runSets}
+              fields:
+              - fields: []
+                name: id
+              - fields: []
+                name: name
+              - fields: []
+                name: _defaultColorIndex
+              - args:
+                - name: tableKey
+                  value: layer-wise-density_table
+                fields: []
+                name: summaryTable
+              name: runSets
+        panel_type: Vega2
+ckpt_dir:
+  desc: null
+  value: ckpts
+ckpt_interval:
+  desc: null
+  value: 10
+dataset:
+  desc: null
+  value:
+    batch_size: 128
+    fixed_shuffle: false
+    max_threads: 1
+    name: CIFAR10
+    root: /nobackup/sclaam/data/CIFAR10
+    test_batch_size: 128
+    validation_split: 0.1
+device:
+  desc: null
+  value: cuda
+exp_name:
+  desc: null
+  value: RigL
+log_interval:
+  desc: null
+  value: 100
+masking:
+  desc: null
+  value:
+    apply_when: step_end
+    decay_schedule: cosine
+    dense: false
+    dense_gradients: false
+    density: 0.1
+    end_when: -1
+    growth_mode: momentum
+    interval: 1
+    name: RigL
+    print_FLOPs: true
+    prune_mode: magnitude
+    prune_rate: 0.3
+    redistribution_mode: none
+    sparse_init: erdos-renyi-kernel
+model:
+  desc: null
+  value: wrn-22-2
+multi_seed:
+  desc: null
+  value: []
+optimizer:
+  desc: null
+  value:
+    decay_factor: 0.2
+    decay_frequency: 30000
+    epochs: 10
+    label_smoothing: 0.0
+    lr: 0.1
+    momentum: 0.9
+    name: SGD
+    training_multiplier: 1
+    use_nesterov: true
+    warmup_steps: 0
+    weight_decay: 0.0005
+resume:
+  desc: null
+  value: false
+seed:
+  desc: null
+  value: 0
+val_interval:
+  desc: null
+  value: 1
+wandb:
+  desc: null
+  value:
+    api_key: /home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key
+    entity: luis_alfredo
+    name: CIFAR10_RigL_density_0.1
+    project: sparse_training
+    use: true
+wandb_api_key:
+  desc: null
+  value: /home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key

@@ -1,0 +1,425 @@
+2022-04-30 20:14:00,899 INFO    BackendThr:55518 [internal.py:wandb_internal():93] W&B internal server running at pid: 55518, started at: 2022-04-30 20:14:00.896322
+2022-04-30 20:14:00,908 INFO    MainThread:55518 [wandb_init.py:init():597] updated telemetry
+2022-04-30 20:14:00,914 DEBUG   SenderThread:55518 [sender.py:send():232] send: header
+2022-04-30 20:14:00,915 INFO    WriterThread:55518 [datastore.py:open_for_write():75] open: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/run-hf8qzhc0.wandb
+2022-04-30 20:14:00,968 INFO    MainThread:55518 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-30 20:14:00,971 DEBUG   SenderThread:55518 [sender.py:send():232] send: run
+2022-04-30 20:14:01,205 INFO    MainThread:55518 [wandb_run.py:_on_init():1923] communicating current version
+2022-04-30 20:14:01,205 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: check_version
+2022-04-30 20:14:01,208 INFO    SenderThread:55518 [dir_watcher.py:__init__():166] watching files in: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files
+2022-04-30 20:14:01,209 INFO    SenderThread:55518 [sender.py:_start_run_threads():814] run started: hf8qzhc0 with start time 1651346040
+2022-04-30 20:14:01,209 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:14:01,210 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:14:01,211 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: check_version
+2022-04-30 20:14:01,272 INFO    MainThread:55518 [wandb_run.py:_on_init():1927] got version response 
+2022-04-30 20:14:01,272 INFO    MainThread:55518 [wandb_init.py:init():659] starting run threads in backend
+2022-04-30 20:14:01,273 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: run_start
+2022-04-30 20:14:01,280 DEBUG   HandlerThread:55518 [meta.py:__init__():35] meta init
+2022-04-30 20:14:01,280 DEBUG   HandlerThread:55518 [meta.py:__init__():49] meta init done
+2022-04-30 20:14:01,280 DEBUG   HandlerThread:55518 [meta.py:probe():209] probe
+2022-04-30 20:14:01,288 DEBUG   HandlerThread:55518 [meta.py:_setup_git():199] setup git
+2022-04-30 20:14:01,407 DEBUG   HandlerThread:55518 [meta.py:_setup_git():206] setup git done
+2022-04-30 20:14:01,407 DEBUG   HandlerThread:55518 [meta.py:_save_pip():53] save pip
+2022-04-30 20:14:01,409 DEBUG   HandlerThread:55518 [meta.py:_save_pip():67] save pip done
+2022-04-30 20:14:01,409 DEBUG   HandlerThread:55518 [meta.py:_save_conda():74] save conda
+2022-04-30 20:14:02,212 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/conda-environment.yaml
+2022-04-30 20:14:02,212 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/requirements.txt
+2022-04-30 20:14:02,212 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:14:05,644 DEBUG   HandlerThread:55518 [meta.py:_save_conda():84] save conda done
+2022-04-30 20:14:05,644 DEBUG   HandlerThread:55518 [meta.py:probe():247] probe done
+2022-04-30 20:14:05,652 DEBUG   SenderThread:55518 [sender.py:send():232] send: files
+2022-04-30 20:14:05,652 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-metadata.json with policy now
+2022-04-30 20:14:05,661 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:14:05,661 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:14:05,664 INFO    MainThread:55518 [wandb_run.py:_console_start():1897] atexit reg
+2022-04-30 20:14:05,665 INFO    MainThread:55518 [wandb_run.py:_redirect():1770] redirect: SettingsConsole.WRAP
+2022-04-30 20:14:05,666 INFO    MainThread:55518 [wandb_run.py:_redirect():1807] Wrapping output streams.
+2022-04-30 20:14:05,666 INFO    MainThread:55518 [wandb_run.py:_redirect():1831] Redirects installed.
+2022-04-30 20:14:05,666 INFO    MainThread:55518 [wandb_init.py:init():684] run started, returning control to user process
+2022-04-30 20:14:05,666 INFO    MainThread:55518 [wandb_watch.py:watch():47] Watching
+2022-04-30 20:14:06,202 INFO    MainThread:55518 [wandb_run.py:_config_callback():1131] config_cb ('_wandb', 'visualize', 'layer-wise-density') {'panel_type': 'Vega2', 'panel_config': {'userQuery': {'queryFields': [{'name': 'runSets', 'args': [{'name': 'runSets', 'value': '${runSets}'}], 'fields': [{'name': 'id', 'fields': []}, {'name': 'name', 'fields': []}, {'name': '_defaultColorIndex', 'fields': []}, {'name': 'summaryTable', 'args': [{'name': 'tableKey', 'value': 'layer-wise-density_table'}], 'fields': []}]}]}, 'panelDefId': 'wandb/bar/v0', 'transform': {'name': 'tableWithLeafColNames'}, 'fieldSettings': {'label': 'layer name', 'value': 'density'}, 'stringSettings': {'title': 'Layer-wise Density'}}} None
+2022-04-30 20:14:06,216 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/conda-environment.yaml
+2022-04-30 20:14:06,216 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:06,216 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-metadata.json
+2022-04-30 20:14:08,218 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:08,964 DEBUG   SenderThread:55518 [sender.py:send():232] send: telemetry
+2022-04-30 20:14:08,964 DEBUG   SenderThread:55518 [sender.py:send():232] send: telemetry
+2022-04-30 20:14:08,964 DEBUG   SenderThread:55518 [sender.py:send():232] send: config
+2022-04-30 20:14:09,010 INFO    Thread-14 :55518 [upload_job.py:push():137] Uploaded file /local/3855893.1.24core-128G-2K80.q/tmpx8dgvjfbwandb/ipq10zl5-wandb-metadata.json
+2022-04-30 20:14:09,190 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: log_artifact
+2022-04-30 20:14:09,190 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: log_artifact
+2022-04-30 20:14:09,230 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table/layer-wise-density_table_0_07f2aead75dd538701b7.table.json
+2022-04-30 20:14:09,231 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table
+2022-04-30 20:14:09,231 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media
+2022-04-30 20:14:10,098 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:14:10,886 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:14:11,224 INFO    Thread-23 :55518 [upload_job.py:push():95] Uploaded file /home/home01/sclaam/.cache/wandb/artifacts/obj/md5/c9/8fc522b9c8f3275c007dbbd5f24963
+2022-04-30 20:14:12,131 INFO    SenderThread:55518 [sender.py:send_request_log_artifact():1001] logged artifact run-hf8qzhc0-layerwisedensity_table - {'id': 'QXJ0aWZhY3Q6MTIwNTEyOTEz', 'digest': '04fe4361d4e4cb5e7f455e3ca3b3db2e', 'state': 'PENDING', 'aliases': [], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE5NTU0NDM5', 'latestArtifact': None}, 'version': 'latest'}
+2022-04-30 20:14:12,131 DEBUG   SenderThread:55518 [sender.py:send():232] send: files
+2022-04-30 20:14:12,131 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file media/table/layer-wise-density_table_0_07f2aead75dd538701b7.table.json with policy now
+2022-04-30 20:14:12,131 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:14:12,132 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:14:12,136 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:14:12,292 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:12,292 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:14:12,689 INFO    Thread-24 :55518 [upload_job.py:push():137] Uploaded file /local/3855893.1.24core-128G-2K80.q/tmpx8dgvjfbwandb/2gchuujq-media/table/layer-wise-density_table_0_07f2aead75dd538701b7.table.json
+2022-04-30 20:14:14,295 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:16,300 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:18,304 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:20,308 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:22,317 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:23,970 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:14:23,970 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:14:24,325 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:26,333 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:28,339 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:29,626 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:14:29,627 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:14:29,627 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:14:29,629 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:14:30,342 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:30,342 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:14:30,751 DEBUG   SenderThread:55518 [sender.py:send():232] send: stats
+2022-04-30 20:14:32,360 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:32,360 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/config.yaml
+2022-04-30 20:14:34,372 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:36,381 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:38,386 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:39,148 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:14:39,148 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:14:40,391 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:42,394 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:44,397 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:46,401 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:48,405 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:50,409 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:51,136 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:14:51,137 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:14:51,137 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:14:51,139 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:14:51,421 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:14:52,427 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:54,312 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:14:54,313 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:14:54,442 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:56,445 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:14:58,449 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:00,452 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:02,096 DEBUG   SenderThread:55518 [sender.py:send():232] send: stats
+2022-04-30 20:15:02,465 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:04,468 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:06,471 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:08,484 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:09,464 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:15:09,464 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:15:10,496 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:12,515 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:14,524 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:16,528 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:17,601 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:15:17,602 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:15:17,602 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:15:17,604 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:15:18,539 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:18,540 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:15:20,552 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:22,557 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:24,562 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:24,641 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: stop_status
+2022-04-30 20:15:24,641 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: stop_status
+2022-04-30 20:15:26,581 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:28,584 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:30,587 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:32,607 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:33,426 DEBUG   SenderThread:55518 [sender.py:send():232] send: stats
+2022-04-30 20:15:33,996 INFO    MainThread:55518 [wandb_run.py:_config_callback():1131] config_cb ('_wandb', 'visualize', 'layer-wise-density') {'panel_type': 'Vega2', 'panel_config': {'userQuery': {'queryFields': [{'name': 'runSets', 'args': [{'name': 'runSets', 'value': '${runSets}'}], 'fields': [{'name': 'id', 'fields': []}, {'name': 'name', 'fields': []}, {'name': '_defaultColorIndex', 'fields': []}, {'name': 'summaryTable', 'args': [{'name': 'tableKey', 'value': 'layer-wise-density_table'}], 'fields': []}]}]}, 'panelDefId': 'wandb/bar/v0', 'transform': {'name': 'tableWithLeafColNames'}, 'fieldSettings': {'label': 'layer name', 'value': 'density'}, 'stringSettings': {'title': 'Layer-wise Density'}}} None
+2022-04-30 20:15:33,997 DEBUG   SenderThread:55518 [sender.py:send():232] send: config
+2022-04-30 20:15:34,165 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: log_artifact
+2022-04-30 20:15:34,166 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: log_artifact
+2022-04-30 20:15:34,204 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: partial_history
+2022-04-30 20:15:34,560 INFO    SenderThread:55518 [sender.py:send_request_log_artifact():1001] logged artifact run-hf8qzhc0-layerwisedensity_table - {'id': 'QXJ0aWZhY3Q6MTIwNTEyOTEz', 'digest': '04fe4361d4e4cb5e7f455e3ca3b3db2e', 'state': 'COMMITTED', 'aliases': [{'artifactCollectionName': 'run-hf8qzhc0-layerwisedensity_table', 'alias': 'latest'}, {'artifactCollectionName': 'run-hf8qzhc0-layerwisedensity_table', 'alias': 'v0'}], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjE5NTU0NDM5', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MTIwNTEyOTEz', 'versionIndex': 0}}, 'version': 'v0'}
+2022-04-30 20:15:34,561 DEBUG   SenderThread:55518 [sender.py:send():232] send: files
+2022-04-30 20:15:34,561 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file media/table/layer-wise-density_table_301_07f2aead75dd538701b7.table.json with policy now
+2022-04-30 20:15:34,561 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:15:34,561 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:15:34,564 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:15:34,628 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:34,629 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:15:34,629 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table/layer-wise-density_table_301_07f2aead75dd538701b7.table.json
+2022-04-30 20:15:34,629 INFO    Thread-10 :55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table
+2022-04-30 20:15:35,123 INFO    Thread-25 :55518 [upload_job.py:push():137] Uploaded file /local/3855893.1.24core-128G-2K80.q/tmpx8dgvjfbwandb/3brlxs28-media/table/layer-wise-density_table_301_07f2aead75dd538701b7.table.json
+2022-04-30 20:15:36,024 INFO    MainThread:55518 [wandb_run.py:_atexit_cleanup():1866] got exitcode: 1
+2022-04-30 20:15:36,026 DEBUG   SenderThread:55518 [sender.py:send():232] send: telemetry
+2022-04-30 20:15:36,025 INFO    MainThread:55518 [wandb_run.py:_restore():1838] restore
+2022-04-30 20:15:36,063 DEBUG   SenderThread:55518 [sender.py:send():232] send: exit
+2022-04-30 20:15:36,063 INFO    SenderThread:55518 [sender.py:send_exit():368] handling exit code: 1
+2022-04-30 20:15:36,063 INFO    SenderThread:55518 [sender.py:send_exit():370] handling runtime: 94
+2022-04-30 20:15:36,064 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,066 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:15:36,066 INFO    SenderThread:55518 [sender.py:send_exit():376] send defer
+2022-04-30 20:15:36,067 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,067 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,067 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 0
+2022-04-30 20:15:36,068 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,068 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 0
+2022-04-30 20:15:36,068 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 1
+2022-04-30 20:15:36,068 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,068 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 1
+2022-04-30 20:15:36,068 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 1
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 1397
+}
+
+2022-04-30 20:15:36,162 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,162 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 1
+2022-04-30 20:15:36,162 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 2
+2022-04-30 20:15:36,162 DEBUG   SenderThread:55518 [sender.py:send():232] send: stats
+2022-04-30 20:15:36,163 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,163 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 2
+2022-04-30 20:15:36,164 DEBUG   SenderThread:55518 [sender.py:send():232] send: history
+2022-04-30 20:15:36,164 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:15:36,166 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:15:36,166 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,167 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 2
+2022-04-30 20:15:36,167 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 3
+2022-04-30 20:15:36,167 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,167 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 3
+2022-04-30 20:15:36,167 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,167 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 3
+2022-04-30 20:15:36,168 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 4
+2022-04-30 20:15:36,168 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,168 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 4
+2022-04-30 20:15:36,168 DEBUG   SenderThread:55518 [sender.py:send():232] send: summary
+2022-04-30 20:15:36,169 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,184 INFO    SenderThread:55518 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 20:15:36,184 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,184 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 4
+2022-04-30 20:15:36,184 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 5
+2022-04-30 20:15:36,184 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,185 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 1
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 1397
+}
+
+2022-04-30 20:15:36,185 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,185 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 5
+2022-04-30 20:15:36,185 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,186 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 5
+2022-04-30 20:15:36,285 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,398 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 6
+2022-04-30 20:15:36,398 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,398 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,399 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 6
+2022-04-30 20:15:36,399 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 1
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 1397
+}
+
+2022-04-30 20:15:36,399 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,400 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 6
+2022-04-30 20:15:36,400 INFO    SenderThread:55518 [dir_watcher.py:finish():279] shutting down directory watcher
+2022-04-30 20:15:36,500 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,632 INFO    SenderThread:55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:36,633 INFO    SenderThread:55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/config.yaml
+2022-04-30 20:15:36,633 INFO    SenderThread:55518 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:15:36,635 INFO    SenderThread:55518 [dir_watcher.py:finish():309] scan: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files
+2022-04-30 20:15:36,636 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/config.yaml config.yaml
+2022-04-30 20:15:36,637 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json wandb-summary.json
+2022-04-30 20:15:36,637 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/requirements.txt requirements.txt
+2022-04-30 20:15:36,638 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/conda-environment.yaml conda-environment.yaml
+2022-04-30 20:15:36,638 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-metadata.json wandb-metadata.json
+2022-04-30 20:15:36,638 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log output.log
+2022-04-30 20:15:36,646 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table/layer-wise-density_table_0_07f2aead75dd538701b7.table.json media/table/layer-wise-density_table_0_07f2aead75dd538701b7.table.json
+2022-04-30 20:15:36,646 INFO    SenderThread:55518 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/media/table/layer-wise-density_table_301_07f2aead75dd538701b7.table.json media/table/layer-wise-density_table_301_07f2aead75dd538701b7.table.json
+2022-04-30 20:15:36,646 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 7
+2022-04-30 20:15:36,646 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,647 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:36,647 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 7
+2022-04-30 20:15:36,648 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:36,648 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:36,648 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 7
+2022-04-30 20:15:36,648 INFO    SenderThread:55518 [file_pusher.py:finish():145] shutting down file pusher
+2022-04-30 20:15:36,748 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,748 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,749 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:36,852 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,852 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,853 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 1397
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:36,953 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:36,954 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:36,954 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 5146
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,055 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,055 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,056 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,157 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,157 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,157 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,237 INFO    Thread-27 :55518 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/wandb-summary.json
+2022-04-30 20:15:37,253 INFO    Thread-26 :55518 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/config.yaml
+2022-04-30 20:15:37,258 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,259 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,259 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,265 INFO    Thread-30 :55518 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/output.log
+2022-04-30 20:15:37,301 INFO    Thread-28 :55518 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/requirements.txt
+2022-04-30 20:15:37,320 INFO    Thread-29 :55518 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/files/conda-environment.yaml
+2022-04-30 20:15:37,360 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,360 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,361 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,462 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,462 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,463 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,521 INFO    Thread-9  :55518 [sender.py:transition_state():389] send defer: 8
+2022-04-30 20:15:37,521 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:37,521 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 8
+2022-04-30 20:15:37,522 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:37,522 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 8
+2022-04-30 20:15:37,563 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:37,947 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 9
+2022-04-30 20:15:37,947 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:37,948 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:37,948 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 9
+2022-04-30 20:15:37,949 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+
+2022-04-30 20:15:37,949 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:37,949 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 9
+2022-04-30 20:15:37,949 INFO    SenderThread:55518 [sender.py:transition_state():389] send defer: 10
+2022-04-30 20:15:37,950 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: defer
+2022-04-30 20:15:37,950 INFO    HandlerThread:55518 [handler.py:handle_request_defer():164] handle defer: 10
+2022-04-30 20:15:37,951 DEBUG   SenderThread:55518 [sender.py:send():232] send: final
+2022-04-30 20:15:37,951 DEBUG   SenderThread:55518 [sender.py:send():232] send: footer
+2022-04-30 20:15:37,951 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: defer
+2022-04-30 20:15:37,951 INFO    SenderThread:55518 [sender.py:send_request_defer():385] handle sender defer: 10
+2022-04-30 20:15:38,050 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: poll_exit
+2022-04-30 20:15:38,051 DEBUG   SenderThread:55518 [sender.py:send_request():246] send_request: poll_exit
+2022-04-30 20:15:38,051 INFO    SenderThread:55518 [file_pusher.py:join():150] waiting for file pusher
+2022-04-30 20:15:38,216 INFO    MainThread:55518 [wandb_run.py:_on_finish():1995] got exit ret: done: true
+exit_result {
+}
+file_counts {
+  wandb_count: 6
+  media_count: 2
+  artifact_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 21825
+  total_bytes: 21825
+}
+local_info {
+}
+
+2022-04-30 20:15:38,317 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: sampled_history
+2022-04-30 20:15:38,319 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: get_summary
+2022-04-30 20:15:38,321 DEBUG   HandlerThread:55518 [handler.py:handle_request():141] handle_request: shutdown
+2022-04-30 20:15:38,321 INFO    HandlerThread:55518 [handler.py:finish():806] shutting down handler
+2022-04-30 20:15:38,951 INFO    WriterThread:55518 [datastore.py:close():279] close: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_201400-hf8qzhc0/run-hf8qzhc0.wandb
+2022-04-30 20:15:39,217 INFO    SenderThread:55518 [sender.py:finish():1106] shutting down sender
+2022-04-30 20:15:39,217 INFO    SenderThread:55518 [file_pusher.py:finish():145] shutting down file pusher
+2022-04-30 20:15:39,217 INFO    SenderThread:55518 [file_pusher.py:join():150] waiting for file pusher
+2022-04-30 20:15:39,323 INFO    MainThread:55518 [wandb_run.py:_footer_history_summary_info():3102] rendering history
+2022-04-30 20:15:39,323 INFO    MainThread:55518 [wandb_run.py:_footer_history_summary_info():3134] rendering summary
+2022-04-30 20:15:39,327 INFO    MainThread:55518 [wandb_run.py:_footer_sync_info():3057] logging synced files
+2022-04-30 20:15:39,328 INFO    MainThread:55518 [internal.py:handle_exit():80] Internal process exited

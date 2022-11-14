@@ -1,0 +1,368 @@
+[[36m2022-04-30 19:27:05,683[39m][[34mroot[39m][[32mINFO[39m] - Excluding bias and batchnorm layers from weight decay.
+[[36m2022-04-30 19:27:05,720[39m][[34mroot[39m][[32mINFO[39m] - Dense FLOPs 315,460,224
+[[36m2022-04-30 19:27:05,723[39m][[34mroot[39m][[32mINFO[39m] - Removing biases...
+[[36m2022-04-30 19:27:05,723[39m][[34mroot[39m][[32mINFO[39m] - Removing 2D batch norms...
+[[36m2022-04-30 19:27:05,724[39m][[34mroot[39m][[32mINFO[39m] - Removing 1D batch norms...
+[[36m2022-04-30 19:27:05,726[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:fc.weight set to 1.0
+[[36m2022-04-30 19:27:05,727[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:block1.layer.0.convShortcut.weight set to 1.0
+[[36m2022-04-30 19:27:05,729[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:conv1.weight set to 1.0
+[[36m2022-04-30 19:27:06,050[39m][[34mroot[39m][[32mINFO[39m] - Total Model parameters: 1079642.
+[[36m2022-04-30 19:27:06,050[39m][[34mroot[39m][[32mINFO[39m] - Total parameters after removed layers: 1076912.
+[[36m2022-04-30 19:27:06,051[39m][[34mroot[39m][[32mINFO[39m] - Total parameters under sparsity level of 0.05: 54048
+[[36m2022-04-30 19:27:06,051[39m][[34mroot[39m][[32mINFO[39m] - Achieved sparsity at init (w/o BN, bias): 0.0502
+[[36m2022-04-30 19:27:06,179[39m][[34mroot[39m][[32mINFO[39m] - Inference (Sparse) FLOPs (at init) 27,983,743
+[[36m2022-04-30 19:27:06,206[39m][[34mroot[39m][[32mINFO[39m] - Not resuming, training from scratch.
+Train Epoch 1 Iters 1 Mask Updates 0 Train loss 2.348708:   0%|          | 1/352 [00:00<04:39,  1.25it/s]/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/optim/lr_scheduler.py:372: UserWarning: To get the last learning rate computed by the scheduler, please use `get_last_lr()`.
+  "please use `get_last_lr()`.", UserWarning)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 1 Iters 301 Mask Updates 0 Train loss 1.262405:  97%|█████████▋| 342/352 [00:56<00:01,  6.30it/s]
+Train Epoch 1 Iters 301 Mask Updates 0 Train loss 1.262405: 100%|██████████| 352/352 [00:58<00:00,  6.04it/s]
+
+
+ 82%|████████▎ | 33/40 [00:04<00:00,  8.21it/s]
+Val Epoch 1 Iters 352 val loss -3.382297 top-1 accuracy 0.4791 top-5 accuracy 0.9285: 100%|██████████| 40/40 [00:04<00:00,  8.27it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 2 Iters 653 Mask Updates 0 Train loss 1.066562:  99%|█████████▉| 349/352 [00:57<00:00,  6.17it/s]
+Train Epoch 2 Iters 653 Mask Updates 0 Train loss 1.066562: 100%|██████████| 352/352 [00:58<00:00,  6.05it/s]
+
+ 65%|██████▌   | 26/40 [00:03<00:01,  8.40it/s]
+Val Epoch 2 Iters 704 val loss -4.631136 top-1 accuracy 0.6113 top-5 accuracy 0.9557: 100%|██████████| 40/40 [00:04<00:00,  8.38it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 3 Iters 1005 Mask Updates 0 Train loss 0.998138: 100%|██████████| 352/352 [00:58<00:00,  6.01it/s]
+  0%|          | 0/40 [00:00<?, ?it/s]
+
+
+ 85%|████████▌ | 34/40 [00:04<00:00,  7.98it/s]
+Val Epoch 3 Iters 1056 val loss -5.726677 top-1 accuracy 0.6334 top-5 accuracy 0.9670: 100%|██████████| 40/40 [00:04<00:00,  8.28it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 4 Iters 1357 Mask Updates 0 Train loss 0.909974:  99%|█████████▊| 347/352 [00:56<00:00,  6.17it/s]
+Train Epoch 4 Iters 1357 Mask Updates 0 Train loss 0.909974: 100%|██████████| 352/352 [00:58<00:00,  6.06it/s]
+
+ 60%|██████    | 24/40 [00:02<00:01,  8.46it/s]
+Val Epoch 4 Iters 1408 val loss -5.553394 top-1 accuracy 0.6514 top-5 accuracy 0.9703: 100%|██████████| 40/40 [00:04<00:00,  8.35it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 5 Iters 1709 Mask Updates 0 Train loss 0.890932: 100%|█████████▉| 351/352 [00:57<00:00,  5.18it/s]
+Train Epoch 5 Iters 1709 Mask Updates 0 Train loss 0.890932: 100%|██████████| 352/352 [00:58<00:00,  5.98it/s]
+
+ 68%|██████▊   | 27/40 [00:03<00:01,  8.57it/s]
+Val Epoch 5 Iters 1760 val loss -5.939136 top-1 accuracy 0.6059 top-5 accuracy 0.9465: 100%|██████████| 40/40 [00:05<00:00,  7.94it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 6 Iters 2061 Mask Updates 0 Train loss 0.911166: 100%|█████████▉| 351/352 [00:58<00:00,  5.16it/s]
+Train Epoch 6 Iters 2061 Mask Updates 0 Train loss 0.911166: 100%|██████████| 352/352 [00:58<00:00,  6.02it/s]
+
+ 80%|████████  | 32/40 [00:03<00:00,  8.39it/s]
+Val Epoch 6 Iters 2112 val loss -5.880772 top-1 accuracy 0.6756 top-5 accuracy 0.9777: 100%|██████████| 40/40 [00:04<00:00,  8.24it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 7 Iters 2413 Mask Updates 0 Train loss 0.846121:  99%|█████████▉| 348/352 [00:57<00:00,  5.87it/s]
+Train Epoch 7 Iters 2413 Mask Updates 0 Train loss 0.846121: 100%|██████████| 352/352 [00:58<00:00,  6.04it/s]
+
+ 62%|██████▎   | 25/40 [00:03<00:01,  8.28it/s]
+Val Epoch 7 Iters 2464 val loss -6.490799 top-1 accuracy 0.6855 top-5 accuracy 0.9734: 100%|██████████| 40/40 [00:04<00:00,  8.33it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 8 Iters 2765 Mask Updates 0 Train loss 0.799773: 100%|█████████▉| 351/352 [00:57<00:00,  5.12it/s]
+Train Epoch 8 Iters 2765 Mask Updates 0 Train loss 0.799773: 100%|██████████| 352/352 [00:58<00:00,  6.03it/s]
+
+ 78%|███████▊  | 31/40 [00:03<00:01,  8.78it/s]
+Val Epoch 8 Iters 2816 val loss -5.842546 top-1 accuracy 0.7080 top-5 accuracy 0.9691: 100%|██████████| 40/40 [00:04<00:00,  8.47it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 9 Iters 3117 Mask Updates 0 Train loss 0.805047:  98%|█████████▊| 346/352 [00:57<00:00,  6.04it/s]
+Train Epoch 9 Iters 3117 Mask Updates 0 Train loss 0.805047: 100%|██████████| 352/352 [00:58<00:00,  6.02it/s]
+
+Val Epoch 9 Iters 3168 val loss -6.301935 top-1 accuracy 0.6406 top-5 accuracy 0.9750: 100%|██████████| 40/40 [00:04<00:00,  8.34it/s]
+  0%|          | 0/352 [00:00<?, ?it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 10 Iters 3469 Mask Updates 0 Train loss 0.779011: 100%|█████████▉| 351/352 [00:58<00:00,  5.11it/s]
+Train Epoch 10 Iters 3469 Mask Updates 0 Train loss 0.779011: 100%|██████████| 352/352 [00:58<00:00,  6.02it/s]
+
+ 78%|███████▊  | 31/40 [00:03<00:01,  8.45it/s]
+[[36m2022-04-30 19:37:39,382[39m][[34mroot[39m][[32mINFO[39m] - Val Epoch 10 Iters 3520 val loss -6.828235 top-1 accuracy 0.7244 top-5 accuracy 0.9783
+Val Epoch 10 Iters 3520 val loss -6.828235 top-1 accuracy 0.7244 top-5 accuracy 0.9783: 100%|██████████| 40/40 [00:04<00:00,  8.35it/s]
+Error executing job with overrides: ['+specific=cifar10_wrn_22_2_rigL_modified', '++optimizer.epochs=10', '++dataset.max_threads=1']
+Traceback (most recent call last):
+  File "main.py", line 801, in main
+    single_seed_run(cfg)
+  File "/home/home01/sclaam/spase-resnet-50-experiments/rigl_repo_utils/main.py", line 406, in single_seed_run
+    is_min=is_min,
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/sparselearning/utils/train_helper.py", line 140, in save_weights
+    torch.save(state_dict, model_path)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/serialization.py", line 377, in save
+    with _open_file_like(f, 'wb') as opened_file:
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/serialization.py", line 231, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/serialization.py", line 212, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: 'ckpts/epoch_10.pth'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

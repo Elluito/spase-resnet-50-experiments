@@ -1,0 +1,72 @@
+[[36m2022-04-30 20:14:05,669[39m][[34mroot[39m][[32mINFO[39m] - Excluding bias and batchnorm layers from weight decay.
+[[36m2022-04-30 20:14:05,706[39m][[34mroot[39m][[32mINFO[39m] - Dense FLOPs 315,460,224
+[[36m2022-04-30 20:14:05,709[39m][[34mroot[39m][[32mINFO[39m] - Removing biases...
+[[36m2022-04-30 20:14:05,709[39m][[34mroot[39m][[32mINFO[39m] - Removing 2D batch norms...
+[[36m2022-04-30 20:14:05,710[39m][[34mroot[39m][[32mINFO[39m] - Removing 1D batch norms...
+[[36m2022-04-30 20:14:05,711[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:fc.weight set to 1.0
+[[36m2022-04-30 20:14:05,713[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:block1.layer.0.convShortcut.weight set to 1.0
+[[36m2022-04-30 20:14:05,714[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:conv1.weight set to 1.0
+[[36m2022-04-30 20:14:05,716[39m][[34mroot[39m][[32mINFO[39m] - Density of layer:block2.layer.0.convShortcut.weight set to 1.0
+[[36m2022-04-30 20:14:06,020[39m][[34mroot[39m][[32mINFO[39m] - Total Model parameters: 1079642.
+[[36m2022-04-30 20:14:06,020[39m][[34mroot[39m][[32mINFO[39m] - Total parameters after removed layers: 1076912.
+[[36m2022-04-30 20:14:06,020[39m][[34mroot[39m][[32mINFO[39m] - Total parameters under sparsity level of 0.1: 107835
+[[36m2022-04-30 20:14:06,020[39m][[34mroot[39m][[32mINFO[39m] - Achieved sparsity at init (w/o BN, bias): 0.1001
+[[36m2022-04-30 20:14:06,156[39m][[34mroot[39m][[32mINFO[39m] - Inference (Sparse) FLOPs (at init) 54,665,984
+[[36m2022-04-30 20:14:06,179[39m][[34mroot[39m][[32mINFO[39m] - Not resuming, training from scratch.
+Train Epoch 1 Iters 1 Mask Updates 0 Train loss 2.351720:   0%|          | 1/352 [00:00<04:32,  1.29it/s]/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/optim/lr_scheduler.py:372: UserWarning: To get the last learning rate computed by the scheduler, please use `get_last_lr()`.
+  "please use `get_last_lr()`.", UserWarning)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 1 Iters 301 Mask Updates 0 Train loss 1.308141:  99%|█████████▉| 350/352 [01:23<00:00,  2.51it/s]
+Train Epoch 1 Iters 301 Mask Updates 0 Train loss 1.308141: 100%|██████████| 352/352 [01:24<00:00,  4.19it/s]
+  0%|          | 0/40 [00:00<?, ?it/s]Error executing job with overrides: ['+specific=cifar10_wrn_22_2_static_modified', '++optimizer.epochs=10', '++dataset.max_threads=1']
+Traceback (most recent call last):
+  File "main.py", line 801, in main
+    single_seed_run(cfg)
+  File "/home/home01/sclaam/spase-resnet-50-experiments/rigl_repo_utils/main.py", line 385, in single_seed_run
+    use_wandb=cfg.wandb.use,
+  File "/home/home01/sclaam/spase-resnet-50-experiments/rigl_repo_utils/main.py", line 200, in evaluate
+    loss += F.log_softmax(smooth_CE(output, target).item())  # sum up batch loss
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/nn/functional.py", line 1905, in log_softmax
+    dim = _get_softmax_dim("log_softmax", input.dim(), _stacklevel)
+AttributeError: 'float' object has no attribute 'dim'
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

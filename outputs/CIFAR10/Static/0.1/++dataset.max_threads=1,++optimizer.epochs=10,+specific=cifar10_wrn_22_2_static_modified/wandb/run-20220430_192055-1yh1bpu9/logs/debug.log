@@ -1,0 +1,160 @@
+2022-04-30 19:20:55,653 INFO    MainThread:49775 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/.config/wandb/settings
+2022-04-30 19:20:55,653 INFO    MainThread:49775 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/settings
+2022-04-30 19:20:55,653 INFO    MainThread:49775 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'api_key': '***REDACTED***', 'start_method': 'thread'}
+2022-04-30 19:20:55,653 WARNING MainThread:49775 [wandb_setup.py:_flush():75] Could not find program at main.py
+2022-04-30 19:20:55,653 INFO    MainThread:49775 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': None, 'program': 'main.py'}
+2022-04-30 19:20:55,654 INFO    MainThread:49775 [wandb_init.py:_log_setup():437] Logging user logs to /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/logs/debug.log
+2022-04-30 19:20:55,654 INFO    MainThread:49775 [wandb_init.py:_log_setup():438] Logging internal logs to /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/logs/debug-internal.log
+2022-04-30 19:20:55,654 INFO    MainThread:49775 [wandb_init.py:init():471] calling init triggers
+2022-04-30 19:20:55,654 INFO    MainThread:49775 [wandb_init.py:init():475] wandb.init called with sweep_config: {}
+config: {'exp_name': 'Static', 'seed': 0, 'multi_seed': [], 'model': 'wrn-22-2', 'device': 'cuda', 'log_interval': 100, 'ckpt_dir': 'ckpts', 'ckpt_interval': 10, 'val_interval': 1, 'resume': False, 'wandb': {'use': True, 'api_key': '/home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key', 'entity': 'luis_alfredo', 'project': 'sparse_training', 'name': 'CIFAR10_Static_density_0.1'}, 'wandb_api_key': '/home/home01/sclaam/spase-resnet-50-experiments/wandb_api.key', 'masking': {'name': 'Static', 'density': 0.1, 'sparse_init': 'erdos-renyi-kernel', 'dense_gradients': False, 'growth_mode': 'momentum', 'prune_mode': 'magnitude', 'redistribution_mode': 'none', 'prune_rate': 0.3, 'dense': False, 'decay_schedule': 'cosine', 'apply_when': 'step_end', 'end_when': -1, 'interval': 1, 'print_FLOPs': True}, 'dataset': {'name': 'CIFAR10', 'root': '/nobackup/sclaam/data/CIFAR10', 'batch_size': 128, 'test_batch_size': 128, 'max_threads': 1, 'validation_split': 0.1, 'fixed_shuffle': False}, 'optimizer': {'name': 'SGD', 'epochs': 10, 'lr': 0.1, 'momentum': 0.9, 'weight_decay': 0.0005, 'label_smoothing': 0.0, 'decay_frequency': 30000, 'decay_factor': 0.2, 'warmup_steps': 0, 'use_nesterov': True, 'training_multiplier': 1}}
+2022-04-30 19:20:55,654 INFO    MainThread:49775 [wandb_init.py:init():524] starting backend
+2022-04-30 19:20:55,663 INFO    MainThread:49775 [backend.py:ensure_launched():217] starting backend process...
+2022-04-30 19:20:55,663 INFO    MainThread:49775 [backend.py:ensure_launched():222] started backend process with pid: 0
+2022-04-30 19:20:55,664 INFO    MainThread:49775 [wandb_init.py:init():533] backend started and connected
+2022-04-30 19:20:55,666 INFO    BackendThr:49775 [internal.py:wandb_internal():93] W&B internal server running at pid: 49775, started at: 2022-04-30 19:20:55.663316
+2022-04-30 19:20:55,676 INFO    MainThread:49775 [wandb_init.py:init():597] updated telemetry
+2022-04-30 19:20:55,681 INFO    WriterThread:49775 [datastore.py:open_for_write():75] open: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/run-1yh1bpu9.wandb
+2022-04-30 19:20:55,736 INFO    MainThread:49775 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-30 19:21:24,061 ERROR   Thread-1  :49775 [retry.py:__call__():126] Retry attempt failed:
+Traceback (most recent call last):
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 384, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 380, in _make_request
+    httplib_response = conn.getresponse()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 1336, in getresponse
+    response.begin()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 306, in begin
+    version, status, reason = self._read_status()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 267, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/contrib/pyopenssl.py", line 310, in recv_into
+    raise timeout('The read operation timed out')
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/adapters.py", line 449, in send
+    timeout=timeout
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 638, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/util/retry.py", line 368, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 600, in urlopen
+    chunked=chunked)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 306, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Read timed out. (read timeout=10)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/lib/retry.py", line 102, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_api.py", line 140, in execute
+    return self.client.execute(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/transport/requests.py", line 38, in execute
+    request = requests.post(self.url, **post_args)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/api.py", line 116, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/sessions.py", line 533, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/sessions.py", line 646, in send
+    r = adapter.send(request, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/adapters.py", line 529, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.wandb.ai', port=443): Read timed out. (read timeout=10)
+2022-04-30 19:21:25,737 INFO    MainThread:49775 [interface_shared.py:_communicate_run():326] couldn't get run from backend
+2022-04-30 19:21:25,738 ERROR   MainThread:49775 [wandb_init.py:init():633] backend process timed out
+2022-04-30 19:21:25,738 ERROR   MainThread:49775 [wandb_init.py:init():644] encountered error: Error communicating with wandb process
+try: wandb.init(settings=wandb.Settings(start_method='fork'))
+or:  wandb.init(settings=wandb.Settings(start_method='thread'))
+For more info see: https://docs.wandb.ai/library/init#init-start-error
+2022-04-30 19:21:25,739 INFO    HandlerThread:49775 [handler.py:finish():806] shutting down handler
+2022-04-30 19:21:25,744 INFO    WriterThread:49775 [datastore.py:close():279] close: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/run-1yh1bpu9.wandb
+2022-04-30 19:21:29,146 ERROR   SenderThread:49775 [retry.py:__call__():126] Retry attempt failed:
+Traceback (most recent call last):
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 384, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 2, in raise_from
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 380, in _make_request
+    httplib_response = conn.getresponse()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 1336, in getresponse
+    response.begin()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 306, in begin
+    version, status, reason = self._read_status()
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/http/client.py", line 267, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/contrib/pyopenssl.py", line 310, in recv_into
+    raise timeout('The read operation timed out')
+socket.timeout: The read operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/adapters.py", line 449, in send
+    timeout=timeout
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 638, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/util/retry.py", line 368, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/packages/six.py", line 686, in reraise
+    raise value
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 600, in urlopen
+    chunked=chunked)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 386, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/urllib3/connectionpool.py", line 306, in _raise_timeout
+    raise ReadTimeoutError(self, url, "Read timed out. (read timeout=%s)" % timeout_value)
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Read timed out. (read timeout=10)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/lib/retry.py", line 102, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/sdk/internal/internal_api.py", line 140, in execute
+    return self.client.execute(*args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/transport/requests.py", line 38, in execute
+    request = requests.post(self.url, **post_args)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/api.py", line 116, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/sessions.py", line 533, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/sessions.py", line 646, in send
+    r = adapter.send(request, **kwargs)
+  File "/apps/developers/compilers/anaconda/2019.10/1/default/lib/python3.7/site-packages/requests/adapters.py", line 529, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='api.wandb.ai', port=443): Read timed out. (read timeout=10)
+2022-04-30 19:21:38,310 INFO    SenderThread:49775 [dir_watcher.py:__init__():166] watching files in: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/files
+2022-04-30 19:21:38,311 INFO    SenderThread:49775 [sender.py:_start_run_threads():814] run started: 1yh1bpu9 with start time 1651342855
+2022-04-30 19:21:38,311 INFO    SenderThread:49775 [sender.py:finish():1106] shutting down sender
+2022-04-30 19:21:38,312 INFO    SenderThread:49775 [dir_watcher.py:finish():279] shutting down directory watcher
+2022-04-30 19:21:39,312 INFO    SenderThread:49775 [dir_watcher.py:finish():309] scan: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/files
+2022-04-30 19:21:39,312 INFO    SenderThread:49775 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/files/config.yaml config.yaml
+2022-04-30 19:21:39,313 INFO    SenderThread:49775 [file_pusher.py:finish():145] shutting down file pusher
+2022-04-30 19:21:39,313 INFO    SenderThread:49775 [file_pusher.py:join():150] waiting for file pusher
+2022-04-30 19:21:40,320 INFO    Thread-12 :49775 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/outputs/CIFAR10/Static/0.1/++dataset.max_threads=1,++optimizer.epochs=10,+specific=cifar10_wrn_22_2_static_modified/wandb/run-20220430_192055-1yh1bpu9/files/config.yaml
+2022-04-30 19:21:41,394 INFO    MainThread:49775 [wandb_init.py:teardown():285] tearing down wandb.init

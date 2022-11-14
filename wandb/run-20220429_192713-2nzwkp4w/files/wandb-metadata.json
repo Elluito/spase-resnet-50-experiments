@@ -1,0 +1,24 @@
+{
+    "os": "Linux-3.10.0-1160.45.1.el7.x86_64-x86_64-with-centos-7.9.2009-Core",
+    "python": "3.7.4",
+    "heartbeatAt": "2022-04-29T18:27:13.991069",
+    "startedAt": "2022-04-29T18:27:13.581608",
+    "docker": null,
+    "gpu": "Tesla V100-PCIE-32GB",
+    "gpu_count": 1,
+    "cpu_count": 40,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "multiprocesing_test.py",
+    "codePath": "multiprocesing_test.py",
+    "git": {
+        "remote": "https://github.com/Elluito/spase-resnet-50-experiments.git",
+        "commit": "d3d9693f45c12cf65e0ac71cdda65578acb96f5f"
+    },
+    "email": "alfredoavendano@hotmail.com",
+    "root": "/home/home01/sclaam/spase-resnet-50-experiments",
+    "host": "db04gpu4.arc4.leeds.ac.uk",
+    "username": "sclaam",
+    "executable": "/apps/developers/compilers/anaconda/2019.10/1/default/bin/python"
+}

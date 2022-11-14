@@ -1,0 +1,26 @@
+2022-04-24 16:42:34,608 INFO    MainThread:194463 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/.config/wandb/settings
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/spase-resnet-50-experiments/wandb/settings
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'api_key': '***REDACTED***', '_require_service': 'True'}
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': 'multiprocesing_test.py', 'program': 'multiprocesing_test.py'}
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_init.py:_log_setup():437] Logging user logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_164234-ivvk983b/logs/debug.log
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_init.py:_log_setup():438] Logging internal logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220424_164234-ivvk983b/logs/debug-internal.log
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_init.py:init():471] calling init triggers
+2022-04-24 16:42:34,609 INFO    MainThread:194463 [wandb_init.py:init():475] wandb.init called with sweep_config: {}
+config: {}
+2022-04-24 16:42:34,610 INFO    MainThread:194463 [wandb_init.py:init():524] starting backend
+2022-04-24 16:42:34,616 INFO    MainThread:194463 [backend.py:_multiprocessing_setup():99] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-04-24 16:42:34,639 INFO    MainThread:194463 [wandb_init.py:init():533] backend started and connected
+2022-04-24 16:42:34,643 INFO    MainThread:194463 [wandb_init.py:init():597] updated telemetry
+2022-04-24 16:42:34,689 INFO    MainThread:194463 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-24 16:42:35,080 INFO    MainThread:194463 [wandb_run.py:_on_init():1923] communicating current version
+2022-04-24 16:42:35,225 INFO    MainThread:194463 [wandb_run.py:_on_init():1927] got version response 
+2022-04-24 16:42:35,225 INFO    MainThread:194463 [wandb_init.py:init():659] starting run threads in backend
+2022-04-24 16:42:38,797 INFO    MainThread:194463 [wandb_run.py:_console_start():1897] atexit reg
+2022-04-24 16:42:38,798 INFO    MainThread:194463 [wandb_run.py:_redirect():1770] redirect: SettingsConsole.WRAP
+2022-04-24 16:42:38,798 INFO    MainThread:194463 [wandb_run.py:_redirect():1807] Wrapping output streams.
+2022-04-24 16:42:38,798 INFO    MainThread:194463 [wandb_run.py:_redirect():1831] Redirects installed.
+2022-04-24 16:42:38,799 INFO    MainThread:194463 [wandb_init.py:init():684] run started, returning control to user process
+2022-04-24 16:42:39,956 INFO    MainThread:194463 [wandb_watch.py:watch():47] Watching
+2022-04-24 16:42:40,009 INFO    MainThread:194463 [wandb_run.py:_config_callback():1131] config_cb None None {'wandb': True, 'learning_rate': 0.09540963110780444, 'rho': 1.5392140101476401, 'adaptive': True, 'epochs': 10, 'percent_valid_examples': 0.1, 'density': 0.05}
+2022-04-24 16:42:49,758 INFO    MainThread:194463 [wandb_run.py:_config_callback():1131] config_cb ('_wandb', 'visualize', 'layer_wise_density') {'panel_type': 'Vega2', 'panel_config': {'userQuery': {'queryFields': [{'name': 'runSets', 'args': [{'name': 'runSets', 'value': '${runSets}'}], 'fields': [{'name': 'id', 'fields': []}, {'name': 'name', 'fields': []}, {'name': '_defaultColorIndex', 'fields': []}, {'name': 'summaryTable', 'args': [{'name': 'tableKey', 'value': 'layer_wise_density_table'}], 'fields': []}]}]}, 'panelDefId': 'wandb/bar/v0', 'transform': {'name': 'tableWithLeafColNames'}, 'fieldSettings': {'label': 'layer name', 'value': 'density'}, 'stringSettings': {'title': 'Layer-wise Density'}}} None
+2022-04-24 16:43:53,692 INFO    MainThread:194463 [wandb_run.py:_config_callback():1131] config_cb ('_wandb', 'visualize', 'layer_wise_density') {'panel_type': 'Vega2', 'panel_config': {'userQuery': {'queryFields': [{'name': 'runSets', 'args': [{'name': 'runSets', 'value': '${runSets}'}], 'fields': [{'name': 'id', 'fields': []}, {'name': 'name', 'fields': []}, {'name': '_defaultColorIndex', 'fields': []}, {'name': 'summaryTable', 'args': [{'name': 'tableKey', 'value': 'layer_wise_density_table'}], 'fields': []}]}]}, 'panelDefId': 'wandb/bar/v0', 'transform': {'name': 'tableWithLeafColNames'}, 'fieldSettings': {'label': 'layer name', 'value': 'density'}, 'stringSettings': {'title': 'Layer-wise Density'}}} None

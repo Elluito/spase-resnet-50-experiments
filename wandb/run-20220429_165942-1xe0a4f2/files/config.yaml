@@ -1,0 +1,70 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.15
+    framework: ignite
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.4
+    start_time: 1651247982
+    t:
+      1:
+      - 1
+      - 9
+      - 10
+      - 41
+      - 50
+      - 55
+      2:
+      - 1
+      - 9
+      - 10
+      - 41
+      - 50
+      - 55
+      3:
+      - 1
+      - 13
+      - 16
+      4: 3.7.4
+      5: 0.12.15
+      8:
+      - 8
+adaptive:
+  desc: null
+  value: true
+density:
+  desc: null
+  value: 0.1
+epochs:
+  desc: null
+  value: 10
+learning_rate:
+  desc: null
+  value: 0.1
+model:
+  desc: null
+  value: wrn-22-2
+momentum:
+  desc: null
+  value: 0.9
+nesterov:
+  desc: null
+  value: true
+percent_valid_examples:
+  desc: null
+  value: 0.1
+rho:
+  desc: null
+  value: 2
+val_interval:
+  desc: null
+  value: 1
+wandb:
+  desc: null
+  value: true
+weight_decay:
+  desc: null
+  value: 0.0005

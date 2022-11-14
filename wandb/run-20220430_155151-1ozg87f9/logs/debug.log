@@ -1,0 +1,275 @@
+2022-04-30 15:51:51,613 INFO    MainThread:34568 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/.config/wandb/settings
+2022-04-30 15:51:51,613 INFO    MainThread:34568 [wandb_setup.py:_flush():75] Loading settings from /home/home01/sclaam/spase-resnet-50-experiments/wandb/settings
+2022-04-30 15:51:51,613 INFO    MainThread:34568 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'api_key': '***REDACTED***', 'start_method': 'thread'}
+2022-04-30 15:51:51,613 INFO    MainThread:34568 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': 'multiprocesing_test.py', 'program': 'multiprocesing_test.py'}
+2022-04-30 15:51:51,614 INFO    MainThread:34568 [wandb_init.py:_log_setup():437] Logging user logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/logs/debug.log
+2022-04-30 15:51:51,614 INFO    MainThread:34568 [wandb_init.py:_log_setup():438] Logging internal logs to /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/logs/debug-internal.log
+2022-04-30 15:51:51,614 INFO    MainThread:34568 [wandb_init.py:init():471] calling init triggers
+2022-04-30 15:51:51,614 INFO    MainThread:34568 [wandb_init.py:init():475] wandb.init called with sweep_config: {}
+config: {'wandb': True, 'model': 'wrn-22-2', 'learning_rate': 0.01, 'rho': 2, 'adaptive': True, 'weight_decay': 0.0005, 'momentum': 0.9, 'nesterov': True, 'epochs': 10, 'percent_valid_examples': 0.1, 'density': 0.1, 'val_interval': 1}
+2022-04-30 15:51:51,614 INFO    MainThread:34568 [wandb_init.py:init():524] starting backend
+2022-04-30 15:51:51,623 INFO    MainThread:34568 [backend.py:ensure_launched():217] starting backend process...
+2022-04-30 15:51:51,624 INFO    MainThread:34568 [backend.py:ensure_launched():222] started backend process with pid: 0
+2022-04-30 15:51:51,624 INFO    MainThread:34568 [wandb_init.py:init():533] backend started and connected
+2022-04-30 15:51:51,626 INFO    BackendThr:34568 [internal.py:wandb_internal():93] W&B internal server running at pid: 34568, started at: 2022-04-30 15:51:51.624149
+2022-04-30 15:51:51,638 INFO    MainThread:34568 [wandb_init.py:init():597] updated telemetry
+2022-04-30 15:51:51,641 INFO    WriterThread:34568 [datastore.py:open_for_write():75] open: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/run-1ozg87f9.wandb
+2022-04-30 15:51:51,698 INFO    MainThread:34568 [wandb_init.py:init():628] communicating run to backend with 30 second timeout
+2022-04-30 15:51:51,921 INFO    MainThread:34568 [wandb_run.py:_on_init():1923] communicating current version
+2022-04-30 15:51:51,923 INFO    SenderThread:34568 [dir_watcher.py:__init__():166] watching files in: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files
+2022-04-30 15:51:51,923 INFO    SenderThread:34568 [sender.py:_start_run_threads():814] run started: 1ozg87f9 with start time 1651330311
+2022-04-30 15:51:51,925 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:51:51,991 INFO    MainThread:34568 [wandb_run.py:_on_init():1927] got version response 
+2022-04-30 15:51:51,991 INFO    MainThread:34568 [wandb_init.py:init():659] starting run threads in backend
+2022-04-30 15:51:52,926 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:51:52,926 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/requirements.txt
+2022-04-30 15:51:52,926 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/conda-environment.yaml
+2022-04-30 15:51:56,360 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-metadata.json with policy now
+2022-04-30 15:51:56,373 INFO    MainThread:34568 [wandb_run.py:_console_start():1897] atexit reg
+2022-04-30 15:51:56,373 INFO    MainThread:34568 [wandb_run.py:_redirect():1770] redirect: SettingsConsole.WRAP
+2022-04-30 15:51:56,374 INFO    MainThread:34568 [wandb_run.py:_redirect():1807] Wrapping output streams.
+2022-04-30 15:51:56,374 INFO    MainThread:34568 [wandb_run.py:_redirect():1831] Redirects installed.
+2022-04-30 15:51:56,375 INFO    MainThread:34568 [wandb_init.py:init():684] run started, returning control to user process
+2022-04-30 15:51:56,375 INFO    MainThread:34568 [wandb_watch.py:watch():47] Watching
+2022-04-30 15:51:56,930 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/conda-environment.yaml
+2022-04-30 15:51:56,930 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:51:56,931 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_created():213] file/dir created: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-metadata.json
+2022-04-30 15:51:57,085 INFO    Thread-14 :34568 [upload_job.py:push():137] Uploaded file /local/3855643.1.24core-128G-2K80.q/tmp3y2_ood_wandb/20znby9a-wandb-metadata.json
+2022-04-30 15:51:57,478 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:51:57,931 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:51:58,932 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:00,939 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:02,941 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:04,945 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:06,952 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:08,954 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:10,959 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:12,961 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:14,963 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:16,964 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:18,970 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:20,972 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:21,972 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/config.yaml
+2022-04-30 15:52:22,974 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:24,449 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:52:24,980 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:24,981 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:52:26,982 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:28,990 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:30,992 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:32,994 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:35,002 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:37,005 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:39,006 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:41,013 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:43,016 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:45,017 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:47,019 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:49,021 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:51,024 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:53,031 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:54,158 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:52:55,033 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:55,034 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:52:57,035 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:52:59,037 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:01,043 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:03,044 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:05,051 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:07,053 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:09,055 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:11,056 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:13,063 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:15,070 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:17,082 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:19,084 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:21,085 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:23,087 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:25,089 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:27,090 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:27,864 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:53:28,091 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:53:29,092 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:31,106 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:33,108 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:35,115 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:37,117 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:39,125 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:41,126 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:43,128 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:45,130 INFO    Thread-10 :34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:46,097 INFO    MainThread:34568 [wandb_run.py:_atexit_cleanup():1866] got exitcode: 1
+2022-04-30 15:53:46,099 INFO    MainThread:34568 [wandb_run.py:_restore():1838] restore
+2022-04-30 15:53:46,503 INFO    SenderThread:34568 [sender.py:send_exit():368] handling exit code: 1
+2022-04-30 15:53:46,503 INFO    SenderThread:34568 [sender.py:send_exit():370] handling runtime: 114
+2022-04-30 15:53:46,505 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:53:46,505 INFO    SenderThread:34568 [sender.py:send_exit():376] send defer
+2022-04-30 15:53:46,506 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 0
+2022-04-30 15:53:46,507 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 0
+2022-04-30 15:53:46,507 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 1
+2022-04-30 15:53:46,507 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 1
+2022-04-30 15:53:46,507 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 847
+}
+
+2022-04-30 15:53:46,564 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 1
+2022-04-30 15:53:46,564 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 2
+2022-04-30 15:53:46,565 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 2
+2022-04-30 15:53:46,565 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 2
+2022-04-30 15:53:46,565 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 3
+2022-04-30 15:53:46,566 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 3
+2022-04-30 15:53:46,566 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 3
+2022-04-30 15:53:46,566 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 4
+2022-04-30 15:53:46,566 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 4
+2022-04-30 15:53:46,568 INFO    SenderThread:34568 [sender.py:_save_file():946] saving file wandb-summary.json with policy end
+2022-04-30 15:53:46,568 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 4
+2022-04-30 15:53:46,569 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 5
+2022-04-30 15:53:46,569 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 5
+2022-04-30 15:53:46,569 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 5
+2022-04-30 15:53:46,766 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 6
+2022-04-30 15:53:46,767 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 6
+2022-04-30 15:53:46,767 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 847
+}
+
+2022-04-30 15:53:46,768 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 6
+2022-04-30 15:53:46,768 INFO    SenderThread:34568 [dir_watcher.py:finish():279] shutting down directory watcher
+2022-04-30 15:53:47,132 INFO    SenderThread:34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/config.yaml
+2022-04-30 15:53:47,133 INFO    SenderThread:34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:47,133 INFO    SenderThread:34568 [dir_watcher.py:_on_file_modified():226] file/dir modified: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:53:47,133 INFO    SenderThread:34568 [dir_watcher.py:finish():309] scan: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files
+2022-04-30 15:53:47,134 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/config.yaml config.yaml
+2022-04-30 15:53:47,134 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json wandb-summary.json
+2022-04-30 15:53:47,135 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/requirements.txt requirements.txt
+2022-04-30 15:53:47,135 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/conda-environment.yaml conda-environment.yaml
+2022-04-30 15:53:47,136 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-metadata.json wandb-metadata.json
+2022-04-30 15:53:47,136 INFO    SenderThread:34568 [dir_watcher.py:finish():323] scan save: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log output.log
+2022-04-30 15:53:47,136 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 7
+2022-04-30 15:53:47,137 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 7
+2022-04-30 15:53:47,138 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,138 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 7
+2022-04-30 15:53:47,138 INFO    SenderThread:34568 [file_pusher.py:finish():145] shutting down file pusher
+2022-04-30 15:53:47,239 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,341 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,442 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 847
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,543 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,645 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,747 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,762 INFO    Thread-23 :34568 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/wandb-summary.json
+2022-04-30 15:53:47,776 INFO    Thread-24 :34568 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/requirements.txt
+2022-04-30 15:53:47,793 INFO    Thread-25 :34568 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/conda-environment.yaml
+2022-04-30 15:53:47,812 INFO    Thread-22 :34568 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/config.yaml
+2022-04-30 15:53:47,815 INFO    Thread-26 :34568 [upload_job.py:push():137] Uploaded file /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/files/output.log
+2022-04-30 15:53:47,848 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:47,950 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:48,015 INFO    Thread-9  :34568 [sender.py:transition_state():389] send defer: 8
+2022-04-30 15:53:48,016 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 8
+2022-04-30 15:53:48,017 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 8
+2022-04-30 15:53:48,443 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 9
+2022-04-30 15:53:48,444 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 9
+2022-04-30 15:53:48,445 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+
+2022-04-30 15:53:48,445 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 9
+2022-04-30 15:53:48,445 INFO    SenderThread:34568 [sender.py:transition_state():389] send defer: 10
+2022-04-30 15:53:48,446 INFO    HandlerThread:34568 [handler.py:handle_request_defer():164] handle defer: 10
+2022-04-30 15:53:48,447 INFO    SenderThread:34568 [sender.py:send_request_defer():385] handle sender defer: 10
+2022-04-30 15:53:48,546 INFO    SenderThread:34568 [file_pusher.py:join():150] waiting for file pusher
+2022-04-30 15:53:48,873 INFO    MainThread:34568 [wandb_run.py:_on_finish():1995] got exit ret: done: true
+exit_result {
+}
+file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 16318
+  total_bytes: 16318
+}
+local_info {
+}
+
+2022-04-30 15:53:48,977 INFO    HandlerThread:34568 [handler.py:finish():806] shutting down handler
+2022-04-30 15:53:49,447 INFO    WriterThread:34568 [datastore.py:close():279] close: /home/home01/sclaam/spase-resnet-50-experiments/wandb/run-20220430_155151-1ozg87f9/run-1ozg87f9.wandb
+2022-04-30 15:53:49,874 INFO    SenderThread:34568 [sender.py:finish():1106] shutting down sender
+2022-04-30 15:53:49,874 INFO    SenderThread:34568 [file_pusher.py:finish():145] shutting down file pusher
+2022-04-30 15:53:49,875 INFO    SenderThread:34568 [file_pusher.py:join():150] waiting for file pusher
+2022-04-30 15:53:49,979 INFO    MainThread:34568 [wandb_run.py:_footer_history_summary_info():3102] rendering history
+2022-04-30 15:53:49,979 INFO    MainThread:34568 [wandb_run.py:_footer_history_summary_info():3134] rendering summary
+2022-04-30 15:53:49,983 INFO    MainThread:34568 [wandb_run.py:_footer_sync_info():3057] logging synced files
+2022-04-30 15:53:49,984 INFO    MainThread:34568 [internal.py:handle_exit():80] Internal process exited

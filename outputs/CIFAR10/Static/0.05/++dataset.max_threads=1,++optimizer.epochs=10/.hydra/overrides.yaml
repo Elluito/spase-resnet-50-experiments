@@ -1,0 +1,2 @@
+- ++optimizer.epochs=10
+- ++dataset.max_threads=1

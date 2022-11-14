@@ -1,0 +1,94 @@
+  0%|          | 0/352 [00:00<?, ?it/s]/home/home01/sclaam/.local/lib/python3.7/site-packages/torch/utils/data/dataloader.py:490: UserWarning: This DataLoader will create 3 worker processes in total. Our suggested max number of worker in current system is 1, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  cpuset_checked))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 0 Iters 301 Train loss 2.087522: 100%|██████████| 352/352 [01:50<00:00,  3.19it/s]
+
+
+Val Epoch 0 val loss 2.041933 top-1 accuracy 0.1986 top-5 accuracy 0.7445: 100%|██████████| 40/40 [00:05<00:00,  6.82it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Train Epoch 1 Iters 353 Train loss 1.992832:  21%|██        | 73/352 [00:30<01:53,  2.46it/s]Traceback (most recent call last):
+  File "multiprocesing_test.py", line 986, in <module>
+    manual_SAM_optimization(cfg)
+  File "multiprocesing_test.py", line 819, in manual_SAM_optimization
+    global_step, use_wandb=cfg.wandb, train_flops=training_FLOPS)
+  File "multiprocesing_test.py", line 686, in train_SAM
+    pbar.update(1)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/std.py", line 1256, in update
+    self.refresh(lock_args=self.lock_args)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/std.py", line 1361, in refresh
+    self.display()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/std.py", line 1509, in display
+    self.sp(self.__str__() if msg is None else msg)
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/std.py", line 350, in print_status
+    fp_write('\r' + s + (' ' * max(last_len[0] - len_s, 0)))
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/std.py", line 344, in fp_write
+    fp_flush()
+  File "/home/home01/sclaam/.local/lib/python3.7/site-packages/tqdm/utils.py", line 145, in inner
+    return func(*args, **kwargs)
+OSError: [Errno 116] Stale file handle

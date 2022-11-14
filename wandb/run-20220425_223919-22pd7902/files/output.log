@@ -1,0 +1,210 @@
+wandb: logging graph, to disable use `wandb.watch(log_graph=False)`
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/callback_connector.py:152: LightningDeprecationWarning: Setting `Trainer(checkpoint_callback=False)` is deprecated in v1.5 and will be removed in v1.7. Please consider using `Trainer(enable_checkpointing=False)`.
+  f"Setting `Trainer(checkpoint_callback={checkpoint_callback})` is deprecated in v1.5 and will "
+GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Files already downloaded and verified
+Files already downloaded and verified
+Files already downloaded and verified
+Sanity Checking: 0it [00:00, ?it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+  | Name        | Type                       | Params
+-----------------------------------------------------------
+0 | model       | WideResNet                 | 1.1 M
+1 | loss_object | LabelSmoothingCrossEntropy | 0
+-----------------------------------------------------------
+1.1 M     Trainable params
+0         Non-trainable params
+1.1 M     Total params
+4.319     Total estimated model params size (MB)
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, val_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 40 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+
+Epoch 0:   0%|          | 0/356 [00:00<?, ?it/s]
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 40 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  category=PossibleUserWarning,
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:231: UserWarning: You called `self.log('Epoch_FLOPS', ...)` in your `training_step` but the value needs to be floating point. Converting it to torch.float32.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 1:  99%|█████████▉| 352/356 [01:08<00:00,  5.13it/s, v_num=7902]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 4:  99%|█████████▉| 353/356 [02:55<00:01,  2.01it/s, v_num=7902]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 8:  99%|█████████▉| 352/356 [05:17<00:03,  1.11it/s, v_num=7902]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 9: 100%|██████████| 356/356 [05:54<00:00,  1.00it/s, v_num=7902]
+Files already downloaded and verified
+Files already downloaded and verified
+Testing DataLoader 0:  58%|█████▊    | 46/79 [00:01<00:01, 27.57it/s]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/home/home01/sclaam/.local/lib/python3.7/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:245: PossibleUserWarning: The dataloader, test_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 40 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+
